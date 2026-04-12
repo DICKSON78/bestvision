@@ -1,0 +1,13 @@
+/* Global font size reduction by 10% */
+html {
+  font-size: 90%;
+}
+
+body {
+  font-size: 90%;
+}
+
+/* Ensure all elements inherit the reduced font size */
+* {
+  font-size: inherit;
+}
