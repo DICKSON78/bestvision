@@ -86,7 +86,7 @@ const CampaignPerformance = () => {
         <React.Fragment>
           {/* Summary Cards */}
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <CampaignIcon sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
@@ -99,7 +99,7 @@ const CampaignPerformance = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <ViewsIcon sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
@@ -112,7 +112,7 @@ const CampaignPerformance = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <ClicksIcon sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
@@ -125,7 +125,7 @@ const CampaignPerformance = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <ConversionsIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
@@ -147,7 +147,7 @@ const CampaignPerformance = () => {
               {data.campaigns && data.campaigns.length > 0 ? (
                 <Grid container spacing={2}>
                   {data.campaigns.map((campaign, index) => (
-                    <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+                    <Grid item xs={12} md={6} key={index}>
                       <Card variant="outlined">
                         <CardContent>
                           <Typography variant="h6" gutterBottom>

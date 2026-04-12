@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiResponse;
 use App\Models\PatientItemBillPayment;
 use App\Models\PatientItemPayment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -31,8 +32,8 @@ class PaymentCenterReportsController extends Controller
         $patient_id = $request->patient_id;
         $patient_gender = $request->patient_gender;
         $patient_phone = $request->patient_phone;
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
+        $start_date = $request->start_date ?? Carbon::today()->format('Y-m-d');
+        $end_date = $request->end_date ?? Carbon::today()->format('Y-m-d');
         $item_payments = PatientItemPayment::with(['channel', 'creator'])
             ->join('patient_payment_cache_items as ppci', 'ppci.item_payment_id', '=', 'patient_item_payments.id')
             ->join('items as it', 'ppci.item_id', '=', 'it.id')

@@ -138,42 +138,34 @@ const Dashboard = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mb: 4 }}
           >
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Total Items"
-                count={numberFormat(data.summary?.total_items || 0)}
-                icon={<InventoryIcon />}
-                color={purple[400]}
-                onClick={() => navigate('/inventory-management/stocktaking')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Low Stock Items"
-                count={numberFormat(data.summary?.low_stock_items || 0)}
-                icon={<LowStockIcon />}
-                color={blue[400]}
-                onClick={() => navigate('/inventory-management/stock-alerts')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Stock In Today"
-                count={numberFormat(data.summary?.stock_in_today || 0)}
-                icon={<StockInIcon />}
-                color={green[400]}
-                onClick={() => navigate('/inventory-management/reports/stock-management/item-balance')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Stock Out Today"
-                count={numberFormat(data.summary?.stock_out_today || 0)}
-                icon={<StockOutIcon />}
-                color={teal[400]}
-                onClick={() => navigate('/inventory-management/reports/stock-alerts')}
-              />
-            </Grid>
+            <InfoCard
+              title="Total Items"
+              count={numberFormat(data.summary?.total_items || 0)}
+              icon={<InventoryIcon />}
+              color={purple[400]}
+              onClick={() => navigate('/inventory-management/stocktaking')}
+            />
+            <InfoCard
+              title="Low Stock Items"
+              count={numberFormat(data.summary?.low_stock_items || 0)}
+              icon={<LowStockIcon />}
+              color={blue[400]}
+              onClick={() => navigate('/inventory-management/stock-alerts')}
+            />
+            <InfoCard
+              title="Stock In Today"
+              count={numberFormat(data.summary?.stock_in_today || 0)}
+              icon={<StockInIcon />}
+              color={green[400]}
+              onClick={() => navigate('/inventory-management/reports/stock-management/item-balance')}
+            />
+            <InfoCard
+              title="Stock Out Today"
+              count={numberFormat(data.summary?.stock_out_today || 0)}
+              icon={<StockOutIcon />}
+              color={teal[400]}
+              onClick={() => navigate('/inventory-management/reports/stock-alerts')}
+            />
           </Grid>
 
           <Grid
@@ -186,32 +178,32 @@ const Dashboard = () => {
               },
             }}
           >
-            <Grid size={{ md: 6, sm: 12, xs: 12 }}>
+            <Grid item md={6} sm={12} xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Quick Actions
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/inventory-management/stocktaking')}>
                         <StocktakingIcon sx={{ fontSize: 28.8, color: '#4CAF50', mb: 1 }} />
                         <Typography variant="subtitle2">Stocktaking</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/inventory-management/stock-alerts')}>
                         <LowStockIcon sx={{ fontSize: 28.8, color: '#FF9800', mb: 1 }} />
                         <Typography variant="subtitle2">Stock Alerts</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/inventory-management/reports/stock-management/item-balance')}>
                         <ReportsIcon sx={{ fontSize: 28.8, color: '#2196F3', mb: 1 }} />
                         <Typography variant="subtitle2">Item Balance</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/inventory-management/reports/stock-alerts')}>
                         <InventoryIcon sx={{ fontSize: 28.8, color: '#9C27B0', mb: 1 }} />
                         <Typography variant="subtitle2">Stock Reports</Typography>
@@ -222,14 +214,14 @@ const Dashboard = () => {
               </Card>
             </Grid>
             
-            <Grid size={{ md: 6, sm: 12, xs: 12 }}>
+            <Grid item md={6} sm={12} xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Inventory Statistics
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <StockInIcon sx={{ fontSize: 28.8, color: '#4CAF50', mb: 1 }} />
                         <Typography variant="h6" color="#4CAF50" fontWeight="bold">
@@ -238,7 +230,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Total Items</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <LowStockIcon sx={{ fontSize: 28.8, color: '#FF9800', mb: 1 }} />
                         <Typography variant="h6" color="#FF9800" fontWeight="bold">
@@ -247,7 +239,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Low Stock Items</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <StockOutIcon sx={{ fontSize: 28.8, color: '#2196F3', mb: 1 }} />
                         <Typography variant="h6" color="#2196F3" fontWeight="bold">
@@ -256,7 +248,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Stock In Today</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <AddItemIcon sx={{ fontSize: 28.8, color: '#E91E63', mb: 1 }} />
                         <Typography variant="h6" color="#E91E63" fontWeight="bold">

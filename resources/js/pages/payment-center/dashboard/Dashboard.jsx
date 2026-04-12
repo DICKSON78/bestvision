@@ -46,7 +46,7 @@ import {
   yellow,
 } from "@mui/material/colors";
 import { useFetch, useToast } from "../../../hooks";
-import { formatError, numberFormat, formatDateForDb, getWeekStartDate } from "../../../helpers";
+import { formatError, numberFormat, formatDateForDb, getTodayDate } from "../../../helpers";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ const Dashboard = () => {
 
   const [params, setParams] = useState({
     clinic_id: undefined,
-    start_date: getWeekStartDate(),
+    start_date: getTodayDate(),
     end_date: undefined,
   });
 
@@ -160,10 +160,9 @@ const Dashboard = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mb: 4 }}
           >
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Total Revenue"
-                count={numberFormat(data.summary.total_revenue || 0)}
+            <InfoCard
+              title="Total Revenue"
+              count={numberFormat(data.summary.total_revenue || 0)}
                 icon={
                   <Typography
                     variant="h6"
@@ -176,14 +175,12 @@ const Dashboard = () => {
                     Tz
                   </Typography>
                 }
-                color={purple[400]}
-                onClick={() => navigate('/payment-center/reports/daily-cash-collection')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Cash Payments"
-                count={numberFormat(data.summary.cash_payments || 0)}
+              color={purple[400]}
+              onClick={() => navigate('/payment-center/reports/daily-cash-collection')}
+            />
+            <InfoCard
+              title="Cash Payments"
+              count={numberFormat(data.summary.cash_payments || 0)}
                 icon={
                   <Typography
                     variant="h6"
@@ -196,14 +193,12 @@ const Dashboard = () => {
                     Tz
                   </Typography>
                 }
-                color={blue[400]}
-                onClick={() => navigate('/payment-center/pending-cash-patients')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Credit Payments"
-                count={numberFormat(data.summary.credit_payments || 0)}
+              color={blue[400]}
+              onClick={() => navigate('/payment-center/pending-cash-patients')}
+            />
+            <InfoCard
+              title="Credit Payments"
+              count={numberFormat(data.summary.credit_payments || 0)}
                 icon={
                   <Typography
                     variant="h6"
@@ -216,41 +211,33 @@ const Dashboard = () => {
                     Tz
                   </Typography>
                 }
-                color={cyan[500]}
-                onClick={() => navigate('/payment-center/pending-credit-patients')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Pending Bills"
-                count={numberFormat(data.summary.pending_bills || 0)}
-                icon={<BillsIcon />}
-                color={theme.palette.warning.main}
-                onClick={() => navigate('/payment-center/patient-bills/pending')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Pending Patients"
-                count={numberFormat(data.summary.pending_payment_cache || 0)}
-                icon={<PeopleIcon />}
-                color={orange[400]}
-                onClick={() => navigate('/payment-center/pending-cash-patients')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Cleared Bills"
-                count={numberFormat(data.summary.cleared_bills || 0)}
-                icon={<BillsIcon />}
-                color={green[500]}
-                onClick={() => navigate('/payment-center/patient-bills/cleared')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Total Expenses"
-                count={numberFormat(data.summary.total_expenses || 0)}
+              color={cyan[500]}
+              onClick={() => navigate('/payment-center/pending-credit-patients')}
+            />
+            <InfoCard
+              title="Pending Bills"
+              count={numberFormat(data.summary.pending_bills || 0)}
+              icon={<BillsIcon />}
+              color={theme.palette.warning.main}
+              onClick={() => navigate('/payment-center/patient-bills/pending')}
+            />
+            <InfoCard
+              title="Pending Patients"
+              count={numberFormat(data.summary.pending_payment_cache || 0)}
+              icon={<PeopleIcon />}
+              color={orange[400]}
+              onClick={() => navigate('/payment-center/pending-cash-patients')}
+            />
+            <InfoCard
+              title="Cleared Bills"
+              count={numberFormat(data.summary.cleared_bills || 0)}
+              icon={<BillsIcon />}
+              color={green[500]}
+              onClick={() => navigate('/payment-center/patient-bills/cleared')}
+            />
+            <InfoCard
+              title="Total Expenses"
+              count={numberFormat(data.summary.total_expenses || 0)}
                 icon={
                   <Typography
                     variant="h6"
@@ -263,14 +250,12 @@ const Dashboard = () => {
                     Tz
                   </Typography>
                 }
-                color={red[400]}
-                onClick={() => navigate('/financial-management/reports/expenses')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Net Profit"
-                count={numberFormat(data.summary.net_profit || 0)}
+              color={red[400]}
+              onClick={() => navigate('/financial-management/reports/expenses')}
+            />
+            <InfoCard
+              title="Net Profit"
+              count={numberFormat(data.summary.net_profit || 0)}
                 icon={
                   <Typography
                     variant="h6"
@@ -283,14 +268,12 @@ const Dashboard = () => {
                     Tz
                   </Typography>
                 }
-                color={green[600]}
-                onClick={() => navigate('/financial-management/dashboard')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Today's Collections"
-                count={numberFormat(data.summary.today_collections || 0)}
+              color={green[600]}
+              onClick={() => navigate('/financial-management/dashboard')}
+            />
+            <InfoCard
+              title="Today's Collections"
+              count={numberFormat(data.summary.today_collections || 0)}
                 icon={
                   <Typography
                     variant="h6"
@@ -303,10 +286,9 @@ const Dashboard = () => {
                     Tz
                   </Typography>
                 }
-                color={orange[500]}
-                onClick={() => navigate('/payment-center/reports/cash-collection')}
-              />
-            </Grid>
+              color={orange[500]}
+              onClick={() => navigate('/payment-center/reports/cash-collection')}
+            />
           </Grid>
 
           {/* Charts Section */}
@@ -315,7 +297,7 @@ const Dashboard = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mt: 2 }}
           >
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card>
                 <CardHeader title="Payment Trends" />
                 <Divider />
@@ -409,7 +391,7 @@ const Dashboard = () => {
               </Card>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card>
                 <CardHeader title="Revenue by Payment Mode" />
                 <Divider />

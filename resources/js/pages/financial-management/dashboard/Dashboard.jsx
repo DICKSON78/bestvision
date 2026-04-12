@@ -110,10 +110,9 @@ const Dashboard = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mb: 4 }}
           >
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Total Revenue"
-                count={numberFormat(data.summary?.total_revenue || 0)}
+            <InfoCard
+              title="Total Revenue"
+              count={numberFormat(data.summary?.total_revenue || 0)}
                 icon={
                   <Typography
                     variant="h6"
@@ -126,37 +125,30 @@ const Dashboard = () => {
                     Tz
                   </Typography>
                 }
-                color={purple[400]}
-                onClick={() => navigate('/financial-management/reports/cash-collection')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Total Expenses"
-                count={numberFormat(data.summary?.total_expenses || 0)}
-                icon={<ExpenseIcon />}
-                color={pink[400]}
-                onClick={() => navigate('/financial-management/expenses')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Net Profit"
-                count={numberFormat(data.summary?.net_profit || 0)}
-                icon={<ProfitIcon />}
-                color={cyan[500]}
-                onClick={() => navigate('/financial-management/reports/expenses')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Pending Bills"
-                count={numberFormat(data.summary?.pending_bills || 0)}
-                icon={<BillsIcon />}
-                color={green[400]}
-                onClick={() => navigate('/payment-center/dashboard')}
-              />
-            </Grid>
+              color={purple[400]}
+              onClick={() => navigate('/financial-management/reports/cash-collection')}
+            />
+            <InfoCard
+              title="Total Expenses"
+              count={numberFormat(data.summary?.total_expenses || 0)}
+              icon={<ExpenseIcon />}
+              color={pink[400]}
+              onClick={() => navigate('/financial-management/expenses')}
+            />
+            <InfoCard
+              title="Net Profit"
+              count={numberFormat(data.summary?.net_profit || 0)}
+              icon={<ProfitIcon />}
+              color={cyan[500]}
+              onClick={() => navigate('/financial-management/reports/expenses')}
+            />
+            <InfoCard
+              title="Pending Bills"
+              count={numberFormat(data.summary?.pending_bills || 0)}
+              icon={<BillsIcon />}
+              color={green[400]}
+              onClick={() => navigate('/payment-center/dashboard')}
+            />
           </Grid>
 
           <Grid
@@ -169,32 +161,32 @@ const Dashboard = () => {
               },
             }}
           >
-            <Grid size={{ md: 6, sm: 12, xs: 12 }}>
+            <Grid item md={6} sm={12} xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Quick Actions
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/financial-management/expenses')}>
                         <ExpenseIcon sx={{ fontSize: 32, color: '#F44336', mb: 1 }} />
                         <Typography variant="subtitle2">Add Expense</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/financial-management/expense-payments')}>
                         <PaymentsIcon sx={{ fontSize: 32, color: '#2196F3', mb: 1 }} />
                         <Typography variant="subtitle2">Expense Payments</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/financial-management/reports/cash-collection')}>
                         <ReportsIcon sx={{ fontSize: 32, color: '#9C27B0', mb: 1 }} />
                         <Typography variant="subtitle2">Financial Reports</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/payment-center/dashboard')}>
                         <PaymentsIcon sx={{ fontSize: 32, color: '#4CAF50', mb: 1 }} />
                         <Typography variant="subtitle2">Payment Center</Typography>
@@ -205,14 +197,14 @@ const Dashboard = () => {
               </Card>
             </Grid>
             
-            <Grid size={{ md: 6, sm: 12, xs: 12 }}>
+            <Grid item md={6} sm={12} xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Financial Statistics
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <Typography 
                           variant="h6" 
@@ -231,7 +223,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Total Revenue (TZS)</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <ExpenseIcon sx={{ fontSize: 32, color: '#F44336', mb: 1 }} />
                         <Typography variant="h6" color="#F44336" fontWeight="bold">
@@ -240,7 +232,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Total Expenses (TZS)</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <ProfitIcon sx={{ fontSize: 32, color: '#2196F3', mb: 1 }} />
                         <Typography variant="h6" color="#2196F3" fontWeight="bold">
@@ -249,7 +241,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Net Profit (TZS)</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <BillsIcon sx={{ fontSize: 32, color: '#FF9800', mb: 1 }} />
                         <Typography variant="h6" color="#FF9800" fontWeight="bold">

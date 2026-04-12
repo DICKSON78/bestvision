@@ -154,78 +154,62 @@ const Dashboard = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mb: 4 }}
           >
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Total Patients"
-                count={numberFormat(data.summary?.total_patients || 0)}
-                icon={<PersonIcon />}
-                color={purple[400]}
-                onClick={() => navigate('/reception/patients')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="VIP Patients"
-                count={numberFormat(data.summary?.vip_patients || 0)}
-                icon={<VipIcon />}
-                color={blue[400]}
-                onClick={() => navigate('/reception/vip-patients')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Spectacle Patients"
-                count={numberFormat(data.summary?.spectacle_patients || 0)}
-                icon={<AddLensIcon />}
-                color={green[400]}
-                onClick={() => navigate('/reception/glass-patients')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Waiting Time"
-                count={numberFormat(data.summary?.waiting_patients || 0)}
-                icon={<WaitingTimeIcon />}
-                color={teal[400]}
-                onClick={() => navigate('/reception/patient-waiting-time')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Patients to Return"
-                count={numberFormat(data.summary?.patients_to_return || 0)}
-                icon={<PatientsToReturnIcon />}
-                color={cyan[500]}
-                onClick={() => navigate('/reception/to-return/patients')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Reports"
-                count={numberFormat(data.summary?.total_reports || 0)}
-                icon={<ReportsIcon />}
-                color={pink[400]}
-                onClick={() => navigate('/reception/reports/patient-registration')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Messages"
-                count={numberFormat(data.summary?.total_messages || 0)}
-                icon={<SettingsIcon />}
-                color={lime[600]}
-                onClick={() => navigate('/reception/sent-messages')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Completed"
-                count={numberFormat(data.summary?.completed_patients || 0)}
-                icon={<DoneIcon />}
-                color={green[500]}
-                onClick={() => navigate('/reception/patients')}
-              />
-            </Grid>
+            <InfoCard
+              title="Total Patients"
+              count={numberFormat(data.summary?.total_patients || 0)}
+              icon={<PersonIcon />}
+              color={purple[400]}
+              onClick={() => navigate('/reception/patients')}
+            />
+            <InfoCard
+              title="VIP Patients"
+              count={numberFormat(data.summary?.vip_patients || 0)}
+              icon={<VipIcon />}
+              color={blue[400]}
+              onClick={() => navigate('/reception/vip-patients')}
+            />
+            <InfoCard
+              title="Spectacle Patients"
+              count={numberFormat(data.summary?.spectacle_patients || 0)}
+              icon={<AddLensIcon />}
+              color={green[400]}
+              onClick={() => navigate('/reception/glass-patients')}
+            />
+            <InfoCard
+              title="Waiting Time"
+              count={numberFormat(data.summary?.waiting_patients || 0)}
+              icon={<WaitingTimeIcon />}
+              color={teal[400]}
+              onClick={() => navigate('/reception/patient-waiting-time')}
+            />
+            <InfoCard
+              title="Patients to Return"
+              count={numberFormat(data.summary?.patients_to_return || 0)}
+              icon={<PatientsToReturnIcon />}
+              color={cyan[500]}
+              onClick={() => navigate('/reception/to-return/patients')}
+            />
+            <InfoCard
+              title="Reports"
+              count={numberFormat(data.summary?.total_reports || 0)}
+              icon={<ReportsIcon />}
+              color={pink[400]}
+              onClick={() => navigate('/reception/reports/patient-registration')}
+            />
+            <InfoCard
+              title="Messages"
+              count={numberFormat(data.summary?.total_messages || 0)}
+              icon={<SettingsIcon />}
+              color={lime[600]}
+              onClick={() => navigate('/reception/sent-messages')}
+            />
+            <InfoCard
+              title="Completed"
+              count={numberFormat(data.summary?.completed_patients || 0)}
+              icon={<DoneIcon />}
+              color={green[500]}
+              onClick={() => navigate('/reception/patients')}
+            />
           </Grid>
 
           <Grid
@@ -239,7 +223,7 @@ const Dashboard = () => {
             }}
           >
             <Grid
-              size={{ xs: 12, sm: 6, md: 3 }}
+              item xs={12} sm={6} md={3}
             >
               <Card>
                 <InfoCard
@@ -320,7 +304,7 @@ const Dashboard = () => {
             </Grid>
 
             <Grid
-              size={{ xs: 12, sm: 6, md: 3 }}
+              item xs={12} sm={6} md={3}
             >
               <Card>
                 <InfoCard
@@ -401,7 +385,7 @@ const Dashboard = () => {
             </Grid>
 
             <Grid
-              size={{ xs: 12, sm: 6, md: 3 }}
+              item xs={12} sm={6} md={3}
             >
               <Card>
                 <InfoCard
@@ -482,7 +466,7 @@ const Dashboard = () => {
             </Grid>
 
             <Grid
-              size={{ xs: 12, sm: 6, md: 3 }}
+              item xs={12} sm={6} md={3}
             >
               <Card>
                 <InfoCard

@@ -159,7 +159,7 @@ const Dashboard = () => {
               spacing={{ xs: 1, sm: 2, md: 3 }}
               sx={{ mb: 4, width: '100%' }}
             >
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <InfoCard
                   title="Patients Registered"
                   count={data.summary.total_patients_registered}
@@ -168,7 +168,7 @@ const Dashboard = () => {
                   onClick={() => navigate("/reception/patients")}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <InfoCard
                   title="Marketing Activities"
                   count={numberFormat(data.summary.total_marketing_activities)}
@@ -177,7 +177,7 @@ const Dashboard = () => {
                   onClick={() => navigate('/marketing/daily-activities')}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <InfoCard
                   title="Ideas Generated"
                   count={numberFormat(data.summary.total_ideas)}
@@ -186,7 +186,7 @@ const Dashboard = () => {
                   onClick={() => navigate('/marketing/idea-development')}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <InfoCard
                   title="Outreach Programmes"
                   count={numberFormat(data.summary.total_outreach_programmes)}
@@ -203,7 +203,7 @@ const Dashboard = () => {
               spacing={{ xs: 1, sm: 2, md: 3 }}
               sx={{ mb: 4, width: '100%' }}
             >
-              <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+              <Grid item xs={12} sm={6} md={4}>
                 <InfoCard
                   title="Communication Logs"
                   count={numberFormat(data.summary.total_communication_logs)}
@@ -212,7 +212,7 @@ const Dashboard = () => {
                   onClick={() => navigate('/marketing/communication-logs')}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+              <Grid item xs={12} sm={6} md={4}>
                 <InfoCard
                   title="Marketing Strategies"
                   count={numberFormat(data.summary.total_marketing_strategies || 0)}
@@ -221,7 +221,7 @@ const Dashboard = () => {
                   onClick={() => navigate('/marketing/strategies')}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+              <Grid item xs={12} sm={6} md={4}>
                 <InfoCard
                   title="Research Plans"
                   count={numberFormat(data.summary.total_research_plans || 0)}
@@ -238,7 +238,7 @@ const Dashboard = () => {
               spacing={{ xs: 1, sm: 2, md: 3 }}
               sx={{ mt: 2, width: '100%', maxWidth: '100%' }}
             >
-              <Grid size={{ xs: 12, md: 6, lg: 6, xl: 6 }}>
+              <Grid item xs={12} md={6} lg={6} xl={6}>
                 <Card sx={{ height: '100%', width: '100%', minHeight: '500px' }}>
                   <CardHeader title="Marketing Activities Overview" />
                   <Divider />
@@ -345,7 +345,7 @@ const Dashboard = () => {
               </Grid>
               
               {/* Information Source Line Chart */}
-              <Grid size={{ xs: 12, md: 6, lg: 6, xl: 6 }}>
+              <Grid item xs={12} md={6} lg={6} xl={6}>
                 <Card sx={{ height: '100%', width: '100%', minHeight: '500px' }}>
                   <CardHeader title="Information Source Analysis" />
                   <Divider />

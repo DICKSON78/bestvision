@@ -55,6 +55,7 @@ use App\Http\Controllers\MedicinesController;
 use App\Http\Controllers\PatientNotificationsController;
 use App\Http\Controllers\MedicineCenterDashboardController;
 use App\Http\Controllers\OtherDispensingDashboardController;
+use App\Http\Controllers\DispensingDashboardController;
 use App\Http\Controllers\InventoryManagementDashboardController;
 use App\Http\Controllers\FinancialManagementDashboardController;
 use App\Http\Controllers\ProcedureRoomDashboardController;
@@ -81,6 +82,9 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 // Public routes - accessible without authentication
 Route::get('/units-of-measure', [UnitsOfMeasureController::class, 'index']);
+
+// Temporary public dispensing dashboard for testing
+Route::get('/dispensing-dashboard-public', [\App\Http\Controllers\DispensingDashboardController::class, '__invoke']);
 
 // Health check endpoint
 Route::get('/health', function () {
@@ -270,7 +274,7 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     });
 
     $router->prefix('dispensing')->group(function ($router) {
-        $router->get('/dashboard', [\App\Http\Controllers\DispensingDashboardController::class, '__invoke']);
+        $router->get('/dashboard', [DispensingDashboardController::class, '__invoke']);
     });
 
     $router->prefix('inventory-management')->group(function ($router) {

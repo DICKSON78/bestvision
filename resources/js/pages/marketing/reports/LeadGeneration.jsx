@@ -86,7 +86,7 @@ const LeadGeneration = () => {
         <React.Fragment>
           {/* Summary Cards */}
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <LeadIcon sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
@@ -99,7 +99,7 @@ const LeadGeneration = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <GrowthIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
@@ -112,7 +112,7 @@ const LeadGeneration = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <QualityIcon sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
@@ -125,7 +125,7 @@ const LeadGeneration = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <SourceIcon sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
@@ -142,7 +142,7 @@ const LeadGeneration = () => {
 
           {/* Lead Sources */}
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card>
                 <CardHeader title="Leads by Source" />
                 <CardContent>
@@ -175,7 +175,7 @@ const LeadGeneration = () => {
               </Card>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card>
                 <CardHeader title="Leads by Status" />
                 <CardContent>

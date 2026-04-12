@@ -218,7 +218,7 @@ const RealTimeClock = () => {
     <Card sx={{ mb: 3, bgcolor: 'primary.main', color: 'primary.contrastText' }}>
       <CardContent sx={{ py: 3 }}>
         <Grid container spacing={2} alignItems="center">
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <CalendarTodayIcon />
               <Box>
@@ -231,7 +231,7 @@ const RealTimeClock = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <AccessTimeIcon />
               <Box>
@@ -244,7 +244,7 @@ const RealTimeClock = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <TimerIcon />
               <Box>
@@ -257,7 +257,7 @@ const RealTimeClock = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <AccessTimeIcon />
               <Box>
@@ -492,7 +492,7 @@ const PatientWaitingTime = () => {
 
           </Box>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <AccessTimeIcon />
                 <Box>
@@ -511,7 +511,7 @@ const PatientWaitingTime = () => {
 
       {/* Statistics Cards */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="primary">
@@ -523,7 +523,7 @@ const PatientWaitingTime = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="warning.main">
@@ -535,7 +535,7 @@ const PatientWaitingTime = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="info.main">
@@ -547,7 +547,7 @@ const PatientWaitingTime = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="success.main">
@@ -559,7 +559,7 @@ const PatientWaitingTime = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="text.primary">
@@ -571,7 +571,7 @@ const PatientWaitingTime = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="text.primary">
@@ -611,7 +611,7 @@ const PatientWaitingTime = () => {
         <CardContent>
           {/* Filters */}
           <Grid container spacing={2} sx={{ mb: 2 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <DatePicker
                 label="Select Date"
                 value={selectedDate}
@@ -619,7 +619,7 @@ const PatientWaitingTime = () => {
                 fullWidth
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Select
                 label="Status Filter"
                 fullWidth

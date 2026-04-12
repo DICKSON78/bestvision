@@ -117,42 +117,34 @@ const Dashboard = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mb: 4 }}
           >
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Patients/Customers"
-                count={numberFormat(data.summary?.total_patients_consulted || 0)}
-                icon={<PatientIcon />}
-                color={purple[400]}
-                onClick={() => navigate('/consultation-room/consultation-patients/pending')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Clinical Notes"
-                count={numberFormat(data.summary?.clinical_notes_created || 0)}
-                icon={<ClinicalNotesIcon />}
-                color={blue[400]}
-                onClick={() => navigate('/consultation-room/clinical-notes')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Eye Examinations"
-                count={numberFormat(data.summary?.eye_examinations || 0)}
-                icon={<EyeExamIcon />}
-                color={green[400]}
-                onClick={() => navigate('/consultation-room/eye-examinations')}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-              <InfoCard
-                title="Prescriptions"
-                count={numberFormat(data.summary?.prescriptions_written || 0)}
-                icon={<PrescriptionIcon />}
-                color={teal[400]}
-                onClick={() => navigate('/consultation-room/prescriptions')}
-              />
-            </Grid>
+            <InfoCard
+              title="Patients/Customers"
+              count={numberFormat(data.summary?.total_patients_consulted || 0)}
+              icon={<PatientIcon />}
+              color={purple[400]}
+              onClick={() => navigate('/consultation-room/consultation-patients/pending')}
+            />
+            <InfoCard
+              title="Clinical Notes"
+              count={numberFormat(data.summary?.clinical_notes_created || 0)}
+              icon={<ClinicalNotesIcon />}
+              color={blue[400]}
+              onClick={() => navigate('/consultation-room/clinical-notes')}
+            />
+            <InfoCard
+              title="Eye Examinations"
+              count={numberFormat(data.summary?.eye_examinations || 0)}
+              icon={<EyeExamIcon />}
+              color={green[400]}
+              onClick={() => navigate('/consultation-room/eye-examinations')}
+            />
+            <InfoCard
+              title="Prescriptions"
+              count={numberFormat(data.summary?.prescriptions_written || 0)}
+              icon={<PrescriptionIcon />}
+              color={teal[400]}
+              onClick={() => navigate('/consultation-room/prescriptions')}
+            />
           </Grid>
 
           <Grid
@@ -165,32 +157,32 @@ const Dashboard = () => {
               },
             }}
           >
-            <Grid size={{ md: 6, sm: 12, xs: 12 }}>
+            <Grid item md={6} sm={12} xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Quick Actions
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/consultation-patients/pending')}>
                         <PatientIcon sx={{ fontSize: 28.8, color: '#FF5722', mb: 1 }} />
                         <Typography variant="subtitle2">Start Consultation</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/clinical-notes')}>
                         <ClinicalNotesIcon sx={{ fontSize: 28.8, color: '#2196F3', mb: 1 }} />
                         <Typography variant="subtitle2">Clinical Notes</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/eye-examinations')}>
                         <EyeExamIcon sx={{ fontSize: 28.8, color: '#4CAF50', mb: 1 }} />
                         <Typography variant="subtitle2">Eye Examination</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/prescriptions')}>
                         <PrescriptionIcon sx={{ fontSize: 28.8, color: '#9C27B0', mb: 1 }} />
                         <Typography variant="subtitle2">Prescription</Typography>
@@ -201,14 +193,14 @@ const Dashboard = () => {
               </Card>
             </Grid>
             
-            <Grid size={{ md: 6, sm: 12, xs: 12 }}>
+            <Grid item md={6} sm={12} xs={12}>
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     Consultation Statistics
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <PatientIcon sx={{ fontSize: 28.8, color: '#FF9800', mb: 1 }} />
                         <Typography variant="h6" color="#FF9800" fontWeight="bold">
@@ -217,7 +209,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Today's Consultations</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <ScheduleIcon sx={{ fontSize: 28.8, color: '#4CAF50', mb: 1 }} />
                         <Typography variant="h6" color="#4CAF50" fontWeight="bold">
@@ -226,7 +218,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Scheduled Today</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <ClinicalNotesIcon sx={{ fontSize: 28.8, color: '#2196F3', mb: 1 }} />
                         <Typography variant="h6" color="#2196F3" fontWeight="bold">
@@ -235,7 +227,7 @@ const Dashboard = () => {
                         <Typography variant="body2" color="textSecondary">Notes Created</Typography>
                       </Box>
                     </Grid>
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
                         <PrescriptionIcon sx={{ fontSize: 28.8, color: '#9C27B0', mb: 1 }} />
                         <Typography variant="h6" color="#9C27B0" fontWeight="bold">

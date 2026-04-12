@@ -173,7 +173,7 @@ const DoctorTasks = () => {
     >
       {/* Statistics Cards */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="primary">
@@ -185,7 +185,7 @@ const DoctorTasks = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="warning.main">
@@ -197,7 +197,7 @@ const DoctorTasks = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="info.main">
@@ -209,7 +209,7 @@ const DoctorTasks = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="success.main">
@@ -221,7 +221,7 @@ const DoctorTasks = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="text.primary">
@@ -233,7 +233,7 @@ const DoctorTasks = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+        <Grid item xs={12} sm={6} md={2}>
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 2 }}>
               <Typography variant="h4" color="text.primary">
@@ -273,7 +273,7 @@ const DoctorTasks = () => {
         <CardContent>
           {/* Filters */}
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <DatePicker
                 label="Date From"
                 value={dateFrom}
@@ -281,7 +281,7 @@ const DoctorTasks = () => {
                 fullWidth
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <DatePicker
                 label="Date To"
                 value={dateTo}
@@ -289,7 +289,7 @@ const DoctorTasks = () => {
                 fullWidth
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Select
                 label="Status Filter"
                 fullWidth

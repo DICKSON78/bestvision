@@ -408,7 +408,7 @@ const StockAlerts = () => {
 
   const renderMedicineAlerts = () => (
     <Grid container spacing={3}>
-      <Grid size={{ xs: 12, md: 4 }}>
+      <Grid item xs={12} md={4}>
         <Card>
           <CardHeader
             title="Out of Stock Medicines"
@@ -445,7 +445,7 @@ const StockAlerts = () => {
         </Card>
       </Grid>
 
-      <Grid size={{ xs: 12, md: 4 }}>
+      <Grid item xs={12} md={4}>
         <Card>
           <CardHeader
             title="Expired Medicines"
@@ -482,7 +482,7 @@ const StockAlerts = () => {
         </Card>
       </Grid>
 
-      <Grid size={{ xs: 12, md: 4 }}>
+      <Grid item xs={12} md={4}>
         <Card>
           <CardHeader
             title="Expiring Soon Medicines"
@@ -561,7 +561,7 @@ const StockAlerts = () => {
                   {/* Summary Alerts */}
           <CardContent>
             <Grid container spacing={2} sx={{ mb: 3 }}>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Alert 
                   severity="error" 
                   icon={<ErrorIcon />}
@@ -580,7 +580,7 @@ const StockAlerts = () => {
                   <Typography variant="body2">Out of Stock Items</Typography>
                 </Alert>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Alert 
                   severity="error" 
                   icon={<WarningIcon />}
@@ -599,7 +599,7 @@ const StockAlerts = () => {
                   <Typography variant="body2">Expired Items</Typography>
                 </Alert>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Alert 
                   severity="warning" 
                   icon={<InfoIcon />}
@@ -618,7 +618,7 @@ const StockAlerts = () => {
                   <Typography variant="body2">Expiring Soon</Typography>
                 </Alert>
               </Grid>
-                             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                             <Grid item xs={12} sm={6} md={3}>
                  <Alert 
                    severity="info" 
                    icon={<InventoryIcon />}

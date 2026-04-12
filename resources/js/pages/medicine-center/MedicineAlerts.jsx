@@ -326,7 +326,7 @@ const MedicineAlerts = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mb: 4 }}
           >
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Card
                 sx={{
                   p: 3,
@@ -393,7 +393,7 @@ const MedicineAlerts = () => {
                 </Stack>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Card
                 sx={{
                   p: 3,
@@ -460,7 +460,7 @@ const MedicineAlerts = () => {
                 </Stack>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Card
                 sx={{
                   p: 3,
@@ -527,7 +527,7 @@ const MedicineAlerts = () => {
                 </Stack>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <Grid item xs={12} sm={6} md={4} lg={3}>
               <Card
                 sx={{
                   p: 3,
@@ -602,7 +602,7 @@ const MedicineAlerts = () => {
             spacing={{ xs: 2, sm: 2, md: 3 }}
           >
             {/* Out of Stock Medicines */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card sx={{ height: '100%' }}>
                 <CardHeader
                   title="Out of Stock Medicines"
@@ -649,7 +649,7 @@ const MedicineAlerts = () => {
             </Grid>
 
             {/* Expired Medicines */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card sx={{ height: '100%' }}>
                 <CardHeader
                   title="Expired Medicines"
@@ -696,7 +696,7 @@ const MedicineAlerts = () => {
             </Grid>
 
             {/* Expiring Soon Medicines - Compact grid */}
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <Card>
                 <CardHeader
                   title="Expiring Soon Medicines (Next 30 Days)"
@@ -723,7 +723,7 @@ const MedicineAlerts = () => {
                         const textColor = status.color === 'error' ? red[700] : yellow[700];
                         
                         return (
-                          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={index}>
+                          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                             <Box sx={{ 
                               p: 1.5, 
                               bgcolor: bgColor, 

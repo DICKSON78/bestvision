@@ -87,7 +87,7 @@ const CommunicationAnalytics = () => {
         <React.Fragment>
           {/* Summary Cards */}
           <Grid container spacing={3} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <AnalyticsIcon sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
@@ -100,7 +100,7 @@ const CommunicationAnalytics = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <CallIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
@@ -113,7 +113,7 @@ const CommunicationAnalytics = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <EmailIcon sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
@@ -126,7 +126,7 @@ const CommunicationAnalytics = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <SmsIcon sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
@@ -143,7 +143,7 @@ const CommunicationAnalytics = () => {
 
           {/* Communication Details */}
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card>
                 <CardHeader title="Communications by Type" />
                 <CardContent>
@@ -176,7 +176,7 @@ const CommunicationAnalytics = () => {
               </Card>
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Card>
                 <CardHeader title="Communications by Status" />
                 <CardContent>
@@ -217,7 +217,7 @@ const CommunicationAnalytics = () => {
               {data.response_times && data.response_times.length > 0 ? (
                 <Grid container spacing={2}>
                   {data.response_times.map((time, index) => (
-                    <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+                    <Grid item xs={12} sm={6} md={4} key={index}>
                       <Card variant="outlined">
                         <CardContent>
                           <Typography variant="h6" gutterBottom>

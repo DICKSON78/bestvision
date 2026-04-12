@@ -10,11 +10,11 @@ import axios from "axios";
 window.axios = axios;
 
 // Set the base URL for API calls
-// For local development: use localhost:8000
+// For local development: use localhost:8000 (Laravel backend)
 // For production: use the live server URL
 // Always use the current origin to avoid DNS resolution issues and ensure
 // consistent behavior behind proxies and during local development
-window.axios.defaults.baseURL = window.location.origin;
+window.axios.defaults.baseURL = 'http://localhost:8000';
 
 // Add timeout configuration to prevent hanging requests
 window.axios.defaults.timeout = 45000; // 45 seconds timeout for complex operations like clinical notes

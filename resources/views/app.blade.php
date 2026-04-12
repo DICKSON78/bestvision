@@ -105,63 +105,16 @@
                    background: transparent;
                    font-family: 'Roboto', 'Open Sans', sans-serif;
                }
-        .loading-container {
-            text-align: center;
-            color: #2196F3;
-        }
-        .loading-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
-            position: relative;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        .loading-logo::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 4px solid #2196F3;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        .loading-logo::after {
-            content: '👁️';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 48px;
-        }
-        .loading-text {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2196F3;
-        }
-        .loading-subtext {
-            font-size: 16px;
-            color: #333333;
-            opacity: 0.8;
-        }
-        .loading-dots {
-            display: inline-block;
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
+    <style>
+               #root {
+                   min-height: 100vh;
+                   display: flex;
+                   flex-direction: column;
+                   align-items: center;
+                   justify-content: center;
+                   background: transparent;
+                   font-family: 'Roboto', 'Open Sans', sans-serif;
+               }
     </style>
 </head>
 <body>
@@ -171,12 +124,6 @@
         <p>You need to enable JavaScript to run this application.</p>
     </div>
 </noscript>
-<div id="root">
-    <div class="loading-container">
-        <div class="loading-logo"></div>
-        <div class="loading-text">Loading New Kayoka<span class="loading-dots"></span></div>
-        <div class="loading-subtext">Please wait while we prepare your experience</div>
-    </div>
-</div>
+<div id="root"></div>
 </body>
 </html>

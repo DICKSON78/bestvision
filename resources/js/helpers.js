@@ -72,6 +72,16 @@ export const formatDate = (date) => {
 };
 
 /**
+ * Get the current date at midnight.
+ * @returns {Date}
+ */
+export const getTodayDate = () => {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+};
+
+/**
  * Get the start date of the current week (Monday).
  * @param date {Date|String} - Optional date, defaults to current date
  * @returns {Date}
@@ -326,8 +336,7 @@ export const getPrivileges = (preferences) => {
       label: "Marketing",
       value: "marketing",
       show:
-        preferences?.find((e) => e.key === "MARKETING_MODULE")?.value
-          === "Yes",
+        preferences?.find((e) => e.key === "MARKETING_MODULE")?.value === "Yes",
     },
     { label: "Financial Management", value: "financial_management" },
     { label: "User Management", value: "user_management" },
