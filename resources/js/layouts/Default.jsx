@@ -89,6 +89,16 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState();
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [splashLoading, setSplashLoading] = useState(true);
+
+  useEffect(() => {
+    // Force splash screen to stay for at least 7 seconds
+    const timer = setTimeout(() => {
+      setSplashLoading(false);
+    }, 7000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -178,14 +188,14 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
                   </IconButton>
                 </Tooltip>
 
-                {/*<Box*/}
-                {/*component="img"*/}
-                {/*src={logo}*/}
-                {/*alt="Logo"*/}
-                {/*width={32}*/}
-                {/*height={32}*/}
-                {/*ml={2}*/}
-                {/*/>*/}
+                <Box
+                  component="img"
+                  src="/images/logo.png"
+                  alt="Logo"
+                  width={32}
+                  height={32}
+                  ml={2}
+                />
 
                 <Typography
                   variant="h5"
@@ -416,7 +426,7 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
 
       <Modal ref={modalRef} />
       <MuiModal
-        open={loading}
+        open={loading || (splashLoading && location.pathname !== '/dashboard')}
         hideBackdrop
         disableAutoFocus
         disableEnforceFocus
@@ -424,19 +434,36 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
       >
         <Box
           display="flex"
+          flexDirection="column"
           height="100vh"
           alignItems="center"
           justifyContent="center"
-          sx={{ pointerEvents: 'none' }}
+          sx={{ pointerEvents: "none", bgcolor: "rgba(0,0,0,0.1)" }}
         >
           <Box
             component="img"
-            src={loader}
-            alt=""
-            width={96}
-            height={96}
-            sx={{ pointerEvents: 'none' }}
+            src="/images/logo.png"
+            alt="Logo"
+            width={128}
+            height="auto"
+            sx={{ pointerEvents: "none", mb: 3 }}
           />
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color="primary"
+            gutterBottom
+            sx={{ textShadow: "0px 2px 4px rgba(0,0,0,0.1)" }}
+          >
+            Loading New Kayoka
+          </Typography>
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            sx={{ opacity: 0.8 }}
+          >
+            Please wait while we prepare your experience
+          </Typography>
         </Box>
       </MuiModal>
     </React.Fragment>

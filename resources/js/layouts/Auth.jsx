@@ -23,6 +23,20 @@ const Auth = () => {
         minHeight="100vh"
       >
         <Card>
+          <Box
+            display="flex"
+            justifyContent="center"
+          >
+            <Box
+              component="img"
+              src={publicLogoUrl}
+              alt="Logo"
+              sx={{
+                height: 192,
+                width: "auto",
+              }}
+            />
+          </Box>
           <Outlet />
         </Card>
         <Card sx={{ mt: 1 }}>
