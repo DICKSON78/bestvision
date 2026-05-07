@@ -2,8 +2,8 @@
 
 ## Domain Configuration
 - **Domain**: bestvisioneyecare.com
-- **URL**: https://bestvisioneyecare.com
-- **SSL**: Enabled (force HTTPS via .htaccess)
+- **URL**: http://bestvisioneyecare.com
+- **SSL**: Disabled (use HTTP for development)
 
 ## Environment Variables (.env)
 Update your `.env` file with the following:
@@ -13,7 +13,7 @@ APP_NAME=Laravel
 APP_ENV=production
 APP_KEY=base64:DZTfsicMYMbKIHEOlmivnXJzNF0ZgpjPFD6krXowe0o=
 APP_DEBUG=false
-APP_URL=https://bestvisioneyecare.com
+APP_URL=http://bestvisioneyecare.com
 
 # Database configuration
 DB_CONNECTION=mysql

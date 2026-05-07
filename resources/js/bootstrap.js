@@ -14,7 +14,8 @@ window.axios = axios;
 // For production: use the live server URL
 // Always use the current origin to avoid DNS resolution issues and ensure
 // consistent behavior behind proxies and during local development
-window.axios.defaults.baseURL = 'http://localhost:8000';
+// Remove hardcoded localhost so it works on production servers natively
+// window.axios.defaults.baseURL = 'http://localhost:8000';
 
 // Add timeout configuration to prevent hanging requests
 window.axios.defaults.timeout = 45000; // 45 seconds timeout for complex operations like clinical notes
