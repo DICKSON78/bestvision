@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Schema;
 
 class MedicinesController extends Controller
 {
+    // Columns zinazoweza kubadilishwa kwenye items table
+    private function allowedColumns()
+    {
+        return [
+            'clinic_id', 'name', 'code', 'item_type_id', 'consultation_type_id',
+            'unit_of_measure_id', 'lens_type_id', 'is_consultation_item', 'is_stock_item',
+            'balance', 'new_balance', 'unit_buying_price', 'expiry_date',
+            'minimum_stock', 'has_expiry', 'templates', 'status'
+        ];
+    }
+
     public function index(Request $request)
     {
         try {
@@ -42,18 +53,6 @@ class MedicinesController extends Controller
                 });
             }
 
-            if ($request->has('has_expiry') && $request->has_expiry !== '') {
-                $query->where('has_expiry', $request->has_expiry);
-            }
-
-            if ($request->has('prescription_required') && $request->prescription_required !== '') {
-                $query->where('prescription_required', $request->prescription_required);
-            }
-
-            if ($request->has('controlled_substance') && $request->controlled_substance !== '') {
-                $query->where('controlled_substance', $request->controlled_substance);
-            }
-
             // Stock status filter
             if ($request->stock_status === 'In Stock') {
                 $query->where('balance', '>', 5);
@@ -63,7 +62,7 @@ class MedicinesController extends Controller
                 $query->where('balance', '<=', 0);
             }
 
-            $sortBy = $request->get('sort_by', 'name');
+            $sortBy = in_array($request->get('sort_by'), $this->allowedColumns()) ? $request->get('sort_by') : 'name';
             $sortOrder = $request->get('sort_order', 'asc');
             $query->orderBy($sortBy, $sortOrder);
 
@@ -71,10 +70,8 @@ class MedicinesController extends Controller
             $medicines = $query->paginate($perPage);
 
             $medicines->getCollection()->transform(function ($row) {
-                $row->balance = isset($row->balance) && $row->balance !== null ? $row->balance : 0;
-                $row->new_balance = isset($row->new_balance) && $row->new_balance !== null ? $row->new_balance : 0;
-                $row->current_balance = isset($row->current_balance) && $row->current_balance !== null ? $row->current_balance : $row->balance;
-                $row->available_balance = isset($row->available_balance) && $row->available_balance !== null ? $row->available_balance : $row->balance;
+                $row->balance = $row->balance ?? 0;
+                $row->new_balance = $row->new_balance ?? 0;
                 return $row;
             });
 
@@ -111,21 +108,14 @@ class MedicinesController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'code' => 'nullable|string|max:100',
-            'generic_name' => 'nullable|string|max:255',
-            'brand_name' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
             'unit_of_measure_id' => 'required|exists:units_of_measure,id',
+            'item_type_id' => 'required|exists:item_types,id',
+            'consultation_type_id' => 'required|exists:consultation_types,id',
             'balance' => 'required|numeric|min:0',
             'unit_buying_price' => 'nullable|numeric|min:0',
-            'selling_price' => 'nullable|numeric|min:0',
-            'expiry_date' => 'nullable|date|after:today',
-            'minimum_stock' => 'required|numeric|min:0',
+            'expiry_date' => 'nullable|date',
+            'minimum_stock' => 'nullable|numeric|min:0',
             'has_expiry' => 'required|in:Yes,No',
-            'prescription_required' => 'required|in:Yes,No',
-            'controlled_substance' => 'required|in:Yes,No',
-            'dosage_instructions' => 'nullable|string',
-            'side_effects' => 'nullable|string',
-            'contraindications' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -137,32 +127,26 @@ class MedicinesController extends Controller
         }
 
         try {
-            $medicineColumns = Schema::getColumnListing('medicines');
-
             $attributes = [
                 'clinic_id' => $clinic_id,
                 'name' => $request->name,
                 'code' => $request->code,
-                'generic_name' => $request->generic_name,
-                'brand_name' => $request->brand_name,
-                'description' => $request->description,
+                'item_type_id' => $request->item_type_id,
+                'consultation_type_id' => $request->consultation_type_id,
                 'unit_of_measure_id' => $request->unit_of_measure_id,
+                'is_consultation_item' => $request->is_consultation_item ?? 'Yes',
+                'is_stock_item' => 'Yes',
                 'balance' => $request->balance,
                 'new_balance' => $request->balance,
                 'unit_buying_price' => $request->unit_buying_price,
-                'selling_price' => $request->selling_price,
                 'expiry_date' => $request->expiry_date,
-                'minimum_stock' => $request->minimum_stock,
+                'minimum_stock' => $request->minimum_stock ?? 0,
                 'has_expiry' => $request->has_expiry,
-                'prescription_required' => $request->prescription_required,
-                'controlled_substance' => $request->controlled_substance,
-                'dosage_instructions' => $request->dosage_instructions,
-                'side_effects' => $request->side_effects,
-                'contraindications' => $request->contraindications,
                 'status' => 'Active',
             ];
 
-            $attributes = array_intersect_key($attributes, array_flip($medicineColumns));
+            // Filter to only allowed columns
+            $attributes = array_intersect_key($attributes, array_flip($this->allowedColumns()));
             $medicine = Medicine::create($attributes);
 
             return response()->json([
@@ -184,7 +168,7 @@ class MedicinesController extends Controller
         $user = Auth::user();
         $clinic_id = $user->clinic_id;
 
-        $medicine = Medicine::with(['clinic', 'unit_of_measure'])
+        $medicine = Medicine::with(['clinic', 'unit_of_measure', 'item_type', 'consultation_type'])
             ->where('clinic_id', $clinic_id)
             ->where('id', $id)
             ->first();
@@ -219,24 +203,25 @@ class MedicinesController extends Controller
         }
 
         try {
-            $medicineColumns = Schema::getColumnListing('medicines');
-
-            $fields = [
-                'name', 'code', 'generic_name', 'brand_name', 'description',
-                'unit_of_measure_id', 'balance', 'unit_buying_price', 'selling_price',
-                'expiry_date', 'minimum_stock', 'has_expiry', 'prescription_required',
-                'controlled_substance', 'dosage_instructions', 'side_effects',
-                'contraindications', 'status',
-            ];
-
+            // Tumia tu columns zilizopo kwenye items table
+            $allowed = $this->allowedColumns();
             $updateData = [];
-            foreach ($fields as $field) {
-                if ($request->has($field)) {
-                    $updateData[$field] = $request->$field;
+
+            foreach ($allowed as $column) {
+                if ($request->has($column)) {
+                    $updateData[$column] = $request->$column;
                 }
             }
 
-            $updateData = array_intersect_key($updateData, array_flip($medicineColumns));
+            // Pia ruhusu selling_price kama imepita lakini iihifadhi kwenye ItemPrice
+            if (empty($updateData)) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Nothing to update',
+                    'data' => $medicine
+                ]);
+            }
+
             $medicine->update($updateData);
 
             return response()->json([
@@ -272,12 +257,10 @@ class MedicinesController extends Controller
 
         try {
             $medicine->update(['status' => 'Inactive']);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Medicine deleted successfully'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -292,7 +275,8 @@ class MedicinesController extends Controller
         $clinic_id = $user->clinic_id;
 
         $query = Medicine::where('clinic_id', $clinic_id)
-            ->where('status', 'Active');
+            ->where('status', 'Active')
+            ->medicines();
 
         if ($request->get('exclude_expired', false)) {
             $query->where(function ($q) {
@@ -305,7 +289,7 @@ class MedicinesController extends Controller
             $query->where('balance', '>', 0);
         }
 
-        $medicines = $query->select('id', 'name', 'code', 'balance', 'unit_buying_price', 'selling_price')
+        $medicines = $query->select('id', 'name', 'code', 'balance', 'unit_buying_price')
             ->orderBy('name')
             ->get();
 
@@ -320,37 +304,23 @@ class MedicinesController extends Controller
         $user = Auth::user();
         $clinic_id = $user->clinic_id;
 
-        if (!Schema::hasTable('medicines')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Database is not ready: missing medicines table. Please run migrations on the server.',
-            ], Response::HTTP_SERVICE_UNAVAILABLE);
-        }
-
-        if (!Schema::hasTable('units_of_measure')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Database is not ready: missing units_of_measure table. Please run migrations on the server.',
-            ], Response::HTTP_SERVICE_UNAVAILABLE);
-        }
-
         $payload = $request->all();
         if (isset($payload['medicines']) && is_array($payload['medicines'])) {
             foreach ($payload['medicines'] as $i => $m) {
-                foreach (['code','generic_name','brand_name','description','expiry_date','dosage_instructions','side_effects','contraindications'] as $nf) {
+                foreach (['code', 'expiry_date'] as $nf) {
                     if (array_key_exists($nf, $m) && $m[$nf] === '') {
                         $payload['medicines'][$i][$nf] = null;
                     }
                 }
-                foreach (['unit_buying_price','selling_price','minimum_stock'] as $nf) {
+                foreach (['unit_buying_price', 'minimum_stock'] as $nf) {
                     if (array_key_exists($nf, $m) && $m[$nf] === '') {
                         $payload['medicines'][$i][$nf] = 0;
                     }
                 }
-                if (isset($m['balance']) && $m['balance'] !== '' && !is_numeric($m['balance'])) {
+                if (isset($m['balance']) && !is_numeric($m['balance'])) {
                     $payload['medicines'][$i]['balance'] = (float) $m['balance'];
                 }
-                foreach (['has_expiry', 'prescription_required', 'controlled_substance'] as $flag) {
+                foreach (['has_expiry'] as $flag) {
                     if (array_key_exists($flag, $m)) {
                         if ($m[$flag] === true) $payload['medicines'][$i][$flag] = 'Yes';
                         if ($m[$flag] === false) $payload['medicines'][$i][$flag] = 'No';
@@ -362,22 +332,11 @@ class MedicinesController extends Controller
         $validator = Validator::make($payload, [
             'medicines' => 'required|array|min:1',
             'medicines.*.name' => 'required|string|max:255',
-            'medicines.*.code' => 'nullable|string|max:100',
-            'medicines.*.generic_name' => 'nullable|string|max:255',
-            'medicines.*.brand_name' => 'nullable|string|max:255',
-            'medicines.*.description' => 'nullable|string',
             'medicines.*.unit_of_measure_id' => 'required|exists:units_of_measure,id',
+            'medicines.*.item_type_id' => 'required|exists:item_types,id',
+            'medicines.*.consultation_type_id' => 'required|exists:consultation_types,id',
             'medicines.*.balance' => 'required|numeric|min:0',
-            'medicines.*.unit_buying_price' => 'nullable|numeric|min:0',
-            'medicines.*.selling_price' => 'nullable|numeric|min:0',
-            'medicines.*.expiry_date' => 'nullable|date',
-            'medicines.*.minimum_stock' => 'nullable|numeric|min:0',
             'medicines.*.has_expiry' => 'required|in:Yes,No',
-            'medicines.*.prescription_required' => 'required|in:Yes,No',
-            'medicines.*.controlled_substance' => 'required|in:Yes,No',
-            'medicines.*.dosage_instructions' => 'nullable|string',
-            'medicines.*.side_effects' => 'nullable|string',
-            'medicines.*.contraindications' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -391,7 +350,8 @@ class MedicinesController extends Controller
         try {
             $createdMedicines = DB::transaction(function () use ($payload, $clinic_id) {
                 $out = [];
-                $medicineColumns = Schema::getColumnListing('medicines');
+                $allowed = $this->allowedColumns();
+
                 foreach ($payload['medicines'] as $medicineData) {
                     if (($medicineData['has_expiry'] ?? 'No') === 'No') {
                         $medicineData['expiry_date'] = null;
@@ -401,26 +361,21 @@ class MedicinesController extends Controller
                         'clinic_id' => $clinic_id,
                         'name' => $medicineData['name'],
                         'code' => $medicineData['code'] ?? null,
-                        'generic_name' => $medicineData['generic_name'] ?? null,
-                        'brand_name' => $medicineData['brand_name'] ?? null,
-                        'description' => $medicineData['description'] ?? null,
+                        'item_type_id' => $medicineData['item_type_id'],
+                        'consultation_type_id' => $medicineData['consultation_type_id'],
                         'unit_of_measure_id' => $medicineData['unit_of_measure_id'],
+                        'is_consultation_item' => $medicineData['is_consultation_item'] ?? 'Yes',
+                        'is_stock_item' => 'Yes',
                         'balance' => $medicineData['balance'],
                         'new_balance' => $medicineData['balance'],
                         'unit_buying_price' => $medicineData['unit_buying_price'] ?? 0,
-                        'selling_price' => $medicineData['selling_price'] ?? 0,
                         'expiry_date' => $medicineData['expiry_date'] ?? null,
                         'minimum_stock' => $medicineData['minimum_stock'] ?? 0,
                         'has_expiry' => $medicineData['has_expiry'],
-                        'prescription_required' => $medicineData['prescription_required'],
-                        'controlled_substance' => $medicineData['controlled_substance'],
-                        'dosage_instructions' => $medicineData['dosage_instructions'] ?? null,
-                        'side_effects' => $medicineData['side_effects'] ?? null,
-                        'contraindications' => $medicineData['contraindications'] ?? null,
                         'status' => 'Active',
                     ];
 
-                    $attributes = array_intersect_key($attributes, array_flip($medicineColumns));
+                    $attributes = array_intersect_key($attributes, array_flip($allowed));
                     $medicine = Medicine::create($attributes);
                     $out[] = $medicine->load(['clinic', 'unit_of_measure']);
                 }
