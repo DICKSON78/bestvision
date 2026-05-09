@@ -43,42 +43,36 @@ class PaymentCenterReportsController extends Controller
             ->join('patient_check_ins as pch', 'ppc.check_in_id', '=', 'pch.id')
             ->join('patients as pt', 'pch.patient_id', '=', 'pt.id');
 
-        // Installment payments - onyesha TU zile ambazo bill imekuwa Cleared siku hiyo hiyo
-        $bill_payments = PatientItemBillPayment::with(['channel', 'creator'])
-            ->join('patient_item_bills as pib', 'patient_item_bill_payments.bill_id', '=', 'pib.id')
+        // Installment bills zilizokamilika siku husika - GROUP BY bill ili ionyeshe jumla moja
+        $bill_payments = DB::table('patient_item_bills as pib')
+            ->join('patient_item_bill_payments as pibp', 'pibp.bill_id', '=', 'pib.id')
             ->join('patient_payment_cache_items as ppci', 'ppci.bill_id', '=', 'pib.id')
             ->join('items as it', 'ppci.item_id', '=', 'it.id')
             ->join('patient_payment_cache as ppc', 'ppci.payment_cache_id', '=', 'ppc.id')
             ->join('patient_check_ins as pch', 'ppc.check_in_id', '=', 'pch.id')
             ->join('patients as pt', 'pch.patient_id', '=', 'pt.id')
+            ->join('users as u', 'pib.cleared_by', '=', 'u.id')
             // Onyesha tu bills zilizokamilika (Cleared)
             ->where('pib.status', 'Cleared')
-            // Cleared_at lazima iwe siku moja na payment husika
-            ->whereRaw('DATE(pib.cleared_at) = DATE(patient_item_bill_payments.created_at)');
+            // Cleared siku iliyo ndani ya date range
+            ->whereRaw('DATE(pib.cleared_at) >= ?', [$start_date])
+            ->whereRaw('DATE(pib.cleared_at) <= ?', [$end_date]);
 
-        if ($user->is_admin) {
-            $item_payments->with(['creator.clinic']);
-
-            if ($clinic_id) {
-                $item_payments->whereHas('creator', function ($query) use ($clinic_id) {
-                    $query->where('clinic_id', $clinic_id);
-                });
-                $bill_payments->whereHas('creator', function ($query) use ($clinic_id) {
-                    $query->where('clinic_id', $clinic_id);
-                });
-            }
-        } else {
+        if (!$user->is_admin) {
             $item_payments->whereHas('creator', function ($query) use ($user) {
                 $query->where('clinic_id', $user->clinic_id);
             });
-            $bill_payments->whereHas('creator', function ($query) use ($user) {
-                $query->where('clinic_id', $user->clinic_id);
+            $bill_payments->where('u.clinic_id', $user->clinic_id);
+        } elseif ($clinic_id) {
+            $item_payments->whereHas('creator', function ($query) use ($clinic_id) {
+                $query->where('clinic_id', $clinic_id);
             });
+            $bill_payments->where('u.clinic_id', $clinic_id);
         }
 
         if ($payment_channel_id) {
             $item_payments->where('patient_item_payments.channel_id', $payment_channel_id);
-            $bill_payments->where('patient_item_bill_payments.channel_id', $payment_channel_id);
+            $bill_payments->where('pibp.channel_id', $payment_channel_id);
         }
 
         if ($patient_name) {
@@ -103,12 +97,10 @@ class PaymentCenterReportsController extends Controller
 
         if ($start_date) {
             $item_payments->whereDate('patient_item_payments.created_at', '>=', $start_date);
-            $bill_payments->whereDate('patient_item_bill_payments.created_at', '>=', $start_date);
         }
 
         if ($end_date) {
             $item_payments->whereDate('patient_item_payments.created_at', '<=', $end_date);
-            $bill_payments->whereDate('patient_item_bill_payments.created_at', '<=', $end_date);
         }
 
         $item_payments->select(
@@ -122,16 +114,19 @@ class PaymentCenterReportsController extends Controller
             DB::raw('group_concat(it.name separator ", ") as items')
         )->groupBy('patient_item_payments.id');
 
+        // Bill payments - GROUP BY pib.id ili ionyeshe mstari MMOJA na jumla ya deni lote
         $bill_payments->select(
             DB::raw("'Installment Completed' as transaction_type"),
             'pt.first_name', 'pt.middle_name', 'pt.last_name',
-            'pch.patient_id', 'channel_id',
-            'patient_item_bill_payments.amount',
-            DB::raw('0 as discount'),
-            'patient_item_bill_payments.created_at',
-            'patient_item_bill_payments.created_by',
-            DB::raw('group_concat(it.name separator ", ") as items')
-        )->groupBy('patient_item_bill_payments.id');
+            'pch.patient_id',
+            DB::raw('NULL as channel_id'),
+            // Jumla ya deni lote (amount - discount) sio installments moja moja
+            DB::raw('(pib.amount - pib.discount) as amount'),
+            DB::raw('pib.discount as discount'),
+            'pib.cleared_at as created_at',
+            'pib.cleared_by as created_by',
+            DB::raw('group_concat(DISTINCT it.name separator ", ") as items')
+        )->groupBy('pib.id');
 
         $data = $item_payments->union($bill_payments);
         $data->orderBy('created_at', 'desc');
