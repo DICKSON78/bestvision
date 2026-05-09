@@ -14,14 +14,10 @@ use Illuminate\Support\Facades\Schema;
 
 class MedicinesController extends Controller
 {
-    /**
-     * Display a listing of medicines
-     */
     public function index(Request $request)
     {
         try {
             $user = $request->user();
-            // Default allow: if user missing or admin, allow optional clinic filter via request
             if (!$user || $user->is_admin) {
                 $clinic_id = $request->clinic_id;
             } else {
@@ -32,13 +28,12 @@ class MedicinesController extends Controller
                 ->withCount(['medicine_dispensations as issued_today' => function ($q) {
                     $q->whereDate('created_at', now()->toDateString());
                 }])
-                ->medicines() // Only get medicines/pharmaceuticals
+                ->medicines()
                 ->when($clinic_id, function ($q) use ($clinic_id) {
                     $q->where('clinic_id', $clinic_id);
                 })
                 ->where('status', 'Active');
 
-            // Apply search filter
             $search = $request->search ?? $request->q;
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -47,7 +42,6 @@ class MedicinesController extends Controller
                 });
             }
 
-            // Apply filters
             if ($request->has('has_expiry') && $request->has_expiry !== '') {
                 $query->where('has_expiry', $request->has_expiry);
             }
@@ -60,20 +54,25 @@ class MedicinesController extends Controller
                 $query->where('controlled_substance', $request->controlled_substance);
             }
 
-            // Apply sorting
+            // Stock status filter
+            if ($request->stock_status === 'In Stock') {
+                $query->where('balance', '>', 5);
+            } elseif ($request->stock_status === 'Low Stock') {
+                $query->where('balance', '>', 0)->where('balance', '<=', 5);
+            } elseif ($request->stock_status === 'Out of Stock') {
+                $query->where('balance', '<=', 0);
+            }
+
             $sortBy = $request->get('sort_by', 'name');
             $sortOrder = $request->get('sort_order', 'asc');
             $query->orderBy($sortBy, $sortOrder);
 
-            // Pagination
             $perPage = (int) $request->get('per_page', 15);
             $medicines = $query->paginate($perPage);
 
-            // Ensure balance-like fields exist for frontend reducers (defensive)
             $medicines->getCollection()->transform(function ($row) {
                 $row->balance = isset($row->balance) && $row->balance !== null ? $row->balance : 0;
                 $row->new_balance = isset($row->new_balance) && $row->new_balance !== null ? $row->new_balance : 0;
-                // Common aliases different UIs might reference
                 $row->current_balance = isset($row->current_balance) && $row->current_balance !== null ? $row->current_balance : $row->balance;
                 $row->available_balance = isset($row->available_balance) && $row->available_balance !== null ? $row->available_balance : $row->balance;
                 return $row;
@@ -104,9 +103,6 @@ class MedicinesController extends Controller
         }
     }
 
-    /**
-     * Store a newly created medicine
-     */
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -141,7 +137,9 @@ class MedicinesController extends Controller
         }
 
         try {
-            $medicine = Medicine::create([
+            $medicineColumns = Schema::getColumnListing('medicines');
+
+            $attributes = [
                 'clinic_id' => $clinic_id,
                 'name' => $request->name,
                 'code' => $request->code,
@@ -150,7 +148,7 @@ class MedicinesController extends Controller
                 'description' => $request->description,
                 'unit_of_measure_id' => $request->unit_of_measure_id,
                 'balance' => $request->balance,
-                'new_balance' => $request->balance, // Set initial new_balance same as balance
+                'new_balance' => $request->balance,
                 'unit_buying_price' => $request->unit_buying_price,
                 'selling_price' => $request->selling_price,
                 'expiry_date' => $request->expiry_date,
@@ -162,7 +160,10 @@ class MedicinesController extends Controller
                 'side_effects' => $request->side_effects,
                 'contraindications' => $request->contraindications,
                 'status' => 'Active',
-            ]);
+            ];
+
+            $attributes = array_intersect_key($attributes, array_flip($medicineColumns));
+            $medicine = Medicine::create($attributes);
 
             return response()->json([
                 'success' => true,
@@ -178,9 +179,6 @@ class MedicinesController extends Controller
         }
     }
 
-    /**
-     * Display the specified medicine
-     */
     public function show($id)
     {
         $user = Auth::user();
@@ -204,9 +202,6 @@ class MedicinesController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified medicine
-     */
     public function update(Request $request, $id)
     {
         $user = Auth::user();
@@ -223,54 +218,26 @@ class MedicinesController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'code' => 'nullable|string|max:100',
-            'generic_name' => 'nullable|string|max:255',
-            'brand_name' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'unit_of_measure_id' => 'required|exists:units_of_measure,id',
-            'balance' => 'required|numeric|min:0',
-            'unit_buying_price' => 'nullable|numeric|min:0',
-            'selling_price' => 'nullable|numeric|min:0',
-            'expiry_date' => 'nullable|date',
-            'minimum_stock' => 'required|numeric|min:0',
-            'has_expiry' => 'required|in:Yes,No',
-            'prescription_required' => 'required|in:Yes,No',
-            'controlled_substance' => 'required|in:Yes,No',
-            'dosage_instructions' => 'nullable|string',
-            'side_effects' => 'nullable|string',
-            'contraindications' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
         try {
-            $medicine->update([
-                'name' => $request->name,
-                'code' => $request->code,
-                'generic_name' => $request->generic_name,
-                'brand_name' => $request->brand_name,
-                'description' => $request->description,
-                'unit_of_measure_id' => $request->unit_of_measure_id,
-                'balance' => $request->balance,
-                'unit_buying_price' => $request->unit_buying_price,
-                'selling_price' => $request->selling_price,
-                'expiry_date' => $request->expiry_date,
-                'minimum_stock' => $request->minimum_stock,
-                'has_expiry' => $request->has_expiry,
-                'prescription_required' => $request->prescription_required,
-                'controlled_substance' => $request->controlled_substance,
-                'dosage_instructions' => $request->dosage_instructions,
-                'side_effects' => $request->side_effects,
-                'contraindications' => $request->contraindications,
-            ]);
+            $medicineColumns = Schema::getColumnListing('medicines');
+
+            $fields = [
+                'name', 'code', 'generic_name', 'brand_name', 'description',
+                'unit_of_measure_id', 'balance', 'unit_buying_price', 'selling_price',
+                'expiry_date', 'minimum_stock', 'has_expiry', 'prescription_required',
+                'controlled_substance', 'dosage_instructions', 'side_effects',
+                'contraindications', 'status',
+            ];
+
+            $updateData = [];
+            foreach ($fields as $field) {
+                if ($request->has($field)) {
+                    $updateData[$field] = $request->$field;
+                }
+            }
+
+            $updateData = array_intersect_key($updateData, array_flip($medicineColumns));
+            $medicine->update($updateData);
 
             return response()->json([
                 'success' => true,
@@ -279,6 +246,7 @@ class MedicinesController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            \Log::error('Medicine update failed', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Error updating medicine: ' . $e->getMessage()
@@ -286,9 +254,6 @@ class MedicinesController extends Controller
         }
     }
 
-    /**
-     * Remove the specified medicine
-     */
     public function destroy($id)
     {
         $user = Auth::user();
@@ -306,7 +271,6 @@ class MedicinesController extends Controller
         }
 
         try {
-            // Soft delete by setting status to Inactive
             $medicine->update(['status' => 'Inactive']);
 
             return response()->json([
@@ -322,9 +286,6 @@ class MedicinesController extends Controller
         }
     }
 
-    /**
-     * Get medicines for selection (dropdown)
-     */
     public function getForSelection(Request $request)
     {
         $user = Auth::user();
@@ -333,7 +294,6 @@ class MedicinesController extends Controller
         $query = Medicine::where('clinic_id', $clinic_id)
             ->where('status', 'Active');
 
-        // Filter out expired medicines if requested
         if ($request->get('exclude_expired', false)) {
             $query->where(function ($q) {
                 $q->where('has_expiry', 'No')
@@ -341,12 +301,11 @@ class MedicinesController extends Controller
             });
         }
 
-        // Filter out out-of-stock medicines if requested
         if ($request->get('exclude_out_of_stock', false)) {
             $query->where('balance', '>', 0);
         }
 
-        $medicines = $query->select('id', 'name', 'code', 'generic_name', 'brand_name', 'balance', 'unit_buying_price', 'selling_price')
+        $medicines = $query->select('id', 'name', 'code', 'balance', 'unit_buying_price', 'selling_price')
             ->orderBy('name')
             ->get();
 
@@ -356,21 +315,18 @@ class MedicinesController extends Controller
         ]);
     }
 
-    /**
-     * Bulk create medicines
-     */
     public function bulkCreate(Request $request)
     {
         $user = Auth::user();
         $clinic_id = $user->clinic_id;
 
-        // Preflight: ensure required tables/columns exist in production DB
         if (!Schema::hasTable('medicines')) {
             return response()->json([
                 'success' => false,
                 'message' => 'Database is not ready: missing medicines table. Please run migrations on the server.',
             ], Response::HTTP_SERVICE_UNAVAILABLE);
         }
+
         if (!Schema::hasTable('units_of_measure')) {
             return response()->json([
                 'success' => false,
@@ -378,23 +334,19 @@ class MedicinesController extends Controller
             ], Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
-        // Normalize incoming payload (booleans, empty strings)
         $payload = $request->all();
         if (isset($payload['medicines']) && is_array($payload['medicines'])) {
             foreach ($payload['medicines'] as $i => $m) {
-                // Coerce empty strings to null for nullable fields
                 foreach (['code','generic_name','brand_name','description','expiry_date','dosage_instructions','side_effects','contraindications'] as $nf) {
                     if (array_key_exists($nf, $m) && $m[$nf] === '') {
                         $payload['medicines'][$i][$nf] = null;
                     }
                 }
-                // Coerce numeric optional fields from '' to 0
                 foreach (['unit_buying_price','selling_price','minimum_stock'] as $nf) {
                     if (array_key_exists($nf, $m) && $m[$nf] === '') {
                         $payload['medicines'][$i][$nf] = 0;
                     }
                 }
-                // Coerce required numeric balance if string
                 if (isset($m['balance']) && $m['balance'] !== '' && !is_numeric($m['balance'])) {
                     $payload['medicines'][$i]['balance'] = (float) $m['balance'];
                 }
@@ -441,12 +393,10 @@ class MedicinesController extends Controller
                 $out = [];
                 $medicineColumns = Schema::getColumnListing('medicines');
                 foreach ($payload['medicines'] as $medicineData) {
-                    // If has_expiry is No, ignore expiry_date
                     if (($medicineData['has_expiry'] ?? 'No') === 'No') {
                         $medicineData['expiry_date'] = null;
                     }
 
-                    // Base attributes
                     $attributes = [
                         'clinic_id' => $clinic_id,
                         'name' => $medicineData['name'],
@@ -470,9 +420,7 @@ class MedicinesController extends Controller
                         'status' => 'Active',
                     ];
 
-                    // Filter attributes to actual columns in prod DB
                     $attributes = array_intersect_key($attributes, array_flip($medicineColumns));
-
                     $medicine = Medicine::create($attributes);
                     $out[] = $medicine->load(['clinic', 'unit_of_measure']);
                 }
