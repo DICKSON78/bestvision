@@ -19,7 +19,7 @@ import TextField from "../../components/TextField";
 import Select from "../../components/Select";
 
 import { useFetch, usePatch, useToast } from "../../hooks";
-import { formatError, getValidationError, numberFormat } from "../../helpers";
+import { formatError } from "../../helpers";
 
 const EditMedicine = () => {
   const navigate = useNavigate();
@@ -47,19 +47,15 @@ const EditMedicine = () => {
 
   const { data: updateData, loading: saving, error: updateError, handlePatch } = usePatch();
 
+  // Tumia tu fields zilizopo kwenye items table
   const [form, setForm] = useState({
     name: "",
     code: "",
-    generic_name: "",
-    brand_name: "",
     unit_of_measure_id: "",
     balance: "",
     unit_buying_price: "",
-    selling_price: "",
     minimum_stock: "",
     has_expiry: "No",
-    prescription_required: "No",
-    controlled_substance: "No",
     expiry_date: null,
   });
 
@@ -81,21 +77,15 @@ const EditMedicine = () => {
 
   useEffect(() => {
     if (showData) {
-      console.log('Medicine data loaded:', showData);
       const m = showData;
       setForm({
         name: m.name || "",
         code: m.code || "",
-        generic_name: m.generic_name || "",
-        brand_name: m.brand_name || "",
         unit_of_measure_id: m.unit_of_measure_id || "",
         balance: m.balance ?? "",
         unit_buying_price: m.unit_buying_price ?? "",
-        selling_price: m.selling_price ?? "",
         minimum_stock: m.minimum_stock ?? "",
         has_expiry: m.has_expiry || "No",
-        prescription_required: m.prescription_required || "No",
-        controlled_substance: m.controlled_substance || "No",
         expiry_date: m.expiry_date || null,
       });
     }
@@ -106,12 +96,10 @@ const EditMedicine = () => {
   const submit = () => {
     if (!form.name) {
       addToast({ message: "Medicine name is required", severity: "warning" });
-      nameRef.current?.focus();
       return;
     }
     if (!form.unit_of_measure_id) {
       addToast({ message: "Unit of measure is required", severity: "warning" });
-      uomRef.current?.focus();
       return;
     }
     handlePatch(`api/medicines/${id}`, form);
@@ -136,7 +124,7 @@ const EditMedicine = () => {
     >
       <Card>
         <PageHeader
-          title={`Edit Medicine`}
+          title="Edit Medicine"
           action={
             <Button variant="outlined" startIcon={<BackIcon />} onClick={() => navigate(-1)}>
               Back
@@ -153,49 +141,87 @@ const EditMedicine = () => {
             <React.Fragment>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
-              <TextField
-                inputRef={nameRef}
-                label="Medicine Name *"
-                value={form.name || ""}
-                onChange={(v) => handleChange("name", v || "")}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField label="Code" value={form.code || ""} onChange={(v) => handleChange("code", v || "")} fullWidth />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField label="Generic Name" value={form.generic_name || ""} onChange={(v) => handleChange("generic_name", v || "")} fullWidth />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField label="Brand Name" value={form.brand_name || ""} onChange={(v) => handleChange("brand_name", v || "")} fullWidth />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Select
-                inputRef={uomRef}
-                label="Unit of Measure *"
-                value={form.unit_of_measure_id || ""}
-                onChange={(v) => handleChange("unit_of_measure_id", v)}
-                options={(uoms?.data || []).map((u) => ({ value: u.id, label: u.name }))}
-                loading={uomsLoading}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField type="number" label="Quantity" value={form.balance ?? ""} onChange={(v) => handleChange("balance", v ? parseFloat(v) : "")} fullWidth />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField type="number" label="Unit Price (TZS)" value={form.unit_buying_price ?? ""} onChange={(v) => handleChange("unit_buying_price", v ? parseFloat(v) : "")} fullWidth />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField type="number" label="Selling Price (TZS)" value={form.selling_price ?? ""} onChange={(v) => handleChange("selling_price", v ? parseFloat(v) : "")} fullWidth />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField type="number" label="Minimum Stock" value={form.minimum_stock ?? ""} onChange={(v) => handleChange("minimum_stock", v ? parseFloat(v) : "")} fullWidth />
-            </Grid>
+                  <TextField
+                    label="Medicine Name *"
+                    value={form.name || ""}
+                    onChange={(v) => handleChange("name", v || "")}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    label="Code"
+                    value={form.code || ""}
+                    onChange={(v) => handleChange("code", v || "")}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Select
+                    label="Unit of Measure *"
+                    value={form.unit_of_measure_id || ""}
+                    onChange={(v) => handleChange("unit_of_measure_id", v)}
+                    options={(uoms?.data || []).map((u) => ({ value: u.id, label: u.name }))}
+                    loading={uomsLoading}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    type="number"
+                    label="Quantity (Stock)"
+                    value={form.balance ?? ""}
+                    onChange={(v) => handleChange("balance", v ? parseFloat(v) : "")}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    type="number"
+                    label="Unit Buying Price (TZS)"
+                    value={form.unit_buying_price ?? ""}
+                    onChange={(v) => handleChange("unit_buying_price", v ? parseFloat(v) : "")}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    type="number"
+                    label="Minimum Stock"
+                    value={form.minimum_stock ?? ""}
+                    onChange={(v) => handleChange("minimum_stock", v ? parseFloat(v) : "")}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Select
+                    label="Has Expiry"
+                    value={form.has_expiry || "No"}
+                    onChange={(v) => handleChange("has_expiry", v)}
+                    options={["Yes", "No"]}
+                    fullWidth
+                  />
+                </Grid>
+                {form.has_expiry === "Yes" && (
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      type="date"
+                      label="Expiry Date"
+                      value={form.expiry_date || ""}
+                      onChange={(v) => handleChange("expiry_date", v)}
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                )}
               </Grid>
               <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-                <Button variant="contained" startIcon={<SaveIcon />} disabled={saving || loadingShow} onClick={submit}>
+                <Button
+                  variant="contained"
+                  startIcon={<SaveIcon />}
+                  disabled={saving || loadingShow}
+                  onClick={submit}
+                >
                   Save Changes
                 </Button>
                 <Button variant="outlined" onClick={() => navigate(-1)}>
@@ -211,5 +237,3 @@ const EditMedicine = () => {
 };
 
 export default EditMedicine;
-
-
