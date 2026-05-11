@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Schema;
 
 class MedicinesController extends Controller
 {
-    // Columns zinazoweza kubadilishwa kwenye items table
     private function allowedColumns()
     {
         return [
@@ -35,9 +34,24 @@ class MedicinesController extends Controller
                 $clinic_id = $user->clinic_id;
             }
 
+            $report_period = $request->get('report_period', 'daily');
+
             $query = Medicine::with(['clinic', 'unit_of_measure', 'item_type', 'consultation_type'])
-                ->withCount(['medicine_dispensations as issued_today' => function ($q) {
-                    $q->whereDate('created_at', now()->toDateString());
+                ->withCount(['medicine_dispensations as issued_today' => function ($q) use ($report_period) {
+                    switch ($report_period) {
+                        case 'weekly':
+                            $q->where('created_at', '>=', now()->startOfWeek());
+                            break;
+                        case 'monthly':
+                            $q->where('created_at', '>=', now()->startOfMonth());
+                            break;
+                        case 'yearly':
+                            $q->where('created_at', '>=', now()->startOfYear());
+                            break;
+                        default: // daily
+                            $q->whereDate('created_at', now()->toDateString());
+                            break;
+                    }
                 }])
                 ->medicines()
                 ->when($clinic_id, function ($q) use ($clinic_id) {
@@ -53,6 +67,18 @@ class MedicinesController extends Controller
                 });
             }
 
+            if ($request->has('has_expiry') && $request->has_expiry !== '') {
+                $query->where('has_expiry', $request->has_expiry);
+            }
+
+            if ($request->has('prescription_required') && $request->prescription_required !== '') {
+                $query->where('prescription_required', $request->prescription_required);
+            }
+
+            if ($request->has('controlled_substance') && $request->controlled_substance !== '') {
+                $query->where('controlled_substance', $request->controlled_substance);
+            }
+
             // Stock status filter
             if ($request->stock_status === 'In Stock') {
                 $query->where('balance', '>', 5);
@@ -62,7 +88,8 @@ class MedicinesController extends Controller
                 $query->where('balance', '<=', 0);
             }
 
-            $sortBy = in_array($request->get('sort_by'), $this->allowedColumns()) ? $request->get('sort_by') : 'name';
+            $allowedSortColumns = ['name', 'code', 'balance', 'unit_buying_price', 'minimum_stock'];
+            $sortBy = in_array($request->get('sort_by'), $allowedSortColumns) ? $request->get('sort_by') : 'name';
             $sortOrder = $request->get('sort_order', 'asc');
             $query->orderBy($sortBy, $sortOrder);
 
@@ -145,7 +172,6 @@ class MedicinesController extends Controller
                 'status' => 'Active',
             ];
 
-            // Filter to only allowed columns
             $attributes = array_intersect_key($attributes, array_flip($this->allowedColumns()));
             $medicine = Medicine::create($attributes);
 
@@ -203,7 +229,6 @@ class MedicinesController extends Controller
         }
 
         try {
-            // Tumia tu columns zilizopo kwenye items table
             $allowed = $this->allowedColumns();
             $updateData = [];
 
@@ -213,7 +238,6 @@ class MedicinesController extends Controller
                 }
             }
 
-            // Pia ruhusu selling_price kama imepita lakini iihifadhi kwenye ItemPrice
             if (empty($updateData)) {
                 return response()->json([
                     'success' => true,
@@ -303,6 +327,13 @@ class MedicinesController extends Controller
     {
         $user = Auth::user();
         $clinic_id = $user->clinic_id;
+
+        if (!Schema::hasTable('medicines')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Database is not ready: missing medicines table.',
+            ], Response::HTTP_SERVICE_UNAVAILABLE);
+        }
 
         $payload = $request->all();
         if (isset($payload['medicines']) && is_array($payload['medicines'])) {
