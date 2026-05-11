@@ -17,6 +17,7 @@ import {
 import Page, { Header as PageHeader } from "../../components/Page";
 import TextField from "../../components/TextField";
 import Select from "../../components/Select";
+import DatePicker from "../../components/DatePicker";
 
 import { useFetch, usePatch, useToast } from "../../hooks";
 import { formatError } from "../../helpers";
@@ -25,9 +26,6 @@ const EditMedicine = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const addToast = useToast();
-
-  const nameRef = useRef();
-  const uomRef = useRef();
 
   const { data: showData, loading: loadingShow, error: showError } = useFetch(
     `api/medicines/${id}`,
@@ -47,7 +45,6 @@ const EditMedicine = () => {
 
   const { data: updateData, loading: saving, error: updateError, handlePatch } = usePatch();
 
-  // Tumia tu fields zilizopo kwenye items table
   const [form, setForm] = useState({
     name: "",
     code: "",
@@ -86,7 +83,7 @@ const EditMedicine = () => {
         unit_buying_price: m.unit_buying_price ?? "",
         minimum_stock: m.minimum_stock ?? "",
         has_expiry: m.has_expiry || "No",
-        expiry_date: m.expiry_date || null,
+        expiry_date: m.expiry_date ? new Date(m.expiry_date) : null,
       });
     }
   }, [showData]);
@@ -161,8 +158,9 @@ const EditMedicine = () => {
                     label="Unit of Measure *"
                     value={form.unit_of_measure_id || ""}
                     onChange={(v) => handleChange("unit_of_measure_id", v)}
-                    options={(uoms?.data || []).map((u) => ({ value: u.id, label: u.name }))}
-                    loading={uomsLoading}
+                    options={uoms?.data || []}
+                    optionsLabel="name"
+                    optionsValue="id"
                     fullWidth
                   />
                 </Grid>
@@ -204,13 +202,11 @@ const EditMedicine = () => {
                 </Grid>
                 {form.has_expiry === "Yes" && (
                   <Grid item xs={12} md={6}>
-                    <TextField
-                      type="date"
+                    <DatePicker
                       label="Expiry Date"
-                      value={form.expiry_date || ""}
+                      value={form.expiry_date}
                       onChange={(v) => handleChange("expiry_date", v)}
                       fullWidth
-                      InputLabelProps={{ shrink: true }}
                     />
                   </Grid>
                 )}
