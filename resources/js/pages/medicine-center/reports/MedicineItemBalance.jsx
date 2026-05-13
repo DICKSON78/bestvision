@@ -77,7 +77,6 @@ const MedicineItemBalance = ({ module, consultationType }) => {
             headerName: "Total Items",
             tableCellProps: { sx: { width: 120 } },
             valueGetter: (item) => {
-              // Stock ya awali = balance iliyobaki + zilizotolewa
               const balance = parseFloat(item.balance) || 0;
               const issued = parseInt(item.issued_today) || 0;
               const total = balance + issued;
@@ -98,7 +97,6 @@ const MedicineItemBalance = ({ module, consultationType }) => {
             headerName: "Remain Stock",
             tableCellProps: { sx: { width: 120 } },
             valueGetter: (item) => {
-              // Remain stock = balance ya sasa (inapungua baada ya dispensing)
               const balance = parseFloat(item.balance) || 0;
               return numberFormat(balance < 0 ? 0 : balance);
             },
@@ -116,21 +114,23 @@ const MedicineItemBalance = ({ module, consultationType }) => {
                 month: "short",
                 day: "numeric",
               });
-              if (expiryDate < now) {
-                return `${formattedDate} (Expired)`;
-              }
+              if (expiryDate < now) return `${formattedDate} (Expired)`;
               return formattedDate;
             },
           },
         ]}
         summationFooterColumns={[
-          { value: "Totals", span: 1, tableCellProps: { sx: { fontWeight: "bold" } } },
+          {
+            value: "Totals",
+            tableCellProps: { sx: { fontWeight: "bold" } },
+          },
           {
             // Total Items = balance + issued
             reducer: (total, item) => {
               const balance = parseFloat(item.balance) || 0;
               const issued = parseInt(item.issued_today) || 0;
-              return total + (balance + issued < 0 ? 0 : balance + issued);
+              const t = balance + issued;
+              return total + (t < 0 ? 0 : t);
             },
           },
           {
@@ -139,9 +139,14 @@ const MedicineItemBalance = ({ module, consultationType }) => {
           },
           {
             // Remain stock = balance ya sasa
-            reducer: (total, item) => total + (parseFloat(item.balance) < 0 ? 0 : parseFloat(item.balance) || 0),
+            reducer: (total, item) => {
+              const balance = parseFloat(item.balance) || 0;
+              return total + (balance < 0 ? 0 : balance);
+            },
           },
-          { value: "" },
+          {
+            value: "",
+          },
         ]}
       />
     </Page>
