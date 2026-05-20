@@ -17,19 +17,37 @@ const PendingCashPatients = () => {
   const modalRef = useRef();
   const { notifications, loading: notificationsLoading } = useNotificationContext();
 
-  const [params, setParams] = useState({
-    page: 1,
-    per_page: 25,
-    item_status: "Pending",
-    item_transaction_type: "Cash",
-    patient_id: undefined,
-    patient_name: undefined,
-    patient_gender: undefined,
-    patient_phone: undefined,
-    start_date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // Last 3 days
-    end_date: new Date(), // Today
-    // Include both pharmacy and glass items to match notification count
-    include_optician_glass: true,
+  const getDateRangeForPeriod = (period) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    switch (period) {
+      case 'daily':
+        return { start_date: today, end_date: now };
+      case 'weekly':
+        return { start_date: new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000), end_date: now };
+      case 'monthly':
+        return { start_date: new Date(today.getTime() - 29 * 24 * 60 * 60 * 1000), end_date: now };
+      default:
+        return { start_date: today, end_date: now };
+    }
+  };
+
+  const [params, setParams] = useState(() => {
+    const dateRange = getDateRangeForPeriod('daily');
+    return {
+      page: 1,
+      per_page: 25,
+      item_status: "Pending",
+      item_transaction_type: "Cash",
+      patient_id: undefined,
+      patient_name: undefined,
+      patient_gender: undefined,
+      patient_phone: undefined,
+      view_period: 'daily',
+      start_date: dateRange.start_date,
+      end_date: dateRange.end_date,
+      include_optician_glass: true,
+    };
   });
 
   const { data, loading, error, handleFetch } = useFetch(
@@ -79,6 +97,7 @@ const PendingCashPatients = () => {
           <Filters
             params={params}
             setParams={setParams}
+            showViewPeriod
             sx={{ mb: 2 }}
           />
           <Table

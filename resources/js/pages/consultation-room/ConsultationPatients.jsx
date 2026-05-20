@@ -32,12 +32,28 @@ const ConsultationPatients = () => {
 
   const { status } = useParams();
 
+  const getDateRangeForPeriod = (period) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    switch (period) {
+      case 'daily':
+        return { start_date: today, end_date: now };
+      case 'weekly':
+        return { start_date: new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000), end_date: now };
+      case 'monthly':
+        return { start_date: new Date(today.getTime() - 29 * 24 * 60 * 60 * 1000), end_date: now };
+      default:
+        return { start_date: today, end_date: now };
+    }
+  };
+
   const [params, setParams] = useState(() => {
     const isPending = String(status || '').toLowerCase() === 'pending';
+    const defaultPeriod = isPending ? 'daily' : undefined;
+    const dateRange = isPending ? getDateRangeForPeriod('daily') : {};
     return {
       page: 1,
       per_page: 25,
-      // Don't force direction by default; show all pending regardless of origin
       patient_direction: undefined,
       status: undefined,
       patient_id: undefined,
@@ -46,9 +62,9 @@ const ConsultationPatients = () => {
       patient_phone: undefined,
       item_payment_mode_id: undefined,
       item_id: undefined,
-      // For pending, default to last 3 days to avoid stale backlog
-      start_date: isPending ? new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) : undefined,
-      end_date: isPending ? new Date() : undefined,
+      view_period: defaultPeriod,
+      start_date: dateRange.start_date,
+      end_date: dateRange.end_date,
     };
   });
 
@@ -143,6 +159,7 @@ const ConsultationPatients = () => {
           <Filters
             params={params}
             setParams={setParams}
+            showViewPeriod={status === 'pending'}
             sx={{ mb: 2 }}
           />
           <Table

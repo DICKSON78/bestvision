@@ -6,10 +6,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/SearchRounded";
 import DatePicker from "../../components/DatePicker";
 import TextField from "../../components/TextField";
+import Select from "../../components/Select";
 
 import { throttle } from "../../helpers";
 
-const PatientFilters = ({ params, setParams, ...rest }) => {
+const PatientFilters = ({ params, setParams, showViewPeriod, ...rest }) => {
   return (
     <Card
       variant="outlined"
@@ -24,6 +25,55 @@ const PatientFilters = ({ params, setParams, ...rest }) => {
           container
           spacing={2}
         >
+          {showViewPeriod && (
+            <Grid
+              item
+              md={1.5}
+              sm={4}
+              xs={12}
+            >
+              <Select
+                label="View Period"
+                fullWidth
+                options={[
+                  { id: 'daily', name: 'Daily' },
+                  { id: 'weekly', name: 'Weekly' },
+                  { id: 'monthly', name: 'Monthly' },
+                ]}
+                optionsLabel="name"
+                optionsValue="id"
+                value={params.view_period || 'daily'}
+                onChange={(value) => {
+                  const now = new Date();
+                  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                  let startDate, endDate;
+                  switch (value) {
+                    case 'daily':
+                      startDate = today;
+                      endDate = now;
+                      break;
+                    case 'weekly':
+                      startDate = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
+                      endDate = now;
+                      break;
+                    case 'monthly':
+                      startDate = new Date(today.getTime() - 29 * 24 * 60 * 60 * 1000);
+                      endDate = now;
+                      break;
+                    default:
+                      startDate = today;
+                      endDate = now;
+                  }
+                  setParams({
+                    ...params,
+                    view_period: value,
+                    start_date: startDate,
+                    end_date: endDate,
+                  });
+                }}
+              />
+            </Grid>
+          )}
           <Grid
             item
             md

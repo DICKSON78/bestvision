@@ -18,6 +18,7 @@ const PatientFilters = ({
   setParams,
   showDiagnosis,
   showConsultant,
+  showViewPeriod,
   ...rest
 }) => {
   const { data: items } = useFetch(
@@ -46,9 +47,58 @@ const PatientFilters = ({
           container
           spacing={2}
         >
+          {showViewPeriod && (
+            <Grid
+              item
+              md={2}
+              sm={4}
+              xs={12}
+            >
+              <Select
+                label="View Period"
+                fullWidth
+                options={[
+                  { id: 'daily', name: 'Daily' },
+                  { id: 'weekly', name: 'Weekly' },
+                  { id: 'monthly', name: 'Monthly' },
+                ]}
+                optionsLabel="name"
+                optionsValue="id"
+                value={params.view_period || 'daily'}
+                onChange={(value) => {
+                  const now = new Date();
+                  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                  let startDate, endDate;
+                  switch (value) {
+                    case 'daily':
+                      startDate = today;
+                      endDate = now;
+                      break;
+                    case 'weekly':
+                      startDate = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
+                      endDate = now;
+                      break;
+                    case 'monthly':
+                      startDate = new Date(today.getTime() - 29 * 24 * 60 * 60 * 1000);
+                      endDate = now;
+                      break;
+                    default:
+                      startDate = today;
+                      endDate = now;
+                  }
+                  setParams({
+                    ...params,
+                    view_period: value,
+                    start_date: startDate,
+                    end_date: endDate,
+                  });
+                }}
+              />
+            </Grid>
+          )}
           <Grid
             item
-            md={3}
+            md={showViewPeriod ? 2 : 3}
             sm={6}
             xs={12}
           >
@@ -66,7 +116,7 @@ const PatientFilters = ({
           </Grid>
           <Grid
             item
-            md={3}
+            md={showViewPeriod ? 2 : 3}
             sm={6}
             xs={12}
           >
@@ -81,7 +131,7 @@ const PatientFilters = ({
           </Grid>
           <Grid
             item
-            md={3}
+            md={showViewPeriod ? 2 : 3}
             sm={6}
             xs={12}
           >
@@ -106,7 +156,7 @@ const PatientFilters = ({
           </Grid>
           <Grid
             item
-            md={3}
+            md={showViewPeriod ? 2 : 3}
             sm={6}
             xs={12}
           >
@@ -131,7 +181,7 @@ const PatientFilters = ({
           </Grid>
           <Grid
             item
-            md={3}
+            md={showViewPeriod ? 2 : 3}
             sm={6}
             xs={12}
           >
@@ -156,7 +206,7 @@ const PatientFilters = ({
           </Grid>
           <Grid
             item
-            md={3}
+            md={showViewPeriod ? 2 : 3}
             sm={6}
             xs={12}
           >
@@ -173,7 +223,7 @@ const PatientFilters = ({
           {showDiagnosis ? (
             <Grid
               item
-              md={3}
+              md={showViewPeriod ? 2 : 3}
               sm={6}
               xs={12}
             >
@@ -189,7 +239,7 @@ const PatientFilters = ({
           {showConsultant ? (
             <Grid
               item
-              md={3}
+              md={showViewPeriod ? 2 : 3}
               sm={6}
               xs={12}
             >
