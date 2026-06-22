@@ -1,0 +1,11 @@
+{
+  "resources/images/loader.svg": {
+    "file": "loader-80d3ba24.svg",
+    "src": "resources/images/loader.svg"
+  },
+  "resources/js/app.jsx": {
+    "file": "app-5febe63c.js",
+    "isEntry": true,
+    "src": "resources/js/app.jsx"
+  }
+}

@@ -62,7 +62,7 @@ const LogIn = () => {
           isGranted(p.reception) ? "/dashboard" : null,
           isGranted(p.payment_center) ? "/dashboard" : null,
           isGranted(p.consultation_room) ? "/dashboard" : null,
-          isGranted(p.dental_lab) ? "/dashboard" : null,
+          isGranted(p.optician_center) ? "/dashboard" : null,
           isGranted(p.medicine_center) ? "/dashboard" : null,
           isGranted(p.procedure_room) ? "/dashboard" : null,
           isGranted(p.inventory_management) ? "/dashboard" : null,
