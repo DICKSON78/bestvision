@@ -91,7 +91,7 @@ const BlogPostForm = () => {
   if (loading) return <Box p={3} textAlign="center">Loading...</Box>;
 
   return (
-    <Box pt={{ xs: 2, sm: 3 }}>
+    <Box pt={{ xs: 4, sm: 6 }} px={{ xs: 2, sm: 3 }}>
       <Typography variant="h5" mb={2}>{isEdit ? "Edit Post" : "New Post"}</Typography>
       <Card sx={{ width: '100%' }}>
         <CardContent sx={{ p: { xs: 2, sm: 3 } }}>

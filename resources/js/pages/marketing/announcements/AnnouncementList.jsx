@@ -55,7 +55,7 @@ const AnnouncementList = () => {
   const statusColor = (s) => s === "published" ? "success" : "warning";
 
   return (
-    <Box pt={{ xs: 2, sm: 3 }}>
+    <Box pt={{ xs: 4, sm: 6 }} px={{ xs: 2, sm: 3 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Box>
           <Typography variant="h5">Announcements Portal</Typography>
