@@ -1094,7 +1094,7 @@ body{ overflow-x:hidden; }
 
 /* Containers */
 .container{
-  width:min(1120px, 100% - 40px);
+  width:min(100%, 100% - 32px);
   margin-inline:auto;
 }
 
@@ -1171,7 +1171,7 @@ input, select, textarea{
 
 /* ---------- Mobile (<= 640px) ---------- */
 @media (max-width: 640px){
-  .container{ width:min(100% - 28px, 1120px); }
+  .container{ width:min(100% - 16px, 100%); }
   h1{ font-size:28px; line-height:1.15; }
   h2{ font-size:22px; line-height:1.2; }
   p{ font-size:15px; }
@@ -1198,7 +1198,7 @@ input, select, textarea{
 
 /* ---------- Large desktop (>= 1280px) ---------- */
 @media (min-width: 1280px){
-  .container{ width:min(1180px, 100% - 56px); }
+  .container{ width:min(100%, 100% - 32px); }
 }
 
 /* ===== About page: equal height cards ===== */
