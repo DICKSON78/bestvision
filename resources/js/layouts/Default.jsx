@@ -368,7 +368,7 @@ const DefaultInner = ({ setThemeMode, setUser, smsBalance }) => {
                 flexDirection: "column",
               }}
             >
-              <Toolbar />
+              <Box sx={{ minHeight: { xs: 56, sm: 64 } }} />
               <Box flexGrow={1}>
                 <Outlet />
               </Box>
