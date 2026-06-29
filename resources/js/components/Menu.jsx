@@ -1024,41 +1024,6 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           to: "/settings/clinics",
           show: user.privileges.settings && user.role === "Admin",
         },
-        {
-          title: "Collaborators",
-          icon: <CollaboratorsIcon />,
-          to: "/settings/collaborators",
-          show: user.privileges.settings,
-        },
-        {
-          title: "13. MOH REPORTS",
-          subheader: true,
-          show: user.privileges.settings,
-        },
-        {
-          title: "Monthly OPD",
-          icon: <ReportsIcon />,
-          to: "/moh-reports/monthly-opd",
-          show: user.privileges.settings,
-        },
-        {
-          title: "Pharmaceutical Consumption",
-          icon: <ReportsIcon />,
-          to: "/moh-reports/pharmaceutical-consumption",
-          show: user.privileges.settings,
-        },
-        {
-          title: "Revenue Summary",
-          icon: <ReportsIcon />,
-          to: "/moh-reports/revenue-summary",
-          show: user.privileges.settings,
-        },
-        {
-          title: "IPD Report",
-          icon: <ReportsIcon />,
-          to: "/moh-reports/ipd-report",
-          show: user.privileges.settings,
-        },
       ]));
     } else {
       setItems([]);

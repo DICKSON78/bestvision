@@ -49,7 +49,6 @@ import FinancialManagementRoutes from "../pages/financial-management/FinancialMa
 import UserManagementRoutes from "../pages/user-management/UserManagementRoutes";
 import PatientRecordsRoutes from "../pages/patient-records/PatientRecordsRoutes";
 import SettingsRoutes from "../pages/settings/SettingsRoutes";
-import MohReportsRoutes from "../pages/moh-reports/MohReportsRoutes";
 
 const App = () => {
   const [themeMode, setThemeMode] = useState(
@@ -233,10 +232,6 @@ const App = () => {
                   }
                 />
               </React.Fragment>
-              <Route
-                path="moh-reports/*"
-                element={<MohReportsRoutes />}
-              />
             </Route>
           </Routes>
             </Router>
