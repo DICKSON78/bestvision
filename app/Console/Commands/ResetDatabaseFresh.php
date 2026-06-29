@@ -90,12 +90,12 @@ class ResetDatabaseFresh extends Command
             // Create clinic
             $this->info('Creating clinic...');
             $clinicId = DB::table('clinics')->insertGetId([
-                'name' => 'Medicore Dental Clinic',
+                'name' => 'Best Vision EyeCare',
                 'phone' => '0678110376',
-                'email' => 'info@medicore-dental.co.tz',
+                'email' => 'info@bestvision-eyecare.co.tz',
                 'address' => 'Natta, Mwanza',
                 'sms_balance' => '0',
-                'sms_sender_name' => 'MEDICORE',
+                'sms_sender_name' => 'BESTVISION',
                 'logo' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -107,9 +107,9 @@ class ResetDatabaseFresh extends Command
             $departments = [
                 ['name' => 'Administration', 'description' => 'Administrative department'],
                 ['name' => 'Reception', 'description' => 'Patient reception'],
-                ['name' => 'Consultation', 'description' => 'Dental consultations'],
-                ['name' => 'Dental Lab', 'description' => 'Dental laboratory services'],
-                ['name' => 'Radiology', 'description' => 'Dental X-ray and imaging'],
+                ['name' => 'Consultation', 'description' => 'Eye consultations'],
+                ['name' => 'Optical Lab', 'description' => 'Optical laboratory services'],
+                ['name' => 'Radiology', 'description' => 'Ophthalmic imaging'],
                 ['name' => 'Pharmacy', 'description' => 'Medicine dispensing'],
                 ['name' => 'Surgery', 'description' => 'Surgical procedures'],
                 ['name' => 'Emergency', 'description' => 'Emergency services'],
@@ -131,11 +131,11 @@ class ResetDatabaseFresh extends Command
             $this->info('Creating job titles...');
             $jobTitles = [
                 ['name' => 'Administrator', 'description' => 'System administrator'],
-                ['name' => 'Dentist', 'description' => 'Dental doctor'],
-                ['name' => 'Dental Nurse', 'description' => 'Registered dental nurse'],
+                ['name' => 'Optometrist', 'description' => 'Eye care doctor'],
+                ['name' => 'Optician', 'description' => 'Registered optician'],
                 ['name' => 'Receptionist', 'description' => 'Front desk staff'],
-                ['name' => 'Dental Technician', 'description' => 'Dental lab technician'],
-                ['name' => 'Dental Assistant', 'description' => 'Chair-side assistant'],
+                ['name' => 'Optical Technician', 'description' => 'Optical lab technician'],
+                ['name' => 'Optometric Assistant', 'description' => 'Chair-side assistant'],
                 ['name' => 'Pharmacist', 'description' => 'Medicine specialist'],
                 ['name' => 'Manager', 'description' => 'Department manager'],
             ];
@@ -165,7 +165,7 @@ class ResetDatabaseFresh extends Command
                 'gender' => 'Male',
                 'national_id' => null,
                 'phone' => '0000000000',
-                'email' => 'admin@medicore-dental.co.tz',
+                'email' => 'admin@bestvision-eyecare.co.tz',
                 'username' => 'admin',
                 'password' => Hash::make('admin'),
                 'remember_token' => null,
@@ -189,7 +189,7 @@ class ResetDatabaseFresh extends Command
                     'reception' => true,
                     'payment_center' => true,
                     'consultation_room' => true,
-                    'dental_lab' => true,
+                    'optical_lab' => true,
                     'medicine_center' => true,
                     'procedure_room' => true,
                     'dispensing' => true,
@@ -271,9 +271,9 @@ class ResetDatabaseFresh extends Command
             // Create preferences
             $this->info('Creating system preferences...');
             $preferences = [
-                ['key' => 'CLINIC_NAME', 'value' => 'Medicore Dental Clinic'],
+                ['key' => 'CLINIC_NAME', 'value' => 'Best Vision EyeCare'],
                 ['key' => 'CLINIC_PHONE', 'value' => '0678110376'],
-                ['key' => 'CLINIC_EMAIL', 'value' => 'info@medicore-dental.co.tz'],
+                ['key' => 'CLINIC_EMAIL', 'value' => 'info@bestvision-eyecare.co.tz'],
                 ['key' => 'CLINIC_ADDRESS', 'value' => 'Natta, Mwanza'],
                 ['key' => 'SYSTEM_VERSION', 'value' => '1.0.0'],
                 ['key' => 'MAINTENANCE_MODE', 'value' => 'No'],

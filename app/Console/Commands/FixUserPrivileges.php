@@ -52,7 +52,7 @@ class FixUserPrivileges extends Command
                 'reception',
                 'payment_center',
                 'consultation_room',
-                'dental_lab',
+                'optical_lab',
                 'medicine_center',
                 'procedure_room',
                 'inventory_management',
@@ -191,7 +191,7 @@ class FixUserPrivileges extends Command
             // Show key privileges that frontend needs
             $keyPrivileges = [
                 'dashboard', 'reception', 'payment_center', 'consultation_room',
-                'dental_lab', 'medicine_center', 'procedure_room',
+                'optical_lab', 'medicine_center', 'procedure_room',
                 'inventory_management', 'marketing', 'financial_management',
                 'user_management', 'settings'
             ];

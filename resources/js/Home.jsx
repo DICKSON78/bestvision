@@ -143,7 +143,7 @@ const Home = () => {
     {
       icon: <CalendarIcon sx={{ fontSize: 32 }} />,
       title: 'Book Appointment',
-      subtitle: 'Schedule your dental check-up online in seconds',
+      subtitle: 'Schedule your eye check-up online in seconds',
       description: '',
       color: colors.primary,
       route: '/appointment',
@@ -162,7 +162,7 @@ const Home = () => {
     {
       icon: <MedicalServicesIcon sx={{ fontSize: 32 }} />,
       title: 'Our Services',
-      subtitle: 'Explore our comprehensive dental care services',
+      subtitle: 'Explore our comprehensive eye care services',
       description: '',
       color: colors.success,
       route: '/services',
@@ -173,79 +173,79 @@ const Home = () => {
   const services = [
     {
       icon: <TreatmentIcon sx={{ fontSize: 48 }} />,
-      title: 'General Dentistry',
-      description: 'Comprehensive dental check-ups and preventive care using advanced diagnostic technology. Our experienced dentists perform thorough oral examinations to detect dental issues early, assess overall oral health, and provide personalized treatment plans.',
+      title: 'Comprehensive Eye Exams',
+      description: 'Complete eye examinations using advanced diagnostic technology. Our experienced optometrists perform thorough vision assessments to detect eye conditions early, evaluate overall eye health, and provide personalized treatment plans.',
       features: [
-        'Complete Oral Examination',
-        'Digital Dental X-Rays',
-        'Professional Teeth Cleaning',
-        'Cavity Detection & Fillings',
-        'Oral Cancer Screening',
+        'Complete Vision Assessment',
+        'Digital Retinal Imaging',
+        'Visual Acuity Test',
+        'Glaucoma Screening',
+        'Diabetic Eye Screening',
       ],
       color: colors.primary,
     },
     {
       icon: <TreatmentIcon sx={{ fontSize: 48 }} />,
-      title: 'Oral Surgery & Extractions',
-      description: 'Expert oral surgical services including simple and complex tooth extractions, wisdom tooth removal, and minor oral surgeries. Our skilled surgeons use modern techniques and anaesthesia to ensure patient comfort throughout the procedure.',
+      title: 'Contact Lens Services',
+      description: 'Expert contact lens fitting and consultation services. Our skilled optometrists help you find the perfect contact lenses, from daily disposables to specialty lenses, ensuring optimal comfort and clear vision.',
       features: [
-        'Tooth Extractions',
-        'Wisdom Tooth Removal',
-        'Surgical Extractions',
-        'Biopsy Procedures',
-        'Post-Operative Care',
+        'Contact Lens Fittings',
+        'Lens Consultation',
+        'Trial Lens Assessments',
+        'Contact Lens Training',
+        'Follow-up Care',
       ],
       color: colors.secondary,
     },
     {
       icon: <TreatmentIcon sx={{ fontSize: 48 }} />,
-      title: 'Root Canal Treatment (Endodontics)',
-      description: 'Advanced root canal treatment to save infected or damaged teeth. Our endodontic services use modern techniques and equipment to remove infection, relieve pain, and preserve your natural teeth for long-term oral health.',
+      title: 'Eyewear & Frames',
+      description: 'Extensive selection of prescription eyewear and fashion frames. We offer high-quality lenses and frames to suit every style and budget, helping you see clearly and look great.',
       features: [
-        'Pulp & Nerve Treatment',
-        'Infection Management',
-        'Pain Relief Procedures',
-        'Tooth Preservation',
-        'Post-Treatment Crowns',
+        'Frame Selection',
+        'Prescription Lenses',
+        'Sunglasses & Blue Light',
+        'Lens Coatings',
+        'Repairs & Adjustments',
       ],
       color: colors.info,
     },
     {
       icon: <WaterDropIcon sx={{ fontSize: 48 }} />,
-      title: 'Teeth Cleaning & Scaling',
-      description: 'Professional dental cleaning services to remove plaque, tartar, and stains. Our scaling and polishing treatments help prevent gum disease, maintain healthy teeth, and give you a bright, clean smile.',
+      title: 'Vision Therapy',
+      description: 'Specialized vision therapy programs to correct visual-motor and perceptual deficiencies. Our therapy helps improve eye coordination, tracking, and focusing abilities for patients of all ages.',
       features: [
-        'Ultrasonic Scaling',
-        'Root Planing',
-        'Stain Removal',
-        'Teeth Polishing',
-        'Gum Health Assessment',
+        'Vision Therapy Exercises',
+        'Binocular Vision Training',
+        'Eye Tracking Therapy',
+        'Convergence Therapy',
+        'Visual Processing Assessment',
       ],
       color: colors.success,
     },
     {
       icon: <MedicalServicesIcon sx={{ fontSize: 48 }} />,
-      title: 'Crowns, Bridges & Dentures',
-      description: 'Complete restorative dentistry services including dental crowns, bridges, and full/partial dentures. We use high-quality materials to restore function, aesthetics, and confidence in your smile.',
+      title: 'Dry Eye Treatment',
+      description: 'Comprehensive diagnosis and treatment of dry eye syndrome. We use advanced diagnostic tools to identify the root cause of your dry eyes and create a personalized treatment plan for lasting relief.',
       features: [
-        'Dental Crowns (PFM, Zirconia, E-max)',
-        'Fixed Bridges',
-        'Complete & Partial Dentures',
-        'Denture Repairs & Adjustments',
-        'Smile Restoration',
+        'Artificial Tears',
+        'Punctal Plugs',
+        'Warm Compress Therapy',
+        'Eyelid Hygiene',
+        'Meibomian Gland Expression',
       ],
       color: colors.warning,
     },
     {
       icon: <ChildCareIcon sx={{ fontSize: 48 }} />,
-      title: 'Pediatric & Preventive Dentistry',
-      description: 'Specialized dental care for children and preventive programs for the whole family. We focus on education, prevention, and creating positive dental experiences to establish lifelong oral health habits.',
+      title: 'Pediatric Eye Care',
+      description: 'Specialized eye care for children, including vision screenings and comprehensive exams. We focus on early detection of vision problems to support healthy visual development and academic success.',
       features: [
-        'Children\'s Dental Check-ups',
-        'Fluoride Application',
-        'Fissure Sealants',
-        'Oral Health Education',
-        'Diet & Hygiene Advice',
+        "Children's Eye Exams",
+        'Vision Screening',
+        'Color Vision Testing',
+        'Screen Time Management',
+        'Nutrition for Eye Health',
       ],
       color: colors.primaryDark,
     },
@@ -254,43 +254,43 @@ const Home = () => {
   const whyChooseUs = [
     {
       image: '/images/services-vision-testing.jpeg',
-      title: 'Advanced Dental Examinations',
-      description: 'State-of-the-art diagnostic technology combined with years of clinical experience. Our comprehensive dental examinations use the latest equipment to detect oral health problems early and ensure your teeth and gums remain healthy. We tailor each examination to your individual needs and medical history.',
+      title: 'Advanced Eye Examinations',
+      description: 'State-of-the-art diagnostic technology combined with years of clinical experience. Our comprehensive eye examinations use the latest equipment to detect vision problems early and ensure your eyes remain healthy. We tailor each examination to your individual needs and medical history.',
       color: colors.primary,
       route: '/services',
     },
     {
       image: '/images/gallery-staff-at-work.jpeg',
-      title: 'Professional Dental Care',
-      description: 'Expert care from certified dentists and specialists. We provide comprehensive dental services including routine check-ups, emergency care, and specialized treatments. Your oral health is our top priority, and we work with you to maintain a healthy, beautiful smile.',
+      title: 'Professional Eye Care',
+      description: 'Expert care from certified optometrists and specialists. We provide comprehensive eye care services including routine check-ups, emergency care, and specialized treatments. Your eye health is our top priority, and we work with you to maintain healthy, clear vision.',
       color: colors.secondary,
       route: '/services',
     },
     {
       image: '/images/services-glasses-frames.jpeg',
       title: 'Disease Prevention & Treatment',
-      description: 'Early detection and treatment of oral diseases to prevent complications. We screen for conditions like tooth decay, gum disease, oral cancer, and malocclusion. Our proactive approach helps preserve your natural teeth and prevents serious complications.',
+      description: 'Early detection and treatment of eye diseases to prevent complications. We screen for conditions like glaucoma, cataracts, macular degeneration, and diabetic retinopathy. Our proactive approach helps preserve your vision and prevents serious complications.',
       color: colors.info,
       route: '/services',
     },
     {
       image: '/images/appointment-receptionist.jpeg',
       title: 'Modern Treatment Techniques',
-      description: 'Using advanced dental technology and modern treatment techniques, we provide comfortable and effective care. From digital X-rays to minimally invasive procedures, we ensure the best outcomes for your dental health.',
+      description: 'Using advanced eye care technology and modern treatment techniques, we provide comfortable and effective care. From digital retinal imaging to minimally invasive procedures, we ensure the best outcomes for your eye health.',
       color: colors.success,
       route: '/services',
     },
     {
       image: '/images/clinic_examination_room_equipment.jpeg',
-      title: 'Quality Restorative Solutions',
-      description: 'Complete restorative services including dental crowns, bridges, dentures, and implants. We use high-quality materials and precise techniques to restore function, aesthetics, and confidence in your smile.',
+      title: 'Quality Vision Solutions',
+      description: 'Complete vision care services including prescription eyewear, contact lenses, and low vision aids. We use high-quality materials and precise techniques to restore function, clarity, and confidence in your vision.',
       color: colors.warning,
       route: '/services',
     },
     {
       image: '/images/professional_man_at_desk.jpeg',
-      title: 'Community Oral Health Programs',
-      description: 'Committed to improving oral health in our community. We provide free dental screenings, educational programs, and outreach services to underserved populations. Our community programs help prevent dental diseases and promote oral health awareness.',
+      title: 'Community Eye Health Programs',
+      description: 'Committed to improving eye health in our community. We provide free vision screenings, educational programs, and outreach services to underserved populations. Our community programs help prevent eye diseases and promote eye health awareness.',
       color: colors.primaryDark,
       route: '/services',
     },
@@ -305,9 +305,9 @@ const Home = () => {
   return (
     <Box sx={{ bgcolor: colors.white, minHeight: '100vh', pt: { xs: '56px', sm: '64px' } }}>
       <SEO
-        title="Medicore Dental Clinic - Premier Dental Clinic in Tanzania | Comprehensive Dental Care"
-        description="Medicore Dental Clinic is the leading dental clinic in Natta-Mwanza, Tanzania. We offer comprehensive dental examinations, oral surgery, root canal treatment, teeth cleaning, crowns, bridges, dentures, and pediatric dentistry. Book your appointment today!"
-        keywords="dental clinic Tanzania, dentist Mwanza, dental examination, teeth cleaning, root canal, tooth extraction, crowns, bridges, dentures, orthodontics, Medicore Dental, dental care Tanzania, family dentistry"
+        title="Best Vision EyeCare - Premier Eye Clinic in Tanzania | Comprehensive Eye Care"
+        description="Best Vision EyeCare is the leading eye clinic in Mwanza, Tanzania. We offer comprehensive eye examinations, contact lens services, eyewear, vision therapy, dry eye treatment, cataract screening, and pediatric eye care. Book your appointment today!"
+        keywords="eye clinic Tanzania, optometrist Mwanza, eye examination, contact lenses, eyewear, vision therapy, cataract screening, glaucoma test, low vision aids, Best Vision EyeCare, eye care Tanzania, family eye care"
       />
       <Navbar />
 
@@ -384,7 +384,7 @@ const Home = () => {
                   wordBreak: 'break-word',
                 }}
               >
-                THE CARE YOUR SMILE DESERVES.
+                THE CARE YOUR EYES DESERVE.
               </Typography>
               <Typography
                 className="hero-animate"
@@ -400,7 +400,7 @@ const Home = () => {
                   wordBreak: 'break-word',
                 }}
               >
-                One of the best dental clinics in Mwanza, delivering expert dental care through precision, advanced technology, and trust. Your smile is our priority.
+                One of the best eye clinics in Mwanza, delivering expert eye care through precision, advanced technology, and trust. Your vision is our priority.
               </Typography>
 
               <Stack
@@ -638,7 +638,7 @@ const Home = () => {
                 lineHeight: 1.7,
               }}
             >
-              Fast, convenient access to our most popular services and features. Everything you need for comprehensive dental care in one place.
+              Fast, convenient access to our most popular services and features. Everything you need for comprehensive eye care in one place.
             </Typography>
           </Box>
 
@@ -838,7 +838,7 @@ const Home = () => {
                 lineHeight: 1.7,
               }}
             >
-              Excellence in dental care through advanced technology, experienced professionals, and personalized service tailored to your unique oral health needs.
+              Excellence in eye care through advanced technology, experienced professionals, and personalized service tailored to your unique vision needs.
             </Typography>
           </Box>
 
@@ -1007,7 +1007,7 @@ const Home = () => {
                         lineHeight: 1.7,
                       }}
                     >
-                      Certified dental professionals
+                      Certified eye care professionals
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
@@ -1020,7 +1020,7 @@ const Home = () => {
                         lineHeight: 1.7,
                       }}
                     >
-                      Comprehensive dental care services
+                      Comprehensive eye care services
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
@@ -1147,7 +1147,7 @@ const Home = () => {
                     mb: 3,
                   }}
                 >
-                  Access our comprehensive collection of oral health education materials. Stay informed about proper dental care, treatment options, and preventive practices for optimal oral health.
+                  Access our comprehensive collection of eye health education materials. Stay informed about proper eye care, treatment options, and preventive practices for optimal vision health.
                 </Typography>
                 <Stack spacing={2} sx={{ mb: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -1159,7 +1159,7 @@ const Home = () => {
                         color: `${colors.textDarkGray} !important`,
                       }}
                     >
-                      Oral hygiene guides
+                      Vision hygiene guides
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -1266,7 +1266,7 @@ const Home = () => {
                 lineHeight: 1.7,
               }}
             >
-              Visit our clinic at Natta-Mwanza, Tanzania. We're conveniently located and easily accessible.
+              Visit our clinic in Mwanza, Tanzania. We're conveniently located and easily accessible.
             </Typography>
           </Box>
 
@@ -1299,7 +1299,7 @@ const Home = () => {
                   <Box
                     component="img"
                     src="/images/clinic_exterior_with_insurance_promo.jpeg"
-                    alt="Medicore Dental Clinic Building"
+                    alt="Best Vision EyeCare Building"
                     sx={{
                       width: '100%',
                       height: '100%',
@@ -1332,7 +1332,7 @@ const Home = () => {
                         mb: 0.5,
                       }}
                     >
-                      Medicore Dental Clinic
+                      Best Vision EyeCare
                     </Typography>
                     <Typography
                       variant="body2"
@@ -1341,7 +1341,7 @@ const Home = () => {
                         fontSize: { xs: '0.875rem', md: '0.95rem' },
                       }}
                     >
-                      Natta-Mwanza, Tanzania
+                      Mwanza, Tanzania
                     </Typography>
                   </Box>
                 </Box>
@@ -1384,7 +1384,7 @@ const Home = () => {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Medicore Dental Clinic Location - Natta-Mwanza, Tanzania"
+                    title="Best Vision EyeCare Location - Mwanza, Tanzania"
                   />
                   <Box
                     sx={{
@@ -1530,7 +1530,7 @@ const Home = () => {
       >
         <IconButton
           component="a"
-          href="https://www.instagram.com/medicore_dental"
+          href="https://www.instagram.com/bestvisioneyecare"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Follow us on Instagram"

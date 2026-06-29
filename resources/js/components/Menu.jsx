@@ -427,12 +427,6 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           show: user.privileges.consultation_room,
         },
         {
-          title: "Dental Appointments",
-          icon: <AppointmentsIcon />,
-          to: "/dental-appointments",
-          show: user.privileges.consultation_room,
-        },
-        {
           title: "Reports",
           icon: <ReportsIcon />,
           to: "/consultation-room/reports",
@@ -444,47 +438,10 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
               to: "/consultation-room/reports/consultation",
               show: user.privileges.consultation_room,
             },
-            {
-              title: "Dental Morbidity (MoH)",
-              icon: <ReportsIcon />,
-              to: "/reports/dental-morbidity",
-              show: user.privileges.consultation_room,
-            },
           ],
         },
         {
-          title: "4. DENTAL LAB",
-          subheader: true,
-          show: user.privileges.dental_lab,
-        },
-        {
-          title: "Dental Lab Dashboard",
-          icon: <HomeIcon />,
-          to: "/dental-lab/dashboard",
-          show: user.privileges.dental_lab,
-        },
-        {
-          title: "Lab Orders",
-          icon: <WaitingIcon />,
-          to: "/dental-lab/lab-orders",
-          show: user.privileges.dental_lab,
-        },
-        {
-          title: "Reports",
-          icon: <ReportsIcon />,
-          to: "/dental-lab/reports",
-          show: user.privileges.dental_lab,
-          items: [
-            {
-              title: "Lab Orders Report",
-              icon: <ReportsIcon />,
-              to: "/dental-lab/reports/lab-orders",
-              show: user.privileges.dental_lab,
-            },
-          ],
-        },
-        {
-          title: "5. OPTICIAN CENTER",
+          title: "4. OPTICIAN CENTER",
           subheader: true,
           show: false,
         },
@@ -535,7 +492,7 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           ],
         },
         {
-          title: "6. MEDICINE CENTER",
+          title: "5. MEDICINE CENTER",
           subheader: true,
           show: user.privileges.medicine_center,
         },

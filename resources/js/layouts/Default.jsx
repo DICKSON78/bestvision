@@ -205,7 +205,7 @@ const Default = ({ setUser, smsBalance }) => {
                   ml={2}
                   sx={{ letterSpacing: 1 }}
                 >
-                  MEDICORE
+                  BEST VISION
                   <Typography
                     component="span"
                     color="secondary"
@@ -213,7 +213,7 @@ const Default = ({ setUser, smsBalance }) => {
                     fontWeight="bold"
                     sx={{ letterSpacing: 1 }}
                   >
-                    {" "}DENTAL
+                    {" "}EYECARE
                   </Typography>
                 </Typography>
 

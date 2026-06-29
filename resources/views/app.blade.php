@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Primary Meta Tags -->
-    <title>Medicore Dental Clinic - Your Smile, Our Priority | Dental Clinic in Tanzania</title>
-    <meta name="title" content="Medicore Dental Clinic - Your Smile, Our Priority | Dental Clinic in Mwanza, Tanzania">
-    <meta name="description" content="Medicore Dental Clinic - Your trusted partner for comprehensive dental health. Expert general dentistry, oral surgery, orthodontics, and more.">
-    <meta name="keywords" content="dental clinic, dentist, oral health, dental care, teeth cleaning, root canal, tooth extraction, dental clinic Mwanza Tanzania, orthodontics, dental implants, Medicore Dental">
-    <meta name="author" content="Medicore Dental Clinic">
+    <title>Best Vision EyeCare - Your Vision, Our Mission | Eye Clinic in Tanzania</title>
+    <meta name="title" content="Best Vision EyeCare - Your Vision, Our Mission | Eye Clinic in Mwanza, Tanzania">
+    <meta name="description" content="Best Vision EyeCare - Your trusted partner for comprehensive eye health. Expert eye examinations, contact lenses, eyewear, and vision care services.">
+    <meta name="keywords" content="eye clinic, optometrist, eye exam, contact lenses, eyewear, vision care, eye health, pediatric eye care, dry eye treatment, best vision eyecare, Mwanza Tanzania">
+    <meta name="author" content="Best Vision EyeCare">
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     <meta name="revisit-after" content="7 days">
@@ -18,28 +18,28 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://medicore-dental.co.tz/">
-    <meta property="og:title" content="Medicore Dental Clinic - Your Smile, Our Priority">
-    <meta property="og:description" content="Your trusted partner for comprehensive dental health in Natta-Mwanza, Tanzania. Expert general dentistry, oral surgery, orthodontics, and more.">
-    <meta property="og:site_name" content="Medicore Dental Clinic">
+    <meta property="og:url" content="https://bestvision-eyecare.co.tz/">
+    <meta property="og:title" content="Best Vision EyeCare - Your Vision, Our Mission">
+    <meta property="og:description" content="Your trusted partner for comprehensive eye health in Mwanza, Tanzania. Expert eye examinations, contact lenses, eyewear, and vision care.">
+    <meta property="og:site_name" content="Best Vision EyeCare">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://medicore-dental.co.tz/">
-    <meta property="twitter:title" content="Medicore Dental Clinic - Your Smile, Our Priority">
-    <meta property="twitter:description" content="Your trusted partner for comprehensive dental health in Natta-Mwanza, Tanzania.">
+    <meta property="twitter:url" content="https://bestvision-eyecare.co.tz/">
+    <meta property="twitter:title" content="Best Vision EyeCare - Your Vision, Our Mission">
+    <meta property="twitter:description" content="Your trusted partner for comprehensive eye health in Mwanza, Tanzania.">
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://medicore-dental.co.tz{{ request()->path() === '/' ? '' : '/' . request()->path() }}">
+    <link rel="canonical" href="https://bestvision-eyecare.co.tz{{ request()->path() === '/' ? '' : '/' . request()->path() }}">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "MedicalBusiness",
-      "name": "Medicore Dental Clinic",
-      "description": "Your trusted partner for comprehensive dental health in Natta-Mwanza, Tanzania",
-      "url": "https://medicore-dental.co.tz",
+      "name": "Best Vision EyeCare",
+      "description": "Your trusted partner for comprehensive eye health in Mwanza, Tanzania",
+      "url": "https://bestvision-eyecare.co.tz",
       "telephone": "+255678110376",
       "address": {
         "@type": "PostalAddress",
@@ -66,16 +66,16 @@
         "closes": "17:00"
       },
       "priceRange": "$$",
-      "medicalSpecialty": "Dentistry",
+      "medicalSpecialty": "Optometry",
       "serviceType": [
-        "General Dentistry",
-        "Oral Surgery",
-        "Root Canal Treatment",
-        "Teeth Cleaning & Scaling",
-        "Orthodontics",
-        "Dental Crowns & Bridges",
-        "Pediatric Dentistry",
-        "Dental Implants"
+        "Comprehensive Eye Examinations",
+        "Contact Lens Fitting",
+        "Eyewear & Spectacles",
+        "Pediatric Eye Care",
+        "Dry Eye Treatment",
+        "Vision Therapy",
+        "Cataract Screening",
+        "Low Vision Aids"
       ]
     }
     </script>

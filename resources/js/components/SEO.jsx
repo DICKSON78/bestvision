@@ -6,15 +6,15 @@ import { useLocation } from 'react-router-dom';
  * Usage: <SEO title="Page Title" description="Page description" />
  */
 const SEO = ({
-  title = 'Medicore Dental Clinic - Premier Dental Clinic in Tanzania',
-  description = 'Medicore Dental Clinic is the leading dental clinic in Natta-Mwanza, Tanzania. We offer comprehensive dental examinations, diagnosis & treatment of oral diseases, teeth cleaning, fillings, extractions, root canal treatment, and community oral health programs.',
-  keywords = 'dental clinic Tanzania, dentist Natta-Mwanza, dental examination, teeth cleaning, root canal, tooth extraction, orthodontics, Medicore Dental',
+  title = 'Best Vision EyeCare - Premier Eye Clinic in Tanzania',
+  description = 'Best Vision EyeCare is the leading eye clinic in Mwanza, Tanzania. We offer comprehensive eye examinations, contact lens fitting, eyewear, vision therapy, and community eye health programs.',
+  keywords = 'eye clinic Tanzania, optometrist Mwanza, eye examination, contact lenses, eyewear, vision care, Best Vision EyeCare',
   image = null,
   type = 'website',
   noindex = false,
 }) => {
   const location = useLocation();
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.medicore-dental.co.tz';
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.bestvision-eyecare.co.tz';
   const fullUrl = `${baseUrl}${location.pathname}`;
   const imageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
 
@@ -37,7 +37,7 @@ const SEO = ({
     updateMetaTag('description', description);
     updateMetaTag('keywords', keywords);
     updateMetaTag('robots', noindex ? 'noindex, nofollow' : 'index, follow');
-    updateMetaTag('author', 'Medicore Dental Clinic');
+    updateMetaTag('author', 'Best Vision EyeCare');
     updateMetaTag('language', 'English');
     updateMetaTag('revisit-after', '7 days');
     updateMetaTag('theme-color', '#667eea');
@@ -50,7 +50,7 @@ const SEO = ({
     updateMetaTag('og:image', imageUrl, 'property');
     updateMetaTag('og:image:width', '1200', 'property');
     updateMetaTag('og:image:height', '630', 'property');
-    updateMetaTag('og:site_name', 'Medicore Dental Clinic', 'property');
+    updateMetaTag('og:site_name', 'Best Vision EyeCare', 'property');
     updateMetaTag('og:locale', 'en_US', 'property');
 
     // Twitter Card Tags - MUST use 'name' attribute, not 'property'
@@ -67,9 +67,9 @@ const SEO = ({
     updateMetaTag('ICBM', '-6.7924, 39.2083');
 
     // Business Information
-    updateMetaTag('contact', 'info@medicore-dental.co.tz');
+    updateMetaTag('contact', 'info@bestvision-eyecare.co.tz');
     updateMetaTag('phone', '+255 678 110 376');
-    updateMetaTag('address', 'Natta-Mwanza, Tanzania');
+    updateMetaTag('address', 'Mwanza, Tanzania');
 
     // Canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -93,14 +93,14 @@ const SEO = ({
       '@context': 'https://schema.org',
       '@type': 'LocalBusiness',
       '@id': fullUrl,
-      name: 'Medicore Dental Clinic',
+      name: 'Best Vision EyeCare',
       description: description,
       url: baseUrl,
       telephone: '+255678110376',
-      email: 'info@medicore-dental.co.tz',
+      email: 'info@bestvision-eyecare.co.tz',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Natta-Mwanza, Tanzania',
+        streetAddress: 'Mwanza, Tanzania',
         addressLocality: 'Mwanza',
         addressCountry: 'TZ',
       },
@@ -122,14 +122,14 @@ const SEO = ({
         name: 'Mwanza',
       },
       service: [
-        'General Dentistry',
-        'Oral Surgery',
-        'Root Canal Treatment',
-        'Teeth Cleaning & Scaling',
-        'Orthodontics',
-        'Dental Crowns & Bridges',
-        'Pediatric Dentistry',
-        'Dental Implants',
+        'Comprehensive Eye Examinations',
+        'Contact Lens Fitting',
+        'Eyewear & Spectacles',
+        'Pediatric Eye Care',
+        'Dry Eye Treatment',
+        'Vision Therapy',
+        'Cataract Screening',
+        'Low Vision Aids',
       ],
     };
 

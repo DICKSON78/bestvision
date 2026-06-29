@@ -6,7 +6,6 @@ import { Skeleton } from "@mui/material";
 import Page from "../../components/Page";
 import Modal from "../../components/Modal";
 import PatientDetails from "../reception/patients/PatientDetails";
-import DentalClinicalNotes from "./dental/DentalClinicalNotes";
 import useFetch from "../../hooks/useFetch";
 
 const ConsultationPatientRoutes = () => {
@@ -65,15 +64,6 @@ const ConsultationPatientRoutes = () => {
 
       {patient && consultation ? (
         <Routes>
-          <Route
-            path="/clinical-notes"
-            element={
-              <DentalClinicalNotes
-                patient={patient}
-                consultation={consultation}
-              />
-            }
-          />
         </Routes>
       ) : null}
       <Modal ref={modalRef} />

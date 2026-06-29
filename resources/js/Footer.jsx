@@ -103,18 +103,18 @@ const Footer = () => {
   ];
 
   const services = [
-    { label: 'General Dentistry', path: '/services' },
-    { label: 'Oral Surgery & Extractions', path: '/services' },
-    { label: 'Root Canal Treatment', path: '/services' },
-    { label: 'Teeth Cleaning & Scaling', path: '/services' },
-    { label: 'Crowns, Bridges & Dentures', path: '/services' },
-    { label: 'Orthodontics & Braces', path: '/services' },
+    { label: 'Comprehensive Eye Exams', path: '/services' },
+    { label: 'Contact Lenses', path: '/services' },
+    { label: 'Eyewear & Frames', path: '/services' },
+    { label: 'Pediatric Eye Care', path: '/services' },
+    { label: 'Dry Eye Treatment', path: '/services' },
+    { label: 'Cataract & LASIK Consultations', path: '/services' },
   ];
 
   const socialLinks = [
-    { icon: <FacebookIcon />, label: 'Facebook', url: 'https://www.facebook.com/medicoredental' },
-    { icon: <InstagramIcon />, label: 'Instagram', url: 'https://www.instagram.com/medicore_dental?igsh=dGc1YWJhM2FwN3k2&utm_source=qr' },
-    { icon: <TikTokIcon />, label: 'TikTok', url: 'https://www.tiktok.com/@medicoredental' },
+    { icon: <FacebookIcon />, label: 'Facebook', url: 'https://www.facebook.com/bestvisioneyecare' },
+    { icon: <InstagramIcon />, label: 'Instagram', url: 'https://www.instagram.com/bestvisioneyecare' },
+    { icon: <TikTokIcon />, label: 'TikTok', url: 'https://www.tiktok.com/@bestvisioneyecare' },
     { icon: <YouTubeIcon />, label: 'YouTube', url: 'https://youtube.com' },
     { icon: <WhatsAppIcon />, label: 'WhatsApp', url: 'https://wa.me/255678110376' },
   ];
@@ -196,7 +196,7 @@ const Footer = () => {
                 },
               }}
             >
-              Medicore Dental Clinic
+              Best Vision EyeCare
             </Typography>
             <Typography
               variant="body2"
@@ -207,7 +207,7 @@ const Footer = () => {
                 lineHeight: 1.5,
               }}
             >
-              Premier Dental Clinic in Tanzania
+              Premier Eye Clinic in Tanzania
             </Typography>
 
             {/* Contact Information */}
@@ -275,7 +275,7 @@ const Footer = () => {
               </Box>
               <Box
                 component="a"
-                href="mailto:info@medicore-dental.co.tz"
+                href="mailto:info@bestvision-eyecare.co.tz"
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -289,7 +289,7 @@ const Footer = () => {
               >
                 <EmailIcon sx={{ color: colors.primaryOrange, fontSize: '18px', flexShrink: 0 }} />
                 <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem' }}>
-                  info@medicore-dental.co.tz
+                  info@bestvision-eyecare.co.tz
                 </Typography>
               </Box>
             </Stack>
@@ -529,7 +529,7 @@ const Footer = () => {
               textAlign: { xs: 'center', sm: 'left' },
             }}
           >
-            © {new Date().getFullYear()} Medicore Dental Clinic. All rights reserved.
+            © {new Date().getFullYear()} Best Vision EyeCare. All rights reserved.
           </Typography>
 
           <Stack

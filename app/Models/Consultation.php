@@ -78,36 +78,6 @@ class Consultation extends Model
         return $this->hasMany(DoctorTask::class, 'consultation_id');
     }
 
-    public function dental_oral_examination()
-    {
-        return $this->hasOne(DentalOralExamination::class, 'consultation_id');
-    }
-
-    public function dental_charting()
-    {
-        return $this->hasMany(DentalCharting::class, 'consultation_id');
-    }
-
-    public function dental_treatment_records()
-    {
-        return $this->hasMany(DentalTreatmentRecord::class, 'consultation_id');
-    }
-
-    public function dental_lab_orders()
-    {
-        return $this->hasMany(DentalLabOrder::class, 'consultation_id');
-    }
-
-    public function dental_radiographs()
-    {
-        return $this->hasMany(DentalRadiograph::class, 'consultation_id');
-    }
-
-    public function dental_appointments()
-    {
-        return $this->hasMany(DentalAppointment::class, 'consultation_id');
-    }
-
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i');

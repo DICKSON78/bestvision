@@ -45,13 +45,13 @@ const About = () => {
     {
       icon: <VisionIcon sx={{ fontSize: 50 }} />,
       title: 'Our Vision',
-      description: 'To become the leading dental care provider in Mwanza, revolutionizing dental services through innovative technology and comprehensive solutions.',
+      description: 'To become the leading eye care provider in Mwanza, revolutionizing eye care services through innovative technology and comprehensive solutions.',
       color: '#00796B',
     },
     {
       icon: <MissionIcon sx={{ fontSize: 50 }} />,
       title: 'Our Mission',
-      description: 'To empower the Mwanza community with cutting-edge dental care technology and comprehensive services to enhance oral health and quality of life.',
+      description: 'To empower the Mwanza community with cutting-edge eye care technology and comprehensive services to enhance vision health and quality of life.',
       color: '#00BCD4',
     },
     {
@@ -63,16 +63,16 @@ const About = () => {
     {
       icon: <TeamIcon sx={{ fontSize: 50 }} />,
       title: 'Our Commitment',
-      description: 'We are dedicated to supporting our patients with responsive service, comprehensive dental care, and a commitment to your success.',
+      description: 'We are dedicated to supporting our patients with responsive service, comprehensive eye care, and a commitment to your success.',
       color: '#00695C',
     },
   ];
 
 
   const teamMembers = [
-    { name: 'Dr. Kayoka S. Kayoka', role: 'Chief Dental Officer', image: '/images/optometrist-headshot.jpeg' },
-    { name: 'Dr. Anna Mwangi', role: 'Lead Dentist', image: '/images/gallery-staff-at-work.jpeg' },
-    { name: 'Dr. Fatma Ali', role: 'Pediatric Dentist', image: '/images/appointment-receptionist.jpeg' },
+    { name: 'Dr. Kayoka S. Kayoka', role: 'Chief Optometrist', image: '/images/optometrist-headshot.jpeg' },
+    { name: 'Dr. Anna Mwangi', role: 'Lead Optometrist', image: '/images/gallery-staff-at-work.jpeg' },
+    { name: 'Dr. Fatma Ali', role: 'Pediatric Optometrist', image: '/images/appointment-receptionist.jpeg' },
   ];
 
   const achievements = [
@@ -154,9 +154,9 @@ const About = () => {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f8f9fa', pt: { xs: '56px', sm: '64px' } }}>
       <SEO
-        title="About Us - Medicore Dental Clinic | Leading Dental Clinic in Tanzania"
-        description="Learn about Medicore Dental Clinic, the leading dental clinic in Natta-Mwanza, Tanzania. Our mission is to provide comprehensive, accessible, and high-quality dental care services to our community."
-        keywords="about Medicore Dental, dental clinic Tanzania, dentist Mwanza, dental care mission, dental clinic history, Medicore Dental team"
+        title="About Us - Best Vision EyeCare | Leading Eye Clinic in Tanzania"
+        description="Learn about Best Vision EyeCare, the leading eye clinic in Mwanza, Tanzania. Our mission is to provide comprehensive, accessible, and high-quality eye care services to our community."
+        keywords="about Best Vision EyeCare, eye clinic Tanzania, optometrist Mwanza, eye care mission, eye clinic history, Best Vision team"
       />
       <Navbar />
 
@@ -211,7 +211,7 @@ const About = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              About Medicore Dental Clinic
+              About Best Vision EyeCare
             </Typography>
             <Typography
               variant="h6"
@@ -224,7 +224,7 @@ const About = () => {
                 lineHeight: 1.8,
               }}
             >
-              Empowering the Mwanza community with innovative dental care technology and comprehensive solutions.
+              Empowering the Mwanza community with innovative eye care technology and comprehensive solutions.
             </Typography>
           </Box>
         </Container>
@@ -328,7 +328,7 @@ const About = () => {
                 <Box
                   component="img"
                   src="/images/clinic-exterior-building.jpeg"
-                    alt="Medicore Dental Clinic"
+                    alt="Best Vision EyeCare"
                   sx={{
                     width: '100%',
                     height: { xs: 300, sm: 400, md: 500, lg: 600 },
@@ -343,7 +343,7 @@ const About = () => {
                   <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
                     <Chip
                       icon={<PersonIcon />}
-                      label="Medicore Team"
+                      label="Best Vision Team"
                       size="small"
                       sx={{ bgcolor: '#667eea', color: 'white' }}
                     />
@@ -374,9 +374,9 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    Medicore Dental Clinic was founded to revolutionize dental care services in Tanzania through innovative technology and compassionate care.
-                    We recognized the critical need for comprehensive, accessible dental care services in Mwanza, delivering comprehensive oral examinations,
-                    advanced diagnostics, quality restorative treatments, and personalized care in one welcoming, professional environment.
+                    Best Vision EyeCare was founded to revolutionize eye care services in Tanzania through innovative technology and compassionate care.
+                    We recognized the critical need for comprehensive, accessible eye care services in Mwanza, delivering comprehensive vision examinations,
+                    advanced diagnostics, quality treatment options, and personalized care in one welcoming, professional environment.
                   </Typography>
                   <Typography
                     variant="body1"
@@ -387,8 +387,8 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    We have grown to become one of Mwanza's most trusted dental care providers, serving thousands of patients throughout the region.
-                    Today, we continue to innovate and expand our services, keeping the needs of our community at the heart of everything we do. Medicore Dental Clinic remains committed to excellence in dental care.
+                    We have grown to become one of Mwanza's most trusted eye care providers, serving thousands of patients throughout the region.
+                    Today, we continue to innovate and expand our services, keeping the needs of our community at the heart of everything we do. Best Vision EyeCare remains committed to excellence in eye care.
                   </Typography>
                   <Button
                     variant="contained"
@@ -456,7 +456,7 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    To empower the Mwanza community with cutting-edge dental care technology, comprehensive services, and unwavering support to enhance oral health and quality of life.
+                    To empower the Mwanza community with cutting-edge eye care technology, comprehensive services, and unwavering support to enhance vision health and quality of life.
                   </Typography>
                 </CardContent>
               </Card>
@@ -504,7 +504,7 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    To become the leading dental care provider in Mwanza and throughout Tanzania, revolutionizing how dental care services are delivered through innovative technology, expert care, and comprehensive solutions.
+                    To become the leading eye care provider in Mwanza and throughout Tanzania, revolutionizing how eye care services are delivered through innovative technology, expert care, and comprehensive solutions.
                   </Typography>
                 </CardContent>
               </Card>
@@ -536,7 +536,7 @@ const About = () => {
                     fontSize: { xs: '1.25rem', md: '1.5rem' },
                   }}
                 >
-                  Ready to Transform Your Smile?
+                  Ready to Transform Your Vision?
                 </Typography>
                 <Typography
                   variant="body2"
@@ -547,7 +547,7 @@ const About = () => {
                     lineHeight: 1.7,
                   }}
                 >
-                   Join thousands of satisfied patients in Mwanza who trust Medicore Dental Clinic for their oral health and dental care needs.
+                   Join thousands of satisfied patients in Mwanza who trust Best Vision EyeCare for their vision health and eye care needs.
                 </Typography>
                 <Stack
                   direction="column"
@@ -624,9 +624,9 @@ const About = () => {
                   </Typography>
                   <Stack spacing={2}>
                     {[
-                      { title: 'Comprehensive Dental Care Services', image: '/images/services-vision-testing.jpeg' },
-                      { title: 'Modern Dental Treatment Equipment', image: '/images/services-glasses-frames.jpeg' },
-                      { title: 'Expert Team of Dentists', image: '/images/gallery-staff-at-work.jpeg' },
+                      { title: 'Comprehensive Eye Care Services', image: '/images/services-vision-testing.jpeg' },
+                      { title: 'Modern Eye Treatment Equipment', image: '/images/services-glasses-frames.jpeg' },
+                      { title: 'Expert Team of Optometrists', image: '/images/gallery-staff-at-work.jpeg' },
                     ].map((post, index) => (
                       <Box
                         key={index}
@@ -697,7 +697,7 @@ const About = () => {
                     Categories
                   </Typography>
                   <Stack spacing={1}>
-                    {['Dental Check-ups', 'Teeth Cleaning', 'Fillings & Restorations', 'Root Canal Treatment', 'Oral Surgery'].map((category, index) => (
+                    {['Eye Examinations', 'Vision Testing', 'Glasses & Frames', 'Cataract Treatment', 'Eye Surgery'].map((category, index) => (
                       <Box
                         key={index}
                         sx={{
@@ -745,7 +745,7 @@ const About = () => {
                     Popular Tags
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    {['Dental Care', 'Oral Health', 'Clinic', 'Dentistry', 'Teeth', 'Medicore', 'Tanzania', 'Health'].map((tag, index) => (
+                    {['Eye Care', 'Vision Health', 'Clinic', 'Optometry', 'Vision', 'Best Vision', 'Tanzania', 'Health'].map((tag, index) => (
                       <Chip
                         key={index}
                         label={tag}

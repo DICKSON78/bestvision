@@ -63,7 +63,7 @@ const Dashboard = () => {
         total_patients_consulted: 0,
         clinical_notes_created: 0,
         prescriptions_written: 0,
-        dental_examinations: 0,
+        total_examinations: 0,
       },
       statistics: {
         consultations_by_status: [],
@@ -175,7 +175,7 @@ const Dashboard = () => {
             />
             <InfoCard
               title="Dental Examinations"
-              count={numberFormat(data.summary.dental_examinations || 0)}
+              count={numberFormat(data.summary.total_examinations || 0)}
               icon={<DentalExamIcon />}
               color={green[400]}
               onClick={() => navigate('/consultation-room/consultation-patients/consulted')}

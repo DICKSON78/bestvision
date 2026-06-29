@@ -38,7 +38,6 @@ import ReceptionRoutes from "../pages/reception/ReceptionRoutes";
 import PaymentCenterRoutes from "../pages/payment-center/PaymentCenterRoutes";
 import ConsultationRoomRoutes from "../pages/consultation-room/ConsultationRoomRoutes";
 import OpticianCenterRoutes from "../pages/optician-center/OpticianCenterRoutes";
-import DentalLabRoutes from "../pages/dental-lab/DentalLabRoutes";
 import MedicineCenterRoutes from "../pages/medicine-center/MedicineCenterRoutes";
 import ProcedureRoomRoutes from "../pages/procedure-room/ProcedureRoomRoutes";
 import DispensingMainRoutes from "../pages/dispensing/DispensingMainRoutes";
@@ -46,8 +45,6 @@ import OtherDispensingRoutes from "../pages/other-dispensing/OtherDispensingRout
 import InventoryManagementRoutes from "../pages/inventory-management/InventoryManagementRoutes";
 import MarketingRoutes from "../pages/marketing/MarketingRoutes";
 import FinancialManagementRoutes from "../pages/financial-management/FinancialManagementRoutes";
-import DentalMorbidityReport from "../pages/reports/dental/DentalMorbidityReport";
-import DentalAppointments from "../pages/appointments/DentalAppointments";
 import UserManagementRoutes from "../pages/user-management/UserManagementRoutes";
 import PatientRecordsRoutes from "../pages/patient-records/PatientRecordsRoutes";
 import SettingsRoutes from "../pages/settings/SettingsRoutes";
@@ -233,26 +230,6 @@ const App = () => {
                 element={
                   user?.privileges?.settings ? <SettingsRoutes /> : null
                 }
-              />
-              <Route
-                path="/dental-lab/*"
-                element={
-                  user?.privileges?.dental_lab ? (
-                    <DentalLabRoutes />
-                  ) : null
-                }
-              />
-              <Route
-                path="/reports/dental-morbidity"
-                element={
-                  user?.privileges?.consultation_room ? (
-                    <DentalMorbidityReport />
-                  ) : null
-                }
-              />
-              <Route
-                path="/dental-appointments"
-                element={<DentalAppointments />}
               />
               <Route
                 path="/moh-reports/*"
