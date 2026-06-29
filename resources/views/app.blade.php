@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Primary Meta Tags -->
-    <title>Best Vision EyeCare - Your Vision, Our Mission | Eye Clinic in Tanzania</title>
-    <meta name="title" content="Best Vision EyeCare - Your Vision, Our Mission | Eye Clinic in Mwanza, Tanzania">
-    <meta name="description" content="Best Vision EyeCare - Your trusted partner for comprehensive eye health. Expert eye examinations, contact lenses, eyewear, and vision care services.">
-    <meta name="keywords" content="eye clinic, optometrist, eye exam, contact lenses, eyewear, vision care, eye health, pediatric eye care, dry eye treatment, best vision eyecare, Mwanza Tanzania">
-    <meta name="author" content="Best Vision EyeCare">
+    <title>Best Vision Eyecare - Clear Vision for a Brighter Future | Eye Care Clinic in Tanzania</title>
+    <meta name="title" content="Best Vision Eyecare - Clear Vision for a Brighter Future | Eye Care Clinic in Mwanza, Tanzania">
+    <meta name="description" content="Best Vision Eyecare - Your trusted partner for clear vision and comprehensive eye health. Expert eye exams, contact lens fitting, pediatric eye care, and more.">
+    <meta name="keywords" content="eye care, optometrist, eye exam, contact lenses, eye clinic, Mwanza Tanzania, vision care, eye health, pediatric eye care, dry eye treatment, eyewear, best vision eyecare">
+    <meta name="author" content="Best Vision Eyecare">
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     <meta name="revisit-after" content="7 days">
@@ -18,28 +18,38 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bestvision-eyecare.co.tz/">
-    <meta property="og:title" content="Best Vision EyeCare - Your Vision, Our Mission">
-    <meta property="og:description" content="Your trusted partner for comprehensive eye health in Mwanza, Tanzania. Expert eye examinations, contact lenses, eyewear, and vision care.">
-    <meta property="og:site_name" content="Best Vision EyeCare">
+    <meta property="og:url" content="https://bestvisioneyecare.com/">
+    <meta property="og:title" content="Best Vision Eyecare - Clear Vision for a Brighter Future">
+    <meta property="og:description" content="Your trusted partner for clear vision and comprehensive eye health in Natta-Mwanza, Tanzania. Expert eye exams, contact lens fitting, and more.">
+    <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta property="og:site_name" content="Best Vision Eyecare">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://bestvision-eyecare.co.tz/">
-    <meta property="twitter:title" content="Best Vision EyeCare - Your Vision, Our Mission">
-    <meta property="twitter:description" content="Your trusted partner for comprehensive eye health in Mwanza, Tanzania.">
+    <meta property="twitter:url" content="https://bestvisioneyecare.com/">
+    <meta property="twitter:title" content="Best Vision Eyecare - Clear Vision for a Brighter Future">
+    <meta property="twitter:description" content="Your trusted partner for clear vision and comprehensive eye health in Natta-Mwanza, Tanzania.">
+    <meta property="twitter:image" content="{{ asset('images/logo.png') }}">
+
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://bestvision-eyecare.co.tz{{ request()->path() === '/' ? '' : '/' . request()->path() }}">
+    <link rel="canonical" href="https://bestvisioneyecare.com{{ request()->path() === '/' ? '' : '/' . request()->path() }}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "MedicalBusiness",
-      "name": "Best Vision EyeCare",
-      "description": "Your trusted partner for comprehensive eye health in Mwanza, Tanzania",
-      "url": "https://bestvision-eyecare.co.tz",
+      "name": "Best Vision Eyecare",
+      "description": "Your trusted partner for clear vision and comprehensive eye health in Natta-Mwanza, Tanzania",
+      "url": "https://bestvisioneyecare.com",
+      "logo": "https://bestvisioneyecare.com/images/logo.png",
+      "image": "https://bestvisioneyecare.com/images/logo.png",
       "telephone": "+255678110376",
       "address": {
         "@type": "PostalAddress",
@@ -68,14 +78,12 @@
       "priceRange": "$$",
       "medicalSpecialty": "Optometry",
       "serviceType": [
-        "Comprehensive Eye Examinations",
+        "Comprehensive Eye Exam",
         "Contact Lens Fitting",
-        "Eyewear & Spectacles",
         "Pediatric Eye Care",
         "Dry Eye Treatment",
-        "Vision Therapy",
-        "Cataract Screening",
-        "Low Vision Aids"
+        "Emergency Eye Care",
+        "Eyewear Consultation"
       ]
     }
     </script>

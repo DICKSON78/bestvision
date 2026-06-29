@@ -1,57 +1,52 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
   Card,
   CardContent,
+  CardHeader,
   Grid,
-  IconButton,
-  LinearProgress,
-  Tooltip,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import {
   MedicalServicesRounded as ConsultationIcon,
   Person2Rounded as PatientIcon,
-  NoteAltRounded as ClinicalNotesIcon,
+  EventNoteRounded as AppointmentsIcon,
+  AssessmentRounded as ClinicalNotesIcon,
+  VisibilityRounded as EyeExamIcon,
   MedicationRounded as PrescriptionIcon,
   ScheduleRounded as ScheduleIcon,
-  BiotechRounded as DentalExamIcon,
-  FilterAltRounded as FilterIcon,
 } from "@mui/icons-material";
 import {
+  blue,
+  cyan,
   green,
   orange,
   purple,
   teal,
-  cyan,
   pink,
+  lime,
 } from "@mui/material/colors";
 
-import Modal from "../../../components/Modal";
-import { Header as PageHeader } from "../../../components/Page";
+import Page from "../../../components/Page";
 import InfoCard from "../../dashboard/InfoCard";
-import Filters from "../../dashboard/Filters";
-import ChartWrapper from "../../../components/ChartWrapper";
 import { useFetch, useToast } from "../../../hooks";
 import { formatError, numberFormat, getWeekStartDate, getWeekEndDate } from "../../../helpers";
-import { useTheme } from "@mui/material/styles";
 
 const Dashboard = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
   const addToast = useToast();
 
-  const modalRef = useRef();
-
-  const [params, setParams] = useState({
+  // Set up date parameters for weekly filtering
+  const [dateParams, setDateParams] = useState({
     start_date: getWeekStartDate().toISOString().split('T')[0],
     end_date: getWeekEndDate().toISOString().split('T')[0],
   });
 
   const { data, loading, error } = useFetch(
     "api/consultation-room/dashboard",
-    params,
+    dateParams,
     true,
     {
       summary: {
@@ -63,7 +58,7 @@ const Dashboard = () => {
         total_patients_consulted: 0,
         clinical_notes_created: 0,
         prescriptions_written: 0,
-        total_examinations: 0,
+        eye_examinations: 0,
       },
       statistics: {
         consultations_by_status: [],
@@ -85,195 +80,174 @@ const Dashboard = () => {
     }
   }, [error, addToast]);
 
-  const openFiltersModal = () => {
-    const component = (
-      <Filters
-        modal={modalRef.current}
-        params={params}
-        setParams={setParams}
-      />
+  if (loading) {
+    return (
+      <Page title="Consultation Room Dashboard">
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+          <CircularProgress />
+        </Box>
+      </Page>
     );
-
-    modalRef.current.open("Filter", component, "sm");
-  };
+  }
 
   return (
-    <Box>
-      <PageHeader
+    <Page
+      title="Consultation Room Dashboard"
+      breadcrumbs={[
+        { title: "Home" },
+        { title: "Consultation Room" },
+        { title: "Consultation Room Dashboard" },
+      ]}
+    >
+      <CardHeader
         title="Consultation Room Dashboard"
-        trailing={
-          <Tooltip title="Show filters">
-            <IconButton onClick={openFiltersModal}>
-              <FilterIcon />
-            </IconButton>
-          </Tooltip>
-        }
+        titleTypographyProps={{
+          variant: "h4",
+          fontWeight: 700,
+        }}
+        sx={{
+          p: 0,
+          mb: 2,
+        }}
       />
-      {loading && <LinearProgress />}
-      {data ? (
-        <>
+      {!loading && data ? (
+        <React.Fragment>
           <Grid
             container
             spacing={{ xs: 2, sm: 2, md: 3 }}
             sx={{ mb: 4 }}
           >
             <InfoCard
-              title="Total Consultations"
-              count={numberFormat(data.summary.total_consultations || 0)}
-              icon={<ConsultationIcon />}
+              title="Patients/Customers"
+              count={numberFormat(data.summary?.total_patients_consulted || 0)}
+              icon={<PatientIcon />}
               color={purple[400]}
               onClick={() => navigate('/consultation-room/consultation-patients/pending')}
             />
             <InfoCard
-              title="Consultations Today"
-              count={numberFormat(data.summary.consultations_today || 0)}
-              icon={<PatientIcon />}
-              color={teal[400]}
-              onClick={() => navigate('/consultation-room/consultation-patients/today')}
-            />
-            <InfoCard
-              title="Scheduled"
-              count={numberFormat(data.summary.scheduled_consultations || 0)}
-              icon={<ScheduleIcon />}
-              color={cyan[500]}
-              onClick={() => navigate('/consultation-room/consultation-patients/pending')}
-            />
-            <InfoCard
-              title="Pending"
-              count={numberFormat(data.summary.pending_consultations || 0)}
-              icon={<ClinicalNotesIcon />}
-              color={theme.palette.warning.main}
-              onClick={() => navigate('/consultation-room/consultation-patients/pending')}
-            />
-            <InfoCard
-              title="Completed"
-              count={numberFormat(data.summary.completed_consultations || 0)}
-              icon={<ClinicalNotesIcon />}
-              color={green[500]}
-              onClick={() => navigate('/consultation-room/consultation-patients/consulted')}
-            />
-            <InfoCard
-              title="Patients Consulted"
-              count={numberFormat(data.summary.total_patients_consulted || 0)}
-              icon={<PatientIcon />}
-              color={pink[400]}
-              onClick={() => navigate('/consultation-room/consultation-patients/pending')}
-            />
-            <InfoCard
               title="Clinical Notes"
-              count={numberFormat(data.summary.clinical_notes_created || 0)}
+              count={numberFormat(data.summary?.clinical_notes_created || 0)}
               icon={<ClinicalNotesIcon />}
-              color={purple[300]}
+              color={blue[400]}
               onClick={() => navigate('/consultation-room/clinical-notes')}
             />
             <InfoCard
-              title="Prescriptions"
-              count={numberFormat(data.summary.prescriptions_written || 0)}
-              icon={<PrescriptionIcon />}
-              color={orange[400]}
-              onClick={() => navigate('/consultation-room/prescriptions')}
+              title="Eye Examinations"
+              count={numberFormat(data.summary?.eye_examinations || 0)}
+              icon={<EyeExamIcon />}
+              color={green[400]}
+              onClick={() => navigate('/consultation-room/eye-examinations')}
             />
             <InfoCard
-              title="Dental Examinations"
-              count={numberFormat(data.summary.total_examinations || 0)}
-              icon={<DentalExamIcon />}
-              color={green[400]}
-              onClick={() => navigate('/consultation-room/consultation-patients/consulted')}
+              title="Prescriptions"
+              count={numberFormat(data.summary?.prescriptions_written || 0)}
+              icon={<PrescriptionIcon />}
+              color={teal[400]}
+              onClick={() => navigate('/consultation-room/prescriptions')}
             />
           </Grid>
 
-          <Card sx={{ mb: 2 }}>
+          <Grid
+            container
+            spacing={{ xs: 2, sm: 2, md: 3 }}
+            justifyContent="stretch"
+            sx={{
+              "& .MuiCard-root": {
+                minHeight: "100%",
+              },
+            }}
+          >
+            <Grid item md={6} sm={12} xs={12}>
+              <Card>
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>Consultations Trend</Typography>
-                  <ChartWrapper
-                    options={{
-                      chart: {
-                        fontFamily: theme.typography.fontFamily,
-                        foreColor: theme.palette.text.primary,
-                        background: "transparent",
-                        toolbar: { show: false },
-                      },
-                      colors: [purple[400], teal[400], cyan[500]],
-                      stroke: { show: true, width: [3, 3, 3], curve: "smooth" },
-                      dataLabels: { enabled: false },
-                      grid: { show: false, borderColor: theme.palette.divider },
-                      xaxis: {
-                        axisBorder: { show: false, color: theme.palette.divider },
-                        axisTicks: { show: true, color: theme.palette.divider, height: 6 },
-                      },
-                      yaxis: {
-                        axisBorder: { show: false, color: theme.palette.divider },
-                        axisTicks: { show: true, color: theme.palette.divider, width: 6 },
-                        labels: { formatter: (val) => numberFormat(val) },
-                      },
-                      tooltip: { theme: "dark", fillSeriesColor: true },
-                      legend: {
-                        markers: { width: 14, height: 8, radius: 4 },
-                      },
-                    }}
-                    series={[
-                      {
-                        name: "Consultations",
-                        data: (data.statistics.consultations_trend || []).map((e) => ({
-                          x: e.date,
-                          y: e.total || 0,
-                        })),
-                      },
-                    ]}
-                    type="line"
-                    height="272"
-                  />
+                  <Typography variant="h6" gutterBottom>
+                    Quick Actions
+                  </Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/consultation-patients/pending')}>
+                        <PatientIcon sx={{ fontSize: 28.8, color: '#FF5722', mb: 1 }} />
+                        <Typography variant="subtitle2">Start Consultation</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/clinical-notes')}>
+                        <ClinicalNotesIcon sx={{ fontSize: 28.8, color: '#2196F3', mb: 1 }} />
+                        <Typography variant="subtitle2">Clinical Notes</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/eye-examinations')}>
+                        <EyeExamIcon sx={{ fontSize: 28.8, color: '#4CAF50', mb: 1 }} />
+                        <Typography variant="subtitle2">Eye Examination</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2, cursor: 'pointer' }} onClick={() => navigate('/consultation-room/prescriptions')}>
+                        <PrescriptionIcon sx={{ fontSize: 28.8, color: '#9C27B0', mb: 1 }} />
+                        <Typography variant="subtitle2">Prescription</Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </Card>
-
-          <Card sx={{ mb: 2 }}>
+            </Grid>
+            
+            <Grid item md={6} sm={12} xs={12}>
+              <Card>
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>Consultations by Status</Typography>
-                    <ChartWrapper
-                      options={{
-                        labels: (data.statistics.consultations_by_status || []).map((e) => e.status),
-                        chart: {
-                          fontFamily: theme.typography.fontFamily,
-                          background: "transparent",
-                          toolbar: { show: false },
-                        },
-                        plotOptions: {
-                          pie: {
-                            donut: {
-                              size: "50%",
-                            },
-                          },
-                        },
-                        colors: [purple[400], teal[400], cyan[500], green[500]],
-                        stroke: { show: true, width: 3, colors: (data.statistics.consultations_by_status || []).map(() => theme.palette.background.paper) },
-                        dataLabels: {
-                          style: { fontWeight: "400", fontSize: "9px" },
-                          dropShadow: { enabled: false },
-                        },
-                        tooltip: { y: { formatter: (val) => numberFormat(val) } },
-                        legend: {
-                          position: "bottom",
-                          labels: {
-                            colors: (data.statistics.consultations_by_status || []).map(() => theme.palette.text.secondary),
-                            useSeriesColors: false,
-                          },
-                          markers: { width: 14, height: 8, radius: 4 },
-                        },
-                      }}
-                      series={(data.statistics.consultations_by_status || []).map((e) => e.total || 0)}
-                      type="donut"
-                      height={(data.statistics.consultations_by_status || []).length ? 288 : 256}
-                    />
+                  <Typography variant="h6" gutterBottom>
+                    Consultation Statistics
+                  </Typography>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                        <PatientIcon sx={{ fontSize: 28.8, color: '#FF9800', mb: 1 }} />
+                        <Typography variant="h6" color="#FF9800" fontWeight="bold">
+                          {numberFormat(data.summary.consultations_today || 0)}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">Today's Consultations</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                        <ScheduleIcon sx={{ fontSize: 28.8, color: '#4CAF50', mb: 1 }} />
+                        <Typography variant="h6" color="#4CAF50" fontWeight="bold">
+                          {numberFormat(data.summary.scheduled_consultations || 0)}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">Scheduled Today</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                        <ClinicalNotesIcon sx={{ fontSize: 28.8, color: '#2196F3', mb: 1 }} />
+                        <Typography variant="h6" color="#2196F3" fontWeight="bold">
+                          {numberFormat(data.summary.clinical_notes_created || 0)}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">Notes Created</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ textAlign: 'center', p: 2, border: '1px solid #e0e0e0', borderRadius: 2 }}>
+                        <PrescriptionIcon sx={{ fontSize: 28.8, color: '#9C27B0', mb: 1 }} />
+                        <Typography variant="h6" color="#9C27B0" fontWeight="bold">
+                          {numberFormat(data.summary.prescriptions_written || 0)}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">Prescriptions</Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </Card>
-        </>
+            </Grid>
+          </Grid>
+        </React.Fragment>
       ) : (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
-          <Typography variant="h6">No data available.</Typography>
+          <CircularProgress />
         </Box>
       )}
-      <Modal ref={modalRef} />
-    </Box>
+    </Page>
   );
 };
 

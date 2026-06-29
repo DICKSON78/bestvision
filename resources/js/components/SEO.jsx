@@ -6,15 +6,15 @@ import { useLocation } from 'react-router-dom';
  * Usage: <SEO title="Page Title" description="Page description" />
  */
 const SEO = ({
-  title = 'Best Vision EyeCare - Premier Eye Clinic in Tanzania',
-  description = 'Best Vision EyeCare is the leading eye clinic in Mwanza, Tanzania. We offer comprehensive eye examinations, contact lens fitting, eyewear, vision therapy, and community eye health programs.',
-  keywords = 'eye clinic Tanzania, optometrist Mwanza, eye examination, contact lenses, eyewear, vision care, Best Vision EyeCare',
-  image = null,
+  title = 'BestVision Eyecare - Premier Eye Care Clinic in Tanzania',
+  description = 'BestVision Eyecare is the leading eye care clinic in Natta-Mwanza, Tanzania. We offer comprehensive eye examinations, diagnosis & treatment of eye disorders, spectacles dispensing, contact lens fitting, and community eye outreach programs.',
+  keywords = 'eye care Tanzania, optometrist Natta-Mwanza, eye examination, eye clinic, contact lens fitting, spectacles Tanzania, eye treatment, BestVision Eyecare',
+  image = '/logo.png',
   type = 'website',
   noindex = false,
 }) => {
   const location = useLocation();
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.bestvision-eyecare.co.tz';
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.bestvisioneyecare.com';
   const fullUrl = `${baseUrl}${location.pathname}`;
   const imageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
 
@@ -37,7 +37,7 @@ const SEO = ({
     updateMetaTag('description', description);
     updateMetaTag('keywords', keywords);
     updateMetaTag('robots', noindex ? 'noindex, nofollow' : 'index, follow');
-    updateMetaTag('author', 'Best Vision EyeCare');
+    updateMetaTag('author', 'BestVision Eyecare');
     updateMetaTag('language', 'English');
     updateMetaTag('revisit-after', '7 days');
     updateMetaTag('theme-color', '#667eea');
@@ -50,7 +50,7 @@ const SEO = ({
     updateMetaTag('og:image', imageUrl, 'property');
     updateMetaTag('og:image:width', '1200', 'property');
     updateMetaTag('og:image:height', '630', 'property');
-    updateMetaTag('og:site_name', 'Best Vision EyeCare', 'property');
+    updateMetaTag('og:site_name', 'SIKAF Eye Care', 'property');
     updateMetaTag('og:locale', 'en_US', 'property');
 
     // Twitter Card Tags - MUST use 'name' attribute, not 'property'
@@ -67,9 +67,9 @@ const SEO = ({
     updateMetaTag('ICBM', '-6.7924, 39.2083');
 
     // Business Information
-    updateMetaTag('contact', 'info@bestvision-eyecare.co.tz');
+    updateMetaTag('contact', 'info@sikafeyecare.co.tz');
     updateMetaTag('phone', '+255 678 110 376');
-    updateMetaTag('address', 'Mwanza, Tanzania');
+    updateMetaTag('address', 'Natta-Mwanza, Tanzania');
 
     // Canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -93,21 +93,21 @@ const SEO = ({
       '@context': 'https://schema.org',
       '@type': 'LocalBusiness',
       '@id': fullUrl,
-      name: 'Best Vision EyeCare',
+      name: 'SIKAF Eye Care',
       description: description,
       url: baseUrl,
       telephone: '+255678110376',
-      email: 'info@bestvision-eyecare.co.tz',
+      email: 'info@sikafeyecare.co.tz',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Mwanza, Tanzania',
-        addressLocality: 'Mwanza',
+        streetAddress: 'Natta-Mwanza, Tanzania',
+        addressLocality: 'Dar es Salaam',
         addressCountry: 'TZ',
       },
       geo: {
         '@type': 'GeoCoordinates',
-        latitude: '-2.5164',
-        longitude: '32.9176',
+        latitude: '-6.7924',
+        longitude: '39.2083',
       },
       openingHoursSpecification: {
         '@type': 'OpeningHoursSpecification',
@@ -119,17 +119,14 @@ const SEO = ({
       priceRange: '$$',
       areaServed: {
         '@type': 'City',
-        name: 'Mwanza',
+        name: 'Dar es Salaam',
       },
       service: [
-        'Comprehensive Eye Examinations',
+        'Eye Examinations',
+        'Eye Disorder Treatment',
+        'Spectacles Dispensing',
         'Contact Lens Fitting',
-        'Eyewear & Spectacles',
-        'Pediatric Eye Care',
-        'Dry Eye Treatment',
-        'Vision Therapy',
-        'Cataract Screening',
-        'Low Vision Aids',
+        'Community Eye Outreach',
       ],
     };
 

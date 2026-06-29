@@ -446,7 +446,6 @@ class ConsultationsController extends Controller
                     $query->with(['item', 'payment_mode', 'consultant', 'server']);
                 }, 'creator', 'external_examination', 'functional_tests', 'visual_acuity', 'refraction', 'fundoscopy',
                 'to_optician_sender',
-
             ]);
 
             if ($with_diagnoses == 'Yes') {
@@ -662,7 +661,7 @@ class ConsultationsController extends Controller
     {
         try {
             $request->validate([
-                'what' => 'required|in:Consultation,Visual Acuity,External Examination,Functional Test,Refraction,Fundoscopy,Dental Oral Examination,Dental Charting,Dental Treatment Record,Dental Radiograph'
+                'what' => 'required|in:Consultation,Visual Acuity,External Examination,Functional Test,Refraction,Fundoscopy'
             ]);
 
             $user = $request->user();

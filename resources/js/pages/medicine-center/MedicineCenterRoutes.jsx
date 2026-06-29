@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-
+import Dashboard from "./dashboard/Dashboard";
 import DispensingRoutes from "../dispensing/DispensingRoutes";
 import MedicineAlerts from "./MedicineAlerts";
 import Medicines from "./Medicines";
@@ -14,6 +14,10 @@ import ReportsRoutes from "./ReportsRoutes";
 const MedicineCenterRoutes = () => {
   return (
     <Routes>
+      <Route
+        path="dashboard"
+        element={<Dashboard />}
+      />
       <Route
         path="dispensing-requests/*"
         element={<DispensingRoutes consultationType="Pharmacy" stockItem="Yes" />}
@@ -57,7 +61,7 @@ const MedicineCenterRoutes = () => {
       />
       <Route
         path=""
-        element={<Navigate to="medicines" />}
+        element={<Navigate to="dashboard" />}
       />
     </Routes>
   );

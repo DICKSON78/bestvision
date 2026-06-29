@@ -1,19 +1,19 @@
-# Deployment Notes for Best Vision EyeCare
+# Deployment Notes for Best Vision Eyecare
 
 ## Domain Configuration
-- **Domain**: bestvision-eyecare.co.tz
-- **URL**: https://bestvision-eyecare.co.tz
-- **SSL**: Enabled
+- **Domain**: bestvisioneyecare.com
+- **URL**: http://bestvisioneyecare.com
+- **SSL**: Disabled (use HTTP for development)
 
 ## Environment Variables (.env)
 Update your `.env` file with the following:
 
 ```env
-APP_NAME=BestVision
+APP_NAME=Laravel
 APP_ENV=production
 APP_KEY=base64:DZTfsicMYMbKIHEOlmivnXJzNF0ZgpjPFD6krXowe0o=
 APP_DEBUG=false
-APP_URL=https://bestvision-eyecare.co.tz
+APP_URL=http://bestvisioneyecare.com
 
 # Database configuration
 DB_CONNECTION=mysql
@@ -75,8 +75,12 @@ DB_PASSWORD=Allos@2026
    php artisan view:cache
    ```
 
+## Favicon
+- Favicon is located at: `public/favicon.ico`
+- Already configured in `resources/views/app.blade.php`
+
 ## Login Access
-- Login page is accessible at: `https://bestvision-eyecare.co.tz/login`
+- Login page is accessible at: `https://newkayoka.com/login`
 - Login button has been removed from the public navbar
 - Users can manually navigate to `/login` if needed
 

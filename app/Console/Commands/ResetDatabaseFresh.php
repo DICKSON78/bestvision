@@ -90,9 +90,9 @@ class ResetDatabaseFresh extends Command
             // Create clinic
             $this->info('Creating clinic...');
             $clinicId = DB::table('clinics')->insertGetId([
-                'name' => 'Best Vision EyeCare',
+                'name' => 'Best Vision Eye Care',
                 'phone' => '0678110376',
-                'email' => 'info@bestvision-eyecare.co.tz',
+                'email' => 'info@bestvision.com',
                 'address' => 'Natta, Mwanza',
                 'sms_balance' => '0',
                 'sms_sender_name' => 'BESTVISION',
@@ -107,9 +107,9 @@ class ResetDatabaseFresh extends Command
             $departments = [
                 ['name' => 'Administration', 'description' => 'Administrative department'],
                 ['name' => 'Reception', 'description' => 'Patient reception'],
-                ['name' => 'Consultation', 'description' => 'Eye consultations'],
-                ['name' => 'Optical Lab', 'description' => 'Optical laboratory services'],
-                ['name' => 'Radiology', 'description' => 'Ophthalmic imaging'],
+                ['name' => 'Consultation', 'description' => 'Doctor consultations'],
+                ['name' => 'Optician', 'description' => 'Optical services'],
+                ['name' => 'Laboratory', 'description' => 'Lab services'],
                 ['name' => 'Pharmacy', 'description' => 'Medicine dispensing'],
                 ['name' => 'Surgery', 'description' => 'Surgical procedures'],
                 ['name' => 'Emergency', 'description' => 'Emergency services'],
@@ -131,11 +131,11 @@ class ResetDatabaseFresh extends Command
             $this->info('Creating job titles...');
             $jobTitles = [
                 ['name' => 'Administrator', 'description' => 'System administrator'],
-                ['name' => 'Optometrist', 'description' => 'Eye care doctor'],
-                ['name' => 'Optician', 'description' => 'Registered optician'],
+                ['name' => 'Doctor', 'description' => 'Medical doctor'],
+                ['name' => 'Nurse', 'description' => 'Registered nurse'],
                 ['name' => 'Receptionist', 'description' => 'Front desk staff'],
-                ['name' => 'Optical Technician', 'description' => 'Optical lab technician'],
-                ['name' => 'Optometric Assistant', 'description' => 'Chair-side assistant'],
+                ['name' => 'Optician', 'description' => 'Optical specialist'],
+                ['name' => 'Technician', 'description' => 'Technical staff'],
                 ['name' => 'Pharmacist', 'description' => 'Medicine specialist'],
                 ['name' => 'Manager', 'description' => 'Department manager'],
             ];
@@ -165,7 +165,7 @@ class ResetDatabaseFresh extends Command
                 'gender' => 'Male',
                 'national_id' => null,
                 'phone' => '0000000000',
-                'email' => 'admin@bestvision-eyecare.co.tz',
+                'email' => 'admin@eyecare.com',
                 'username' => 'admin',
                 'password' => Hash::make('admin'),
                 'remember_token' => null,
@@ -178,29 +178,6 @@ class ResetDatabaseFresh extends Command
             $this->info("✅ Admin user created with ID: $adminId");
             $this->info("   Username: admin");
             $this->info("   Password: admin");
-            $this->newLine();
-
-            // Grant admin full privileges
-            $this->info('Granting admin privileges...');
-            DB::table('user_privileges')->updateOrInsert(
-                ['user_id' => $adminId],
-                ['privilege' => json_encode([
-                    'dashboard' => true,
-                    'reception' => true,
-                    'payment_center' => true,
-                    'consultation_room' => true,
-                    'optical_lab' => true,
-                    'medicine_center' => true,
-                    'procedure_room' => true,
-                    'dispensing' => true,
-                    'inventory_management' => true,
-                    'marketing' => true,
-                    'financial_management' => true,
-                    'user_management' => true,
-                    'settings' => true,
-                ])]
-            );
-            $this->info('✅ Admin privileges granted');
             $this->newLine();
 
             // Create payment modes
@@ -271,9 +248,9 @@ class ResetDatabaseFresh extends Command
             // Create preferences
             $this->info('Creating system preferences...');
             $preferences = [
-                ['key' => 'CLINIC_NAME', 'value' => 'Best Vision EyeCare'],
+                ['key' => 'CLINIC_NAME', 'value' => 'Best Vision Eye Care'],
                 ['key' => 'CLINIC_PHONE', 'value' => '0678110376'],
-                ['key' => 'CLINIC_EMAIL', 'value' => 'info@bestvision-eyecare.co.tz'],
+                ['key' => 'CLINIC_EMAIL', 'value' => 'info@bestvision.com'],
                 ['key' => 'CLINIC_ADDRESS', 'value' => 'Natta, Mwanza'],
                 ['key' => 'SYSTEM_VERSION', 'value' => '1.0.0'],
                 ['key' => 'MAINTENANCE_MODE', 'value' => 'No'],

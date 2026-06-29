@@ -46,7 +46,7 @@ class ConsultationRoomDashboardController extends Controller
                 'total_patients_consulted' => 0,
                 'clinical_notes_created' => 0,
                 'prescriptions_written' => 0,
-                'total_examinations' => 0,
+                'eye_examinations' => 0,
             ],
             'statistics' => [
                 'consultations_by_status' => [],
@@ -145,14 +145,16 @@ class ConsultationRoomDashboardController extends Controller
             ->whereBetween('created_at', [$start_date, $end_date])
             ->count();
 
-        // Total examinations (count of all consulted patients)
-        $data['summary']['total_examinations'] = Consultation::query()
+        // Eye examinations (approximation based on glass items)
+        $data['summary']['eye_examinations'] = PatientPaymentCacheItem::query()
             ->when($clinic_id, function ($query) use ($clinic_id) {
-                $query->whereHas('payment_cache_item.creator', function ($q) use ($clinic_id) {
+                $query->whereHas('creator', function ($q) use ($clinic_id) {
                     $q->where('clinic_id', $clinic_id);
                 });
             })
-            ->where('status', 'Consulted')
+            ->whereHas('consultation_type', function ($query) {
+                $query->where('name', 'Glass');
+            })
             ->whereBetween('created_at', [$start_date, $end_date])
             ->count();
 

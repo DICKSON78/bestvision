@@ -12,10 +12,11 @@ import {
   Divider,
 } from '@mui/material';
 import {
+  Visibility as EyeIcon,
   Healing as TreatmentIcon,
+  ShoppingBag as SpectaclesIcon,
+  Contacts as ContactLensIcon,
   Groups as OutreachIcon,
-  WaterDrop as WaterDropIcon,
-  ChildCare as ChildCareIcon,
   ArrowForward as ArrowForwardIcon,
   CheckCircle as CheckIcon,
   Person as PersonIcon,
@@ -35,7 +36,7 @@ gsap.registerPlugin(ScrollTrigger);
 const colors = {
   primary: '#1E88E5',
   primaryLight: '#4FC3F7',
-  primaryDark: '#004D40',
+  primaryDark: '#1565c0',
   secondary: '#00ACC1',
   secondaryLight: '#4dd0e1',
   secondaryDark: '#0097a7',
@@ -62,109 +63,109 @@ const Services = () => {
 
   const services = [
     {
-      id: 'comprehensive-eye-exams',
-      icon: TreatmentIcon,
-      title: 'Comprehensive Eye Exams & Vision Testing',
-      description: 'Our comprehensive eye examination service utilizes state-of-the-art diagnostic equipment and advanced techniques to provide a thorough assessment of your vision and eye health. Our experienced optometrists conduct detailed evaluations to detect early signs of eye diseases, assess visual acuity, evaluate binocular vision, and assess overall ocular health. Each examination is tailored to your individual needs, age, and medical history, ensuring personalized care recommendations that support optimal vision throughout your life.',
+      id: 'eye-examinations',
+      icon: EyeIcon,
+      title: 'Comprehensive Eye Examination',
+      description: 'Our comprehensive eye examination service utilizes state-of-the-art diagnostic equipment and advanced techniques to provide a thorough assessment of your vision health. Our experienced optometrists conduct detailed evaluations to detect early signs of eye diseases, assess visual acuity, test eye coordination, and evaluate overall eye health. Each examination is tailored to your individual needs, age, and medical history, ensuring personalized care recommendations that support optimal vision throughout your life.',
       features: [
-        'Complete eye examination and assessment',
-        'Digital retinal imaging and screening',
-        'Visual acuity testing and refraction',
-        'Glaucoma and cataract screening',
-        'Dry eye assessment and management',
-        'Color vision testing',
-        'Binocular vision assessment',
-        'Personalized vision care recommendations',
+        'Complete vision assessment and refraction',
+        'Advanced retinal examination with imaging',
+        'Comprehensive glaucoma screening and testing',
+        'Color vision and depth perception evaluation',
+        'Eye pressure measurement (tonometry)',
+        'Binocular vision and eye coordination testing',
+        'Peripheral vision field testing',
+        'Pupil response and eye movement assessment',
       ],
       image: '/images/services-vision-testing.jpeg',
       color: '#1E88E5',
     },
     {
-      id: 'contact-lens-fitting',
-      icon: TreatmentIcon,
-      title: 'Contact Lens Fitting & Consultations',
-      description: 'Our contact lens fitting service provides expert care for patients seeking comfortable and clear vision with contact lenses. Our skilled optometrists use modern fitting techniques and comprehensive pre-fitting evaluations to ensure optimal lens selection and fit. We manage a wide range of contact lens needs including daily wear, toric lenses for astigmatism, multifocal lenses, and specialty lenses. Follow-up care and detailed instructions ensure proper lens use and eye health.',
+      id: 'binocular-vision',
+      icon: EyeIcon,
+      title: 'Binocular Vision Assessment',
+      description: 'Our binocular vision assessment service evaluates how well your eyes work together as a team. This comprehensive evaluation includes testing eye alignment, depth perception, eye coordination, and the ability to maintain comfortable vision during extended tasks. We assess conditions such as strabismus (eye misalignment), amblyopia (lazy eye), convergence insufficiency, and other binocular vision disorders. Our experienced optometrists use specialized techniques and equipment to identify vision problems that may affect reading, learning, and daily activities, providing personalized treatment plans to improve visual comfort and performance.',
       features: [
-        'Comprehensive pre-fitting eye examination',
-        'Wide range of contact lens options',
-        'Toric lenses for astigmatism',
-        'Multifocal and bifocal contact lenses',
-        'Proper lens handling and hygiene instruction',
-        'Trial lens evaluation period',
-        'Follow-up appointments for optimal fit',
-        'Management of contact lens-related complications',
+        'Eye alignment and coordination testing',
+        'Depth perception and stereopsis evaluation',
+        'Convergence and divergence assessment',
+        'Accommodation and focusing ability testing',
+        'Visual tracking and eye movement evaluation',
+        'Treatment for binocular vision disorders',
+        'Vision therapy programs when needed',
+        'Follow-up care and progress monitoring',
       ],
-      image: '/images/gallery-staff-at-work.jpeg',
+      image: '/images/services-vision-testing.jpeg',
       color: '#764ba2',
     },
     {
-      id: 'eyewear-optical',
+      id: 'eye-disorders',
       icon: TreatmentIcon,
-      title: 'Eyewear & Optical Services',
-      description: 'Our eyewear and optical service specializes in providing high-quality prescription glasses and frames to meet your vision needs. Using precision lens crafting technology, we offer single vision, bifocal, and progressive lenses with a variety of lens coatings. Our experienced optical team guides you through frame selection, ensuring the perfect combination of style, comfort, and visual clarity for everyday wear.',
+      title: 'Diagnose, Manage and Treat Disorders of the Eyes',
+      description: 'Our clinic specializes in the expert diagnosis and comprehensive management of various eye conditions and diseases. Our team of qualified optometrists uses cutting-edge diagnostic technology to identify conditions such as cataracts, diabetic retinopathy, macular degeneration, glaucoma, dry eye syndrome, and other ocular diseases. We develop personalized treatment plans that may include prescription medications, lifestyle modifications, specialized eye drops, and when necessary, timely referrals to specialist ophthalmologists for surgical intervention or advanced care.',
       features: [
-        'Comprehensive frame styling and selection guidance',
-        'Single vision, bifocal and progressive lenses',
-        'Anti-glare, scratch-resistant and UV protective coatings',
-        'Precision lens crafting and fitting',
-        'Frame adjustments and repairs',
-        'Prescription sunglasses and protective eyewear',
-        'Digital screen protection lenses',
-        'Quality assurance and satisfaction guarantee',
+        'Advanced diagnostic tools and imaging',
+        'Personalized treatment protocol development',
+        'Chronic disease management and monitoring',
+        'Prescription medication management',
+        'Specialist referral coordination',
+        'Regular follow-up care and progress tracking',
+        'Emergency eye care services',
+        'Post-operative care and management',
       ],
-      image: '/images/services-glasses-frames.jpeg',
+      image: '/images/gallery-staff-at-work.jpeg',
       color: '#f093fb',
     },
     {
-      id: 'vision-therapy',
-      icon: WaterDropIcon,
-      title: 'Vision Therapy & Orthoptics',
-      description: 'Our vision therapy service provides specialized programs to improve visual skills and processing abilities. Using advanced therapeutic techniques and exercises, we treat binocular vision disorders, convergence insufficiency, amblyopia (lazy eye), and strabismus (squint). Vision therapy helps patients develop or enhance visual skills, improve eye coordination, and alleviate symptoms such as eye strain, headaches, and difficulty reading.',
+      id: 'clinical-refraction',
+      icon: EyeIcon,
+      title: 'Clinical Refraction',
+      description: 'Clinical refraction is a precise procedure performed by our experienced optometrists to determine your exact eyeglass or contact lens prescription. Using advanced phoropters and computerized equipment, we measure how light focuses on your retina to identify refractive errors such as nearsightedness (myopia), farsightedness (hyperopia), astigmatism, and presbyopia. Our thorough refraction process includes both objective and subjective testing methods, ensuring accurate prescription measurements that provide optimal visual clarity and comfort for all your daily activities.',
       features: [
-        'Binocular vision disorder assessment',
-        'Convergence insufficiency treatment',
-        'Amblyopia (lazy eye) therapy',
-        'Strabismus (squint) management',
-        'Visual perceptual training',
-        'Eye tracking and focusing exercises',
-        'Personalized home exercise programs',
-        'Progress monitoring and adjustment',
+        'Objective and subjective refraction testing',
+        'Accurate prescription measurement',
+        'Refractive error diagnosis and correction',
+        'Presbyopia assessment and management',
+        'Astigmatism evaluation and correction',
+        'Prescription verification and optimization',
+        'Specialized testing for complex cases',
+        'Regular prescription updates and adjustments',
       ],
       image: '/images/services-vision-testing.jpeg',
       color: '#4facfe',
     },
     {
-      id: 'low-vision-rehabilitation',
-      icon: TreatmentIcon,
-      title: 'Low Vision Aids & Rehabilitation',
-      description: 'Our low vision rehabilitation services provide comprehensive solutions for individuals with significant vision impairment. We offer low vision assessments, prescribe specialized optical and electronic aids including magnifiers, telescopic systems, and adaptive technology. Using high-quality devices and personalized training, we help patients maximize their remaining vision, maintain independence, and improve quality of life.',
+      id: 'prescribe-provide',
+      icon: SpectaclesIcon,
+      title: 'Prescribe and Provide Eye Glasses, Ophthalmic, Medication and Contact Lenses',
+      description: 'We provide comprehensive prescription and dispensing services for all your vision correction needs. Our services include prescribing and providing high-quality eyeglasses with a wide selection of designer frames and premium lenses, ophthalmic medications for various eye conditions, and professional contact lens fitting and supply. Our certified opticians ensure accurate prescription execution, proper frame fitting, and optimal lens selection. We also provide expert guidance on medication usage, contact lens care, and ongoing support to ensure the best possible vision outcomes and eye health.',
       features: [
-        'Comprehensive low vision assessment',
-        'Prescription of low vision aids and devices',
-        'Magnifiers and telescopic systems',
-        'Adaptive technology and training',
-        'Lighting and contrast optimization',
-        'Daily living skills training',
-        'Referral to support services',
-        'Ongoing follow-up and support',
+        'Eyeglass prescription and dispensing',
+        'Wide selection of designer frames and premium lenses',
+        'Ophthalmic medication prescription and supply',
+        'Contact lens prescription and fitting',
+        'Professional frame fitting and adjustment',
+        'Prescription lens options and upgrades',
+        'Medication guidance and usage instructions',
+        'Ongoing support and follow-up care',
       ],
       image: '/images/services-glasses-frames.jpeg',
       color: '#43e97b',
     },
     {
-      id: 'pediatric-community-outreach',
+      id: 'outreach',
       icon: OutreachIcon,
-      title: 'Pediatric Eye Care & Community Outreach',
-      description: 'We are deeply committed to improving eye health awareness in our community through comprehensive preventive programs and children\'s vision services. Our services include gentle eye care for children, vision screening programs, and educational programs for proper eye health. We conduct school outreach programs, community health education, and provide accessible preventive care to promote lifelong healthy vision for everyone.',
+      title: 'Outreach Program',
+      description: 'We are deeply committed to improving eye health awareness and accessibility in our community through comprehensive outreach initiatives. Our programs include free eye screenings at community events, educational workshops on eye health and disease prevention, mobile clinic services for underserved areas, and partnerships with schools for vision screening programs. We also participate in community health fairs, provide services to senior care facilities, and offer corporate wellness eye care programs. Our goal is to make quality eye care accessible to everyone, regardless of their circumstances.',
       features: [
-        'Children\'s eye check-ups and treatment',
+        'Free community eye screening programs',
+        'Educational workshops and health seminars',
+        'Mobile clinic services for remote areas',
         'School vision screening programs',
-        'Amblyopia detection and treatment',
-        'Refractive error correction for children',
-        'Eye health education and demonstrations',
-        'Community outreach initiatives',
-        'Dietary advice for eye health',
-        'Preventive care for all ages',
+        'Community health fair participation',
+        'Senior care facility visitations',
+        'Corporate wellness eye care programs',
+        'Accessible care initiatives for underserved populations',
       ],
       image: '/images/appointment-receptionist.jpeg',
       color: '#ff6b6b',
@@ -172,29 +173,29 @@ const Services = () => {
   ];
 
   const serviceCategories = [
-    'Comprehensive Eye Exams',
-    'Contact Lens Fitting',
-    'Eyewear & Optical',
-    'Vision Therapy',
-    'Low Vision Aids',
-    'Cataract Screening',
-    'Pediatric Eye Care',
-    'Community Outreach',
+    'Comprehensive Eye Examination',
+    'Binocular Vision Assessment',
+    'Diagnosis & Treatment',
+    'Clinical Refraction',
+    'Eyeglasses & Contact Lenses',
+    'Ophthalmic Medications',
+    'Emergency Services',
+    'Outreach Programs',
   ];
 
   const recentServices = [
-    { title: 'Modern Retinal Imaging Technology', image: '/images/services-vision-testing.jpeg' },
-    { title: 'Frame Styling Consultation', image: '/images/services-glasses-frames.jpeg' },
+    { title: 'Advanced Retinal Imaging Technology', image: '/images/services-vision-testing.jpeg' },
+    { title: 'Custom Frame Fitting Consultation', image: '/images/services-glasses-frames.jpeg' },
     { title: 'Professional Eye Care Team', image: '/images/gallery-staff-at-work.jpeg' },
   ];
 
   const popularTags = [
-    'Eye Check-ups',
-    'Vision Health',
-    'Contact Lenses',
-    'Eyewear',
-    'Cataract Screening',
-    'Best Vision',
+    'Eye Examinations',
+    'Vision Care',
+    'Eye Health',
+    'Ophthalmology',
+    'Optometry',
+    'BestVision',
     'Tanzania',
     'Eye Care',
   ];
@@ -272,9 +273,9 @@ const Services = () => {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f8f9fa !important', pt: { xs: '56px', sm: '64px' } }}>
       <SEO 
-        title="Our Services - Best Vision EyeCare | Comprehensive Eye Care Solutions in Tanzania"
-        description="Best Vision EyeCare offers comprehensive eye care services including eye examinations, diagnosis & treatment of eye conditions, vision testing, contact lens fitting, eyewear, vision therapy, cataract screening, and community outreach programs in Mwanza, Tanzania."
-        keywords="eye care services Tanzania, optometrist Mwanza, eye examination, vision testing, contact lenses, eyewear, cataract screening, eye clinic services, Best Vision EyeCare services"
+        title="Our Services - BestVision Eyecare | Comprehensive Eye Care Solutions in Tanzania"
+        description="BestVision Eyecare offers comprehensive eye care services including eye examinations, diagnosis & treatment of eye disorders, spectacles dispensing, contact lens fitting, and community eye outreach programs in Dar es Salaam, Tanzania."
+        keywords="eye care services Tanzania, eye examinations Dar es Salaam, eye disorder treatment, spectacles dispensing, contact lens fitting, eye clinic services, BestVision Eyecare services"
       />
       <Navbar />
       
@@ -350,7 +351,7 @@ const Services = () => {
                     opacity: 1,
                   }}
                 >
-                    At Best Vision EyeCare, we provide comprehensive, patient-centered eye care services designed to preserve and enhance your vision. Our experienced team of optometrists utilizes state-of-the-art technology and evidence-based practices to deliver exceptional care tailored to your unique needs.
+                  At BestVision Eyecare, we provide comprehensive, patient-centered eye care services designed to preserve and enhance your vision. Our experienced team of optometrists utilizes state-of-the-art technology and evidence-based practices to deliver exceptional care tailored to your unique needs.
                 </Typography>
                 <Typography
                   className="hero-animate"
@@ -362,7 +363,7 @@ const Services = () => {
                     opacity: 1,
                   }}
                 >
-                    From routine eye exams to specialized treatments including contact lens fitting, eyewear dispensing, vision therapy, low vision rehabilitation, and community health initiatives, we are committed to supporting optimal vision and eye health for individuals and families throughout Tanzania.
+                  From routine eye examinations to specialized treatment of eye disorders, professional eyewear dispensing, contact lens fitting, and community health initiatives, we are committed to supporting optimal eye health for individuals and families throughout Tanzania.
                 </Typography>
               </Box>
             </Grid>
@@ -381,7 +382,7 @@ const Services = () => {
                     opacity: 1,
                   }}
                 >
-                    Our comprehensive range of services includes advanced diagnostic capabilities, personalized treatment plans, modern optical solutions, and accessible community programs, all delivered with professionalism, compassion, and the highest standards of clinical excellence.
+                  Our comprehensive range of services includes advanced diagnostic capabilities, personalized treatment plans, premium eyewear solutions, and accessible community programs, all delivered with professionalism, compassion, and the highest standards of clinical excellence.
                 </Typography>
                 <Box
                   className="hero-animate"
@@ -409,19 +410,19 @@ const Services = () => {
                         Comprehensive eye examination
                       </Typography>
                       <Typography component="li" variant="body2" sx={{ mb: 1, fontSize: { xs: '0.85rem', md: '0.95rem' }, lineHeight: 1.7 }}>
-                        Vision testing & contact lens fitting
+                        Binocular vision assessment
                       </Typography>
                       <Typography component="li" variant="body2" sx={{ mb: 1, fontSize: { xs: '0.85rem', md: '0.95rem' }, lineHeight: 1.7 }}>
-                        Diagnose, manage and treat eye conditions
+                        Diagnose, manage and treat disorders of the eyes
                       </Typography>
                       <Typography component="li" variant="body2" sx={{ mb: 1, fontSize: { xs: '0.85rem', md: '0.95rem' }, lineHeight: 1.7 }}>
-                        Eyewear dispensing & optical services
+                        Clinical refraction
                       </Typography>
                       <Typography component="li" variant="body2" sx={{ mb: 1, fontSize: { xs: '0.85rem', md: '0.95rem' }, lineHeight: 1.7 }}>
-                        Vision therapy & low vision aids
+                        Prescribe and provide eye glasses, ophthalmic, medication and contact lenses
                       </Typography>
                       <Typography component="li" variant="body2" sx={{ fontSize: { xs: '0.85rem', md: '0.95rem' }, lineHeight: 1.7 }}>
-                        Outreach & Prevention Programs
+                        Outreach Program
                       </Typography>
                     </Box>
                   </Stack>
@@ -472,7 +473,7 @@ const Services = () => {
                 mx: 'auto',
               }}
             >
-               Explore our range of professional services designed to support your vision health
+              Explore our range of professional services designed to support your vision health
             </Typography>
           </Box>
           <Grid container spacing={{ xs: 2, md: 3 }}>
@@ -897,7 +898,7 @@ const Services = () => {
                 opacity: 1,
               }}
             >
-               Experience world-class eye care with our expert team. Book your appointment today and take the first step towards better vision health and clear sight.
+              Experience world-class eye care with our expert team. Book your appointment today and take the first step towards better vision and optimal eye health.
             </Typography>
             <Stack 
               className="cta-animate"
@@ -919,7 +920,7 @@ const Services = () => {
                   borderRadius: '8px',
                   textTransform: 'none',
                   '&:hover': {
-                    bgcolor: '#004D40',
+                    bgcolor: '#1565c0',
                   },
                 }}
               >

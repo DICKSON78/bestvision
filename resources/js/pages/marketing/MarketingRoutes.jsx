@@ -8,10 +8,10 @@ import MarketingStrategies from "./marketing-strategies/MarketingStrategies";
 import Events from "./events/Events";
 import CommunicationLogs from "./communication-logs/CommunicationLogs";
 import SettingsRoutes from "./settings/SettingsRoutes";
-import ReportsRoutes from "./reports/ReportsRoutes";
 import BlogPostList from "./blog/BlogPostList";
 import BlogPostForm from "./blog/BlogPostForm";
 import BlogPostView from "./blog/BlogPostView";
+import ReportsRoutes from "./reports/ReportsRoutes";
 
 const MarketingRoutes = () => {
   return (
@@ -53,6 +53,22 @@ const MarketingRoutes = () => {
         element={<CommunicationLogs />}
       />
       <Route
+        path="/blog"
+        element={<BlogPostList />}
+      />
+      <Route
+        path="/blog/create"
+        element={<BlogPostForm />}
+      />
+      <Route
+        path="/blog/:id"
+        element={<BlogPostView />}
+      />
+      <Route
+        path="/blog/:id/edit"
+        element={<BlogPostForm />}
+      />
+      <Route
         path="/settings/*"
         element={<SettingsRoutes />}
       />
@@ -60,10 +76,6 @@ const MarketingRoutes = () => {
         path="/reports/*"
         element={<ReportsRoutes />}
       />
-      <Route path="/blog" element={<BlogPostList />} />
-      <Route path="/blog/create" element={<BlogPostForm />} />
-      <Route path="/blog/:id" element={<BlogPostView />} />
-      <Route path="/blog/:id/edit" element={<BlogPostForm />} />
     </Routes>
   );
 };

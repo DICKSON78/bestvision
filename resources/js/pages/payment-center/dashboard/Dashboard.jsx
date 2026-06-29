@@ -4,11 +4,13 @@ import {
   Box,
   Card,
   CardContent,
+  CardHeader,
+  Divider,
   Grid,
   IconButton,
-  LinearProgress,
   Tooltip,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import {
   PaymentRounded as PaymentIcon,
@@ -21,8 +23,8 @@ import {
   PeopleRounded as PeopleIcon,
 } from "@mui/icons-material";
 
+import Page from "../../../components/Page";
 import Modal from "../../../components/Modal";
-import { Header as PageHeader } from "../../../components/Page";
 import InfoCard from "../../dashboard/InfoCard";
 import Filters from "../../dashboard/Filters";
 import ChartWrapper from "../../../components/ChartWrapper";
@@ -114,21 +116,45 @@ const Dashboard = () => {
     modalRef.current.open("Filter", component, "sm");
   };
 
+  if (loading) {
+    return (
+      <Page title="Payment Center Dashboard">
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+          <CircularProgress />
+        </Box>
+      </Page>
+    );
+  }
+
   return (
-    <Box>
-      <PageHeader
+    <Page
+      title="Payment Center Dashboard"
+      breadcrumbs={[
+        { title: "Home" },
+        { title: "Payment Center" },
+        { title: "Dashboard" },
+      ]}
+    >
+      <CardHeader
         title="Payment Center Dashboard"
-        trailing={
+        action={
           <Tooltip title="Show filters">
             <IconButton onClick={openFiltersModal}>
               <FilterIcon />
             </IconButton>
           </Tooltip>
         }
+        titleTypographyProps={{
+          variant: "h4",
+          fontWeight: 700,
+        }}
+        sx={{
+          p: 0,
+          mb: 2,
+        }}
       />
-      {loading && <LinearProgress />}
-      {data ? (
-        <>
+      {!loading && data ? (
+        <React.Fragment>
           <Grid
             container
             spacing={{ xs: 2, sm: 2, md: 3 }}
@@ -265,9 +291,16 @@ const Dashboard = () => {
             />
           </Grid>
 
-          <Card sx={{ mb: 2 }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>Payment Trends</Typography>
+          {/* Charts Section */}
+          <Grid
+            container
+            spacing={{ xs: 2, sm: 2, md: 3 }}
+            sx={{ mt: 2 }}
+          >
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader title="Payment Trends" />
+                <Divider />
                 <ChartWrapper
                   options={{
                     chart: {
@@ -285,7 +318,7 @@ const Dashboard = () => {
                         borderRadiusWhenStacked: "last",
                       },
                     },
-                    colors: [purple[400], teal[400], cyan[500]],
+                    colors: [purple[400], blue[400], cyan[500]],
                     stroke: {
                       show: true,
                       width: [3, 3, 3],
@@ -355,12 +388,14 @@ const Dashboard = () => {
                   type="line"
                   height="272"
                 />
-                </CardContent>
               </Card>
+            </Grid>
 
-          <Card sx={{ mb: 2 }}>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader title="Revenue by Payment Mode" />
+                <Divider />
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>Revenue by Payment Mode</Typography>
                   <ChartWrapper
                     options={{
                       labels: (data.statistics.revenue_by_payment_mode || []).map((e) => e.payment_mode) || [],
@@ -378,7 +413,7 @@ const Dashboard = () => {
                           },
                         },
                       },
-                      colors: [purple[400], teal[400], cyan[500], green[500]],
+                      colors: [purple[400], blue[400], cyan[500], green[500]],
                       stroke: {
                         show: true,
                         width: 3,
@@ -426,14 +461,16 @@ const Dashboard = () => {
                   />
                 </CardContent>
               </Card>
-        </>
+            </Grid>
+          </Grid>
+        </React.Fragment>
       ) : (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
           <Typography variant="h6">No data available.</Typography>
         </Box>
       )}
       <Modal ref={modalRef} />
-    </Box>
+    </Page>
   );
 };
 

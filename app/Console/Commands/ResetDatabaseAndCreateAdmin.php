@@ -132,7 +132,7 @@ class ResetDatabaseAndCreateAdmin extends Command
                     'name' => 'Default Clinic',
                     'address' => 'Default Address',
                     'phone' => '1234567890',
-                    'email' => 'clinic@bestvision-eyecare.co.tz',
+                    'email' => 'clinic@eyecare.com',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
@@ -174,7 +174,7 @@ class ResetDatabaseAndCreateAdmin extends Command
                 'gender' => 'Male',
                 'national_id' => '123456789',
                 'phone' => '1234567890',
-                'email' => 'admin@bestvision-eyecare.co.tz',
+                'email' => 'admin@eyecare.com',
                 'username' => 'admin',
                 'password' => Hash::make('password'),
                 'role' => 'Admin',
@@ -192,7 +192,7 @@ class ResetDatabaseAndCreateAdmin extends Command
                     ['Password', 'password'],
                     ['Role', 'Admin'],
                     ['Status', 'Active'],
-                    ['Email', 'admin@bestvision-eyecare.co.tz'],
+                    ['Email', 'admin@eyecare.com'],
                 ]
             );
             

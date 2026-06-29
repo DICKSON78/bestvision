@@ -97,29 +97,29 @@ class QuickSystemSetup extends Command
                 [
                     'first_name' => 'Dr. John',
                     'last_name' => 'Smith',
-                    'username' => 'optometrist1',
-                    'role' => 'Optometrist',
+                    'username' => 'doctor1',
+                    'role' => 'Doctor',
                     'department_id' => 3, // Consultation
-                    'job_title_id' => 2, // Optometrist
-                    'designation' => 'Senior Optometrist',
+                    'job_title_id' => 2, // Doctor
+                    'designation' => 'Senior Doctor',
                 ],
                 [
                     'first_name' => 'Mary',
                     'last_name' => 'Johnson',
-                    'username' => 'optician1',
-                    'role' => 'Optician',
-                    'department_id' => 3, // Consultation
-                    'job_title_id' => 3, // Optician
-                    'designation' => 'Senior Optician',
+                    'username' => 'nurse1',
+                    'role' => 'Nurse',
+                    'department_id' => 11, // Nursing
+                    'job_title_id' => 3, // Nurse
+                    'designation' => 'Senior Nurse',
                 ],
                 [
                     'first_name' => 'Robert',
                     'last_name' => 'Wilson',
-                    'username' => 'optotech1',
-                    'role' => 'Optical Technician',
-                    'department_id' => 4, // Optical Lab
-                    'job_title_id' => 4, // Optical Technician
-                    'designation' => 'Senior Optical Technician',
+                    'username' => 'optician1',
+                    'role' => 'Optician',
+                    'department_id' => 4, // Optician
+                    'job_title_id' => 5, // Optician
+                    'designation' => 'Senior Optician',
                 ],
                 [
                     'first_name' => 'Sarah',
@@ -157,7 +157,7 @@ class QuickSystemSetup extends Command
                         'gender' => 'Female',
                         'national_id' => null,
                         'phone' => '0000000000',
-                        'email' => $userData['username'] . '@bestvision-eyecare.co.tz',
+                        'email' => $userData['username'] . '@eyecare.com',
                         'username' => $userData['username'],
                         'password' => Hash::make('password123'),
                         'remember_token' => null,
@@ -260,10 +260,10 @@ class QuickSystemSetup extends Command
             $consultationTypes = [
                 ['name' => 'General Consultation', 'description' => 'General eye examination'],
                 ['name' => 'Follow-up', 'description' => 'Follow-up consultation'],
-                ['name' => 'Emergency', 'description' => 'Emergency eye consultation'],
+                ['name' => 'Emergency', 'description' => 'Emergency consultation'],
                 ['name' => 'Surgery Consultation', 'description' => 'Pre-surgery consultation'],
                 ['name' => 'Post-surgery', 'description' => 'Post-surgery follow-up'],
-                ['name' => 'Vision Review', 'description' => 'Vision treatment review'],
+                ['name' => 'VIP Consultation', 'description' => 'VIP patient consultation'],
             ];
 
             foreach ($consultationTypes as $type) {
@@ -282,21 +282,21 @@ class QuickSystemSetup extends Command
             // Create diseases (without description column)
             $this->info('9. Creating common eye diseases...');
             $diseases = [
-                'Refractive Error',
                 'Cataract',
                 'Glaucoma',
+                'Diabetic Retinopathy',
+                'Macular Degeneration',
+                'Refractive Errors',
                 'Conjunctivitis',
                 'Dry Eye Syndrome',
-                'Pterygium',
                 'Blepharitis',
-                'Corneal Ulcer',
-                'Stye (Hordeolum)',
-                'Macular Degeneration',
-                'Diabetic Retinopathy',
-                'Amblyopia',
-                'Keratitis',
-                'Uveitis',
+                'Stye',
+                'Corneal Abrasion',
                 'Retinal Detachment',
+                'Uveitis',
+                'Keratoconus',
+                'Amblyopia',
+                'Strabismus',
             ];
 
             foreach ($diseases as $disease) {
@@ -408,9 +408,9 @@ class QuickSystemSetup extends Command
             $this->newLine();
             $this->info('Login with: admin / admin');
             $this->info('Additional users created:');
-            $this->info('- optometrist1 / password123');
+            $this->info('- doctor1 / password123');
+            $this->info('- nurse1 / password123');
             $this->info('- optician1 / password123');
-            $this->info('- optotech1 / password123');
             $this->info('- reception1 / password123');
             $this->info('- cashier1 / password123');
 

@@ -10,7 +10,6 @@ import moment from "moment";
  * @returns {String}
  */
 export const numberFormat = (number) => {
-  if (number == null) return "0";
   let parts = number.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(".");
@@ -70,11 +69,6 @@ export const formatDateForDb = (date) => {
 export const formatDate = (date) => {
   if (!date) return "-";
   return moment(date).format("MMM DD, YYYY");
-};
-
-export const formatDateTime = (date) => {
-  if (!date) return "-";
-  return moment(date).format("MMM DD, YYYY HH:mm");
 };
 
 /**
@@ -343,7 +337,7 @@ export const getPrivileges = (preferences) => {
     { label: "Reception", value: "reception" },
     { label: "Payment Center", value: "payment_center" },
     { label: "Consultation Room", value: "consultation_room" },
-    { label: "Dental Lab", value: "dental_lab" },
+    { label: "Optician Center", value: "optician_center" },
     { label: "Medicine Center", value: "medicine_center" },
     { label: "Procedure Room", value: "procedure_room" },
     { label: "Dispensing", value: "dispensing" },

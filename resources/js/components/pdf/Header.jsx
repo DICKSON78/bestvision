@@ -1,9 +1,24 @@
 import React from "react";
-import { StyleSheet, Text, View } from "@react-pdf/renderer";
+import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
+
+// Resolve logo source for PDF (prefer clinic-uploaded logo; fallback to public logo)
+const getLogoSrc = () => {
+  try {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const clinicLogo = window?.user?.clinic?.logo;
+    if (clinicLogo && typeof clinicLogo === 'string') {
+      // Accept absolute URLs or relative paths stored in DB
+      return clinicLogo.startsWith('http') ? clinicLogo : `${origin}${clinicLogo}`;
+    }
+    return `${origin}/images/logo.png`;
+  } catch (_) {
+    return '/images/logo.png';
+  }
+};
 
 const Header = ({ fixed, title, subtitle, dense }) => {
   const getAddressLine = () => {
-    let contacts = ["Medicore"];
+    let contacts = [window.user.clinic.name];
 
     if (window.user.clinic.address) {
       contacts.push(window.user.clinic.address);
@@ -27,8 +42,8 @@ const Header = ({ fixed, title, subtitle, dense }) => {
         justifyContent: "space-between",
         alignItems: "center",
         paddingVertical: 4,
-        borderTop: "1pt solid #004D40",
-        borderBottom: "1pt solid #E65100",
+        borderTop: "1pt solid #00225f",
+        borderBottom: "1pt solid #d71a20",
         marginBottom: 16,
         ...(dense && {
           flexDirection: "column",
@@ -37,10 +52,16 @@ const Header = ({ fixed, title, subtitle, dense }) => {
       }}
     >
       <View style={{ width: 112 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold", fontFamily: "Custom" }}>
-          <Text style={{ color: "#009688" }}>MEDI</Text>
-          <Text style={{ color: "#f44336" }}>CORE</Text>
-        </Text>
+        <Image
+          src={getLogoSrc()}
+          style={{
+            width: 80,
+            height: "auto",
+            ...(dense && {
+              margin: "0 auto",
+            }),
+          }}
+        />
       </View>
       <View style={{ flex: 1 }}>
         <Text

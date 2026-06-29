@@ -97,24 +97,23 @@ const Footer = () => {
     { label: 'Home', path: '/' },
     { label: 'About Us', path: '/about' },
     { label: 'Services', path: '/services' },
-    { label: 'Gallery', path: '/gallery' },
+    { label: 'Eyeware', path: '/gallery' },
     { label: 'Testimonials', path: '/testimonials' },
     { label: 'Contact', path: '/contact' },
   ];
 
   const services = [
-    { label: 'Comprehensive Eye Exams', path: '/services' },
-    { label: 'Contact Lenses', path: '/services' },
-    { label: 'Eyewear & Frames', path: '/services' },
-    { label: 'Pediatric Eye Care', path: '/services' },
-    { label: 'Dry Eye Treatment', path: '/services' },
-    { label: 'Cataract & LASIK Consultations', path: '/services' },
+    { label: 'Comprehensive Eye Examinations', path: '/services' },
+    { label: 'Diagnosis & Treatment of Eye Disorders', path: '/services' },
+    { label: 'Spectacles Dispensing', path: '/services' },
+    { label: 'Contact Lens Fitting & Dispensing', path: '/services' },
+    { label: 'Community Eye Outreach Programs', path: '/services' },
   ];
 
   const socialLinks = [
-    { icon: <FacebookIcon />, label: 'Facebook', url: 'https://www.facebook.com/bestvisioneyecare' },
-    { icon: <InstagramIcon />, label: 'Instagram', url: 'https://www.instagram.com/bestvisioneyecare' },
-    { icon: <TikTokIcon />, label: 'TikTok', url: 'https://www.tiktok.com/@bestvisioneyecare' },
+    { icon: <FacebookIcon />, label: 'Facebook', url: 'https://www.facebook.com/sikafeyecare' },
+    { icon: <InstagramIcon />, label: 'Instagram', url: 'https://www.instagram.com/sikaf_eye_care?igsh=dGc1YWJhM2FwN3k2&utm_source=qr' },
+    { icon: <TikTokIcon />, label: 'TikTok', url: 'https://www.tiktok.com/@sikafeyecare' },
     { icon: <YouTubeIcon />, label: 'YouTube', url: 'https://youtube.com' },
     { icon: <WhatsAppIcon />, label: 'WhatsApp', url: 'https://wa.me/255678110376' },
   ];
@@ -196,7 +195,7 @@ const Footer = () => {
                 },
               }}
             >
-              Best Vision EyeCare
+              SIKAF Eye Care
             </Typography>
             <Typography
               variant="body2"
@@ -207,7 +206,7 @@ const Footer = () => {
                 lineHeight: 1.5,
               }}
             >
-              Premier Eye Clinic in Tanzania
+              Best Eye Care Clinic in Tanzania
             </Typography>
 
             {/* Contact Information */}
@@ -275,7 +274,7 @@ const Footer = () => {
               </Box>
               <Box
                 component="a"
-                href="mailto:info@bestvision-eyecare.co.tz"
+                href="mailto:info@sikafeyecare.co.tz"
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -289,7 +288,7 @@ const Footer = () => {
               >
                 <EmailIcon sx={{ color: colors.primaryOrange, fontSize: '18px', flexShrink: 0 }} />
                 <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem' }}>
-                  info@bestvision-eyecare.co.tz
+                  info@sikafeyecare.co.tz
                 </Typography>
               </Box>
             </Stack>
@@ -529,7 +528,7 @@ const Footer = () => {
               textAlign: { xs: 'center', sm: 'left' },
             }}
           >
-            © {new Date().getFullYear()} Best Vision EyeCare. All rights reserved.
+            © {new Date().getFullYear()} SIKAF Eye Care. All rights reserved.
           </Typography>
 
           <Stack

@@ -6,6 +6,9 @@ import Card from "@mui/material/Card";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
+// Use clinic logo from public folder for reliable serving
+const publicLogoUrl = "/images/logo.png";
+
 const Auth = () => {
   return (
     <Container
@@ -24,14 +27,15 @@ const Auth = () => {
             display="flex"
             justifyContent="center"
           >
-            <Typography
-              variant="h3"
-              fontWeight="bold"
-              sx={{ my: 4 }}
-            >
-              <span style={{ color: "#009688" }}>MEDI</span>
-              <span style={{ color: "#f44336" }}>CORE</span>
-            </Typography>
+            <Box
+              component="img"
+              src={publicLogoUrl}
+              alt="Logo"
+              sx={{
+                height: 192,
+                width: "auto",
+              }}
+            />
           </Box>
           <Outlet />
         </Card>
@@ -43,7 +47,7 @@ const Auth = () => {
             p={2}
           >
             {"© "}
-            {new Date().getFullYear()} Medicore Dental Clinic
+            {new Date().getFullYear()} Pharmex by Allos
           </Typography>
         </Card>
       </Box>

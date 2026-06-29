@@ -45,34 +45,34 @@ const About = () => {
     {
       icon: <VisionIcon sx={{ fontSize: 50 }} />,
       title: 'Our Vision',
-      description: 'To become the leading eye care provider in Mwanza, revolutionizing eye care services through innovative technology and comprehensive solutions.',
-      color: '#00796B',
+      description: 'To become the leading eye care provider in Dar es Salaam, revolutionizing eye care services through innovative technology and comprehensive solutions.',
+      color: '#1976d2',
     },
     {
       icon: <MissionIcon sx={{ fontSize: 50 }} />,
       title: 'Our Mission',
-      description: 'To empower the Mwanza community with cutting-edge eye care technology and comprehensive services to enhance vision health and quality of life.',
+      description: 'To empower the Dar es Salaam community with cutting-edge eye care technology and comprehensive services to enhance vision health and quality of life.',
       color: '#00BCD4',
     },
     {
       icon: <AwardIcon sx={{ fontSize: 50 }} />,
       title: 'Our Values',
       description: 'Excellence, innovation, integrity, and patient-centered care drive everything we do.',
-      color: '#80CBC4',
+      color: '#42a5f5',
     },
     {
       icon: <TeamIcon sx={{ fontSize: 50 }} />,
       title: 'Our Commitment',
-      description: 'We are dedicated to supporting our patients with responsive service, comprehensive eye care, and a commitment to your success.',
-      color: '#00695C',
+      description: 'We are dedicated to supporting our patients with responsive service, comprehensive care, and a commitment to your success.',
+      color: '#1565c0',
     },
   ];
 
 
   const teamMembers = [
-    { name: 'Dr. Kayoka S. Kayoka', role: 'Chief Optometrist', image: '/images/optometrist-headshot.jpeg' },
-    { name: 'Dr. Anna Mwangi', role: 'Lead Optometrist', image: '/images/gallery-staff-at-work.jpeg' },
-    { name: 'Dr. Fatma Ali', role: 'Pediatric Optometrist', image: '/images/appointment-receptionist.jpeg' },
+    { name: 'Dr. Sarah Johnson', role: 'Chief Medical Officer', image: '/images/optometrist-headshot.jpeg' },
+    { name: 'Dr. Michael Chen', role: 'Lead Ophthalmologist', image: '/images/gallery-staff-at-work.jpeg' },
+    { name: 'Dr. Amina Hassan', role: 'Pediatric Eye Specialist', image: '/images/appointment-receptionist.jpeg' },
   ];
 
   const achievements = [
@@ -154,9 +154,9 @@ const About = () => {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#f8f9fa', pt: { xs: '56px', sm: '64px' } }}>
       <SEO
-        title="About Us - Best Vision EyeCare | Leading Eye Clinic in Tanzania"
-        description="Learn about Best Vision EyeCare, the leading eye clinic in Mwanza, Tanzania. Our mission is to provide comprehensive, accessible, and high-quality eye care services to our community."
-        keywords="about Best Vision EyeCare, eye clinic Tanzania, optometrist Mwanza, eye care mission, eye clinic history, Best Vision team"
+        title="About Us - BestVision Eyecare | Leading Eye Care Clinic in Tanzania"
+        description="Learn about BestVision Eyecare, the leading eye care clinic in Dar es Salaam, Tanzania. Our mission is to provide comprehensive, accessible, and high-quality eye care services to our community. Trusted since 2018."
+        keywords="about BestVision Eyecare, eye clinic Tanzania, optometrist Dar es Salaam, eye care mission, eye clinic history, BestVision Eyecare team"
       />
       <Navbar />
 
@@ -211,7 +211,7 @@ const About = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              About Best Vision EyeCare
+              About BestVision Eyecare
             </Typography>
             <Typography
               variant="h6"
@@ -224,7 +224,7 @@ const About = () => {
                 lineHeight: 1.8,
               }}
             >
-              Empowering the Mwanza community with innovative eye care technology and comprehensive solutions.
+              Empowering the Dar es Salaam community with innovative eye care technology and comprehensive solutions since 2018.
             </Typography>
           </Box>
         </Container>
@@ -328,7 +328,7 @@ const About = () => {
                 <Box
                   component="img"
                   src="/images/clinic-exterior-building.jpeg"
-                    alt="Best Vision EyeCare"
+                  alt="BestVision Eyecare Clinic"
                   sx={{
                     width: '100%',
                     height: { xs: 300, sm: 400, md: 500, lg: 600 },
@@ -343,7 +343,7 @@ const About = () => {
                   <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
                     <Chip
                       icon={<PersonIcon />}
-                      label="Best Vision Team"
+                      label="BestVision Team"
                       size="small"
                       sx={{ bgcolor: '#667eea', color: 'white' }}
                     />
@@ -374,9 +374,9 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    Best Vision EyeCare was founded to revolutionize eye care services in Tanzania through innovative technology and compassionate care.
-                    We recognized the critical need for comprehensive, accessible eye care services in Mwanza, delivering comprehensive vision examinations,
-                    advanced diagnostics, quality treatment options, and personalized care in one welcoming, professional environment.
+                    BestVision Eyecare was founded in 2018 in Dar es Salaam to revolutionize eye care services in Tanzania through innovative technology and compassionate care.
+                    We recognized the critical need for comprehensive, accessible eye care services in Tanzania's commercial capital, delivering comprehensive eye examinations,
+                    advanced diagnostics, quality eyewear, and personalized treatment in one welcoming, professional environment.
                   </Typography>
                   <Typography
                     variant="body1"
@@ -387,8 +387,8 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    We have grown to become one of Mwanza's most trusted eye care providers, serving thousands of patients throughout the region.
-                    Today, we continue to innovate and expand our services, keeping the needs of our community at the heart of everything we do. Best Vision EyeCare remains committed to excellence in eye care.
+                    Starting as a small clinic, we've grown to become one of Dar es Salaam's most trusted eye care providers, serving thousands of patients throughout the region.
+                    Today, we continue to innovate and expand our services, keeping the needs of our community at the heart of everything we do. BestVision Eyecare remains committed to excellence in eye care.
                   </Typography>
                   <Button
                     variant="contained"
@@ -456,7 +456,7 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    To empower the Mwanza community with cutting-edge eye care technology, comprehensive services, and unwavering support to enhance vision health and quality of life.
+                    To empower the Dar es Salaam community with cutting-edge eye care technology, comprehensive services, and unwavering support to enhance vision health and quality of life.
                   </Typography>
                 </CardContent>
               </Card>
@@ -504,7 +504,7 @@ const About = () => {
                       color: '#4A4A4A !important',
                     }}
                   >
-                    To become the leading eye care provider in Mwanza and throughout Tanzania, revolutionizing how eye care services are delivered through innovative technology, expert care, and comprehensive solutions.
+                    To become the leading eye care provider in Dar es Salaam and throughout Tanzania, revolutionizing how eye care services are delivered through innovative technology, expert care, and comprehensive solutions.
                   </Typography>
                 </CardContent>
               </Card>
@@ -536,7 +536,7 @@ const About = () => {
                     fontSize: { xs: '1.25rem', md: '1.5rem' },
                   }}
                 >
-                  Ready to Transform Your Vision?
+                  Ready to Transform Your Practice?
                 </Typography>
                 <Typography
                   variant="body2"
@@ -547,7 +547,7 @@ const About = () => {
                     lineHeight: 1.7,
                   }}
                 >
-                   Join thousands of satisfied patients in Mwanza who trust Best Vision EyeCare for their vision health and eye care needs.
+                  Join thousands of satisfied patients in Dar es Salaam who trust BestVision Eyecare for their vision health and eye care needs.
                 </Typography>
                 <Stack
                   direction="column"
@@ -625,8 +625,8 @@ const About = () => {
                   <Stack spacing={2}>
                     {[
                       { title: 'Comprehensive Eye Care Services', image: '/images/services-vision-testing.jpeg' },
-                      { title: 'Modern Eye Treatment Equipment', image: '/images/services-glasses-frames.jpeg' },
-                      { title: 'Expert Team of Optometrists', image: '/images/gallery-staff-at-work.jpeg' },
+                      { title: 'Advanced Vision Testing Equipment', image: '/images/services-glasses-frames.jpeg' },
+                      { title: 'Expert Team of Ophthalmologists', image: '/images/gallery-staff-at-work.jpeg' },
                     ].map((post, index) => (
                       <Box
                         key={index}
@@ -697,7 +697,7 @@ const About = () => {
                     Categories
                   </Typography>
                   <Stack spacing={1}>
-                    {['Eye Examinations', 'Vision Testing', 'Glasses & Frames', 'Cataract Treatment', 'Eye Surgery'].map((category, index) => (
+                    {['Eye Examinations', 'Vision Testing', 'Glasses & Frames', 'Contact Lenses', 'Surgical Procedures'].map((category, index) => (
                       <Box
                         key={index}
                         sx={{
@@ -745,7 +745,7 @@ const About = () => {
                     Popular Tags
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    {['Eye Care', 'Vision Health', 'Clinic', 'Optometry', 'Vision', 'Best Vision', 'Tanzania', 'Health'].map((tag, index) => (
+                    {['Eye Care', 'Vision', 'Clinic', 'Ophthalmology', 'Optometry', 'BestVision', 'Tanzania', 'Health'].map((tag, index) => (
                       <Chip
                         key={index}
                         label={tag}

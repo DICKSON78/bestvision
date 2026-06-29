@@ -14,6 +14,7 @@ import { useNotificationContext } from "../contexts/NotificationContext";
 
 import {
   AddRounded as AddIcon,
+  ArticleRounded as ArticleIcon,
   BadgeRounded as JobTitlesIcon,
   ContactsRounded as ClinicDetailsIcon,
   DoneAllRounded as DoneIcon,
@@ -28,7 +29,6 @@ import {
   LightbulbRounded as IdeaDevelopmentIcon,
   LibraryBooksRounded as ReportsIcon,
   LocalActivityRounded as OutreachProgrammesIcon,
-  ArticleRounded as BlogIcon,
   LocalHospitalRounded as ClinicsIcon,
   LocationSearchingRounded as MarketResearchIcon,
   ManageAccountsRounded as UserManagementIcon,
@@ -235,7 +235,7 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           title: "Dashboard",
           icon: <HomeIcon />,
           to: "/dashboard",
-          show: true,
+          show: user.privileges.dashboard,
         },
         {
           title: "Patient Records",
@@ -272,7 +272,7 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           icon: <GlassPatientsIcon />,
           to: "/reception/glass-patients",
           badge: Number(notifications?.spectacle_patients) || 0,
-          show: false,
+          show: user.privileges.reception,
         },
         {
           title: "Patient Waiting Time",
@@ -394,12 +394,12 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
               to: "/payment-center/reports/expenses",
               show: user.privileges.payment_center,
             },
-        {
-          title: "Partner Frame Payments",
-          icon: <ReportsIcon />,
-          to: "/payment-center/reports/partner-frame-payments",
-          show: false,
-        },
+            // {
+            //   title: "Partner Frame Payments",
+            //   icon: <ReportsIcon />,
+            //   to: "/payment-center/reports/partner-frame-payments",
+            //   show: user.privileges.payment_center,
+            // },
           ],
         },
         {
@@ -443,57 +443,63 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
         {
           title: "4. OPTICIAN CENTER",
           subheader: true,
-          show: false,
+          show: user.privileges.optician_center,
         },
         {
           title: "Optician Center Dashboard",
           icon: <HomeIcon />,
           to: "/optician-center/dashboard",
-          show: false,
+          show: user.privileges.optician_center,
         },
         {
           title: "Patients Sent to Optician",
           icon: <WaitingIcon />,
           to: "/optician-center/glass-patients",
           badge: Number(notifications?.patients_sent_to_optician) || 0,
-          show: false,
+          show: user.privileges.optician_center,
         },
         {
           title: "Glass Dispensing Requests",
           icon: <WaitingIcon />,
           to: "/optician-center/dispensing-requests",
           badge: Number(notifications?.glass_dispensing_requests) || 0,
-          show: false,
+          show: user.privileges.optician_center,
         },
         {
           title: "Reports",
           icon: <ReportsIcon />,
           to: "/optician-center/reports",
-          show: false,
+          show: user.privileges.optician_center,
           items: [
             {
               title: "Items Dispensed Report",
               icon: <ReportsIcon />,
               to: "/optician-center/reports/items-dispensed",
-              show: false,
+              show: user.privileges.optician_center,
             },
             {
               title: "Items Not Dispensed Report",
               icon: <ReportsIcon />,
               to: "/optician-center/reports/items-not-dispensed",
-              show: false,
+              show: user.privileges.optician_center,
             },
             {
               title: "Item Balance Report",
               icon: <ReportsIcon />,
               to: "/optician-center/reports/item-balance",
-              show: false,
+              show: user.privileges.optician_center,
             },
           ],
         },
         {
           title: "5. MEDICINE CENTER",
           subheader: true,
+          show: user.privileges.medicine_center,
+        },
+        {
+          title: "Medicine Center Dashboard",
+          icon: <HomeIcon />,
+          to: "/medicine-center/dashboard",
           show: user.privileges.medicine_center,
         },
 
@@ -720,7 +726,7 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           title: "Lens Stock",
           icon: <ItemsIcon />,
           to: "/inventory-management/lens-stock",
-          show: false,
+          show: user.privileges.inventory_management,
         },
         {
           title: "Reports",
@@ -780,6 +786,12 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           show: user.privileges.marketing,
         },
         {
+          title: "Blog Posts",
+          icon: <ArticleIcon />,
+          to: "/marketing/blog",
+          show: user.privileges.marketing,
+        },
+        {
           title: "Marketing Strategies",
           icon: <MarketingStrategiesIcon />,
           to: "/marketing/strategies",
@@ -801,12 +813,6 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           title: "Communication Logs",
           icon: <CommunicationLogsIcon />,
           to: "/marketing/communication-logs",
-          show: user.privileges.marketing,
-        },
-        {
-          title: "Blog Posts",
-          icon: <BlogIcon />,
-          to: "/marketing/blog",
           show: user.privileges.marketing,
         },
         {
@@ -954,7 +960,7 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
               title: "Lens Types",
               icon: <SettingsIcon />,
               to: "/settings/item-management/lens-types",
-              show: false,
+              show: user.privileges.settings,
             },
             {
               title: "Items",
@@ -1027,31 +1033,31 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
         {
           title: "13. MOH REPORTS",
           subheader: true,
-          show: true,
+          show: user.privileges.settings,
         },
         {
-          title: "Monthly OPD Report",
+          title: "Monthly OPD",
           icon: <ReportsIcon />,
           to: "/moh-reports/monthly-opd",
-          show: true,
+          show: user.privileges.settings,
         },
         {
-          title: "Pharm. Consumption",
+          title: "Pharmaceutical Consumption",
           icon: <ReportsIcon />,
           to: "/moh-reports/pharmaceutical-consumption",
-          show: true,
+          show: user.privileges.settings,
         },
         {
           title: "Revenue Summary",
           icon: <ReportsIcon />,
           to: "/moh-reports/revenue-summary",
-          show: true,
+          show: user.privileges.settings,
         },
         {
-          title: "IPD Report (HMIS 002)",
+          title: "IPD Report",
           icon: <ReportsIcon />,
           to: "/moh-reports/ipd-report",
-          show: true,
+          show: user.privileges.settings,
         },
       ]));
     } else {

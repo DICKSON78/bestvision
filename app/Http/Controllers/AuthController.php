@@ -88,21 +88,13 @@ class AuthController extends Controller
             }
 
             // Build normalized privileges object: { key: true }
-            $privilegeRows = UserPrivilege::where('user_id', $user->id)
+            $privilegeKeys = UserPrivilege::where('user_id', $user->id)
                 ->pluck('privilege')
                 ->toArray();
             $normalized = new \stdClass();
-            foreach ($privilegeRows as $row) {
-                $decoded = json_decode($row, true);
-                if (is_array($decoded)) {
-                    foreach ($decoded as $key => $value) {
-                        if ($value) {
-                            $normalized->$key = true;
-                        }
-                    }
-                } else if ($row) {
-                    $normalized->$row = true;
-                }
+            foreach ($privilegeKeys as $key) {
+                // Only set truthy flags; frontend treats true/1/"1" equivalently
+                $normalized->$key = true;
             }
             $user->privileges = $normalized;
 

@@ -14,12 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('stocktake_items', function (Blueprint $table) {
-            if (!Schema::hasColumn('stocktake_items', 'selling_price')) {
-                $table->double('selling_price')->unsigned()->nullable()->after('unit_buying_price');
-            }
-            if (!Schema::hasColumn('stocktake_items', 'expiration_date')) {
-                $table->date('expiration_date')->nullable()->after('selling_price');
-            }
+            $table->double('selling_price')->unsigned()->nullable()->after('unit_buying_price');
+            $table->date('expiration_date')->nullable()->after('selling_price');
         });
     }
 

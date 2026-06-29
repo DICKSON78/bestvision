@@ -18,7 +18,6 @@ use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\ItemTypesController;
 use App\Http\Controllers\JobTitlesController;
 use App\Http\Controllers\LensTypesController;
-use App\Http\Controllers\Marketing\BlogPostsController;
 use App\Http\Controllers\Marketing\CommunicationLogsController;
 use App\Http\Controllers\Marketing\DailyActivitiesController;
 use App\Http\Controllers\Marketing\EventsController;
@@ -263,13 +262,12 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
         $router->apiResource('/marketing-strategies', MarketingStrategiesController::class);
         $router->apiResource('/information-sources', InformationSourcesController::class);
         $router->apiResource('/communication-logs', CommunicationLogsController::class);
-        $router->apiResource('/blog-posts', BlogPostsController::class);
+        $router->apiResource('/blog-posts', \App\Http\Controllers\Marketing\BlogPostsController::class);
     });
     
     $router->prefix('consultation-room')->group(function ($router) {
         $router->get('/dashboard', [ConsultationRoomDashboardController::class, '__invoke']);
     });
-    
     
     $router->prefix('optician-center')->group(function ($router) {
         $router->get('/dashboard', [OpticianCenterDashboardController::class, '__invoke']);
@@ -315,12 +313,6 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
         $router->controller(InventoryManagementReportsController::class)->prefix('inventory-management')->group(function ($router) {
             $router->get('/item-quantity-dispensed', 'getItemQuantityDispensedReport');
             $router->get('/item-balance', 'getItemBalanceReport');
-        });
-        $router->controller(\App\Http\Controllers\Reports\MoHReportsController::class)->prefix('moh')->group(function ($router) {
-            $router->get('/monthly-opd', 'monthlyOpd');
-            $router->get('/pharmaceutical-consumption', 'pharmaceuticalConsumption');
-            $router->get('/revenue-summary', 'revenueSummary');
-            $router->get('/ipd-report', 'ipdReport');
         });
     });
 });

@@ -55,7 +55,7 @@ class GiveAdminFullAccess extends Command
             $allPrivileges = [
                 'reception',
                 'medicine_center',
-                'optical_lab',
+                'optician_center',
                 'consultation_room',
                 'procedure_room',
                 'other_dispensing',

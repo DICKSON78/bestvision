@@ -21,6 +21,13 @@ import {
   DialogActions,
 } from '@mui/material';
 import {
+  CalendarToday as CalendarIcon,
+  Security as InsuranceIcon,
+  ShoppingBag as ShopIcon,
+  Visibility as EyeIcon,
+  Healing as TreatmentIcon,
+  Lens as ContactLensIcon,
+  Groups as OutreachIcon,
   ArrowForward as ArrowForwardIcon,
   CheckCircle as CheckIcon,
   Star as StarIcon,
@@ -44,6 +51,7 @@ import {
   ChildCare as ChildCareIcon,
   WaterDrop as WaterDropIcon,
   MedicalServices as MedicalServicesIcon,
+  MenuBook as MenuBookIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
 import { gsap } from 'gsap';
@@ -59,7 +67,7 @@ gsap.registerPlugin(ScrollTrigger);
 const colors = {
   primary: '#1E88E5',
   primaryLight: '#4FC3F7',
-  primaryDark: '#004D40',
+  primaryDark: '#1565c0',
   secondary: '#00ACC1',
   secondaryLight: '#4dd0e1',
   secondaryDark: '#0097a7',
@@ -143,7 +151,7 @@ const Home = () => {
     {
       icon: <CalendarIcon sx={{ fontSize: 32 }} />,
       title: 'Book Appointment',
-      subtitle: 'Schedule your eye check-up online in seconds',
+      subtitle: 'Book your comprehensive eye examination online in seconds',
       description: '',
       color: colors.primary,
       route: '/appointment',
@@ -160,92 +168,92 @@ const Home = () => {
       external: true,
     },
     {
-      icon: <MedicalServicesIcon sx={{ fontSize: 32 }} />,
-      title: 'Our Services',
-      subtitle: 'Explore our comprehensive eye care services',
+      icon: <ShopIcon sx={{ fontSize: 32 }} />,
+      title: 'Shop Eyewear',
+      subtitle: 'Browse our collection of designer frame and lenses',
       description: '',
       color: colors.success,
-      route: '/services',
-      buttonText: 'View Services',
+      route: '/gallery', // Eyeware Gallery
+      buttonText: 'Shop Now',
     },
   ];
 
   const services = [
     {
-      icon: <TreatmentIcon sx={{ fontSize: 48 }} />,
-      title: 'Comprehensive Eye Exams',
-      description: 'Complete eye examinations using advanced diagnostic technology. Our experienced optometrists perform thorough vision assessments to detect eye conditions early, evaluate overall eye health, and provide personalized treatment plans.',
+      icon: <EyeIcon sx={{ fontSize: 48 }} />,
+      title: 'Comprehensive Eye Examination',
+      description: 'Complete eye health assessment using advanced diagnostic technology. Our certified optometrists perform thorough examinations to evaluate your vision, detect eye diseases early, and ensure optimal eye health. We use state-of-the-art equipment for accurate diagnosis and personalized care.',
       features: [
         'Complete Vision Assessment',
         'Digital Retinal Imaging',
-        'Visual Acuity Test',
         'Glaucoma Screening',
-        'Diabetic Eye Screening',
+        'Intraocular Pressure Testing',
+        'Visual Field Analysis',
       ],
       color: colors.primary,
     },
     {
-      icon: <TreatmentIcon sx={{ fontSize: 48 }} />,
-      title: 'Contact Lens Services',
-      description: 'Expert contact lens fitting and consultation services. Our skilled optometrists help you find the perfect contact lenses, from daily disposables to specialty lenses, ensuring optimal comfort and clear vision.',
+      icon: <EyeIcon sx={{ fontSize: 48 }} />,
+      title: 'Vision Screening & Testing',
+      description: 'Professional vision screening services to assess visual acuity, color vision, depth perception, and eye coordination. Early detection of vision problems helps prevent complications and ensures timely intervention. Our comprehensive testing covers all aspects of visual function.',
       features: [
-        'Contact Lens Fittings',
-        'Lens Consultation',
-        'Trial Lens Assessments',
-        'Contact Lens Training',
-        'Follow-up Care',
+        'Visual Acuity Testing',
+        'Color Vision Assessment',
+        'Depth Perception Evaluation',
+        'Eye Movement Analysis',
+        'Binocular Vision Testing',
       ],
       color: colors.secondary,
     },
     {
       icon: <TreatmentIcon sx={{ fontSize: 48 }} />,
-      title: 'Eyewear & Frames',
-      description: 'Extensive selection of prescription eyewear and fashion frames. We offer high-quality lenses and frames to suit every style and budget, helping you see clearly and look great.',
+      title: 'Eye Disease Diagnosis & Treatment',
+      description: 'Advanced diagnosis and treatment of various eye conditions including cataracts, glaucoma, diabetic retinopathy, macular degeneration, and dry eye syndrome. Our experienced ophthalmologists provide comprehensive care with access to the latest treatment options and surgical interventions when needed.',
       features: [
-        'Frame Selection',
-        'Prescription Lenses',
-        'Sunglasses & Blue Light',
-        'Lens Coatings',
-        'Repairs & Adjustments',
+        'Advanced Diagnostic Imaging',
+        'Medical Treatment Plans',
+        'Surgical Referrals',
+        'Disease Monitoring',
+        'Preventive Care',
       ],
       color: colors.info,
     },
     {
-      icon: <WaterDropIcon sx={{ fontSize: 48 }} />,
-      title: 'Vision Therapy',
-      description: 'Specialized vision therapy programs to correct visual-motor and perceptual deficiencies. Our therapy helps improve eye coordination, tracking, and focusing abilities for patients of all ages.',
+      icon: <EyeIcon sx={{ fontSize: 48 }} />,
+      title: 'Prescription Services',
+      description: 'Precise prescription determination for eyeglasses and contact lenses using modern refraction equipment. Our optometrists perform detailed assessments to identify refractive errors and provide accurate prescriptions for optimal vision correction.',
       features: [
-        'Vision Therapy Exercises',
-        'Binocular Vision Training',
-        'Eye Tracking Therapy',
-        'Convergence Therapy',
-        'Visual Processing Assessment',
+        'Digital Refraction',
+        'Prescription Accuracy',
+        'Refractive Error Analysis',
+        'Lens Power Calculation',
+        'Progressive Lens Fitting',
       ],
       color: colors.success,
     },
     {
-      icon: <MedicalServicesIcon sx={{ fontSize: 48 }} />,
-      title: 'Dry Eye Treatment',
-      description: 'Comprehensive diagnosis and treatment of dry eye syndrome. We use advanced diagnostic tools to identify the root cause of your dry eyes and create a personalized treatment plan for lasting relief.',
+      icon: <ShopIcon sx={{ fontSize: 48 }} />,
+      title: 'Eyewear & Optical Services',
+      description: 'Complete optical services including prescription eyeglasses, contact lenses, and ophthalmic medications. We offer a wide selection of designer frames, premium lenses, and professional fitting services. Our certified opticians ensure perfect fit and optimal vision correction.',
       features: [
-        'Artificial Tears',
-        'Punctal Plugs',
-        'Warm Compress Therapy',
-        'Eyelid Hygiene',
-        'Meibomian Gland Expression',
+        'Designer Frame Selection',
+        'Premium Lens Options',
+        'Professional Frame Fitting',
+        'Contact Lens Services',
+        'Optical Accessories',
       ],
       color: colors.warning,
     },
     {
-      icon: <ChildCareIcon sx={{ fontSize: 48 }} />,
-      title: 'Pediatric Eye Care',
-      description: 'Specialized eye care for children, including vision screenings and comprehensive exams. We focus on early detection of vision problems to support healthy visual development and academic success.',
+      icon: <OutreachIcon sx={{ fontSize: 48 }} />,
+      title: 'Community Eye Health Programs',
+      description: 'Dedicated community outreach programs to promote eye health awareness and provide accessible eye care services. We conduct free screenings, educational workshops, and collaborate with schools and organizations to improve community eye health and prevent vision loss.',
       features: [
-        "Children's Eye Exams",
-        'Vision Screening',
-        'Color Vision Testing',
-        'Screen Time Management',
-        'Nutrition for Eye Health',
+        'Free Vision Screenings',
+        'Health Education Workshops',
+        'School Vision Programs',
+        'Community Partnerships',
+        'Preventive Eye Care',
       ],
       color: colors.primaryDark,
     },
@@ -253,44 +261,44 @@ const Home = () => {
 
   const whyChooseUs = [
     {
-      image: '/images/services-vision-testing.jpeg',
+      image: '/images/eye_exam.jpeg',
       title: 'Advanced Eye Examinations',
       description: 'State-of-the-art diagnostic technology combined with years of clinical experience. Our comprehensive eye examinations use the latest equipment to detect vision problems early and ensure your eyes remain healthy. We tailor each examination to your individual needs and medical history.',
       color: colors.primary,
       route: '/services',
     },
     {
-      image: '/images/gallery-staff-at-work.jpeg',
-      title: 'Professional Eye Care',
-      description: 'Expert care from certified optometrists and specialists. We provide comprehensive eye care services including routine check-ups, emergency care, and specialized treatments. Your eye health is our top priority, and we work with you to maintain healthy, clear vision.',
+      image: '/images/eyecare.jpeg',
+      title: 'Professional Vision Care',
+      description: 'Expert care from certified optometrists and ophthalmologists. We provide comprehensive vision care services including routine check-ups, emergency care, and specialized treatments. Your vision health is our top priority, and we work with you to maintain optimal eye health.',
       color: colors.secondary,
       route: '/services',
     },
     {
-      image: '/images/services-glasses-frames.jpeg',
+      image: '/images/disease.jpeg',
       title: 'Disease Prevention & Treatment',
-      description: 'Early detection and treatment of eye diseases to prevent complications. We screen for conditions like glaucoma, cataracts, macular degeneration, and diabetic retinopathy. Our proactive approach helps preserve your vision and prevents serious complications.',
+      description: 'Early detection and treatment of eye diseases to prevent vision loss. We screen for conditions like glaucoma, diabetic retinopathy, cataracts, and macular degeneration. Our proactive approach helps preserve your vision and prevents serious complications.',
       color: colors.info,
       route: '/services',
     },
     {
-      image: '/images/appointment-receptionist.jpeg',
-      title: 'Modern Treatment Techniques',
-      description: 'Using advanced eye care technology and modern treatment techniques, we provide comfortable and effective care. From digital retinal imaging to minimally invasive procedures, we ensure the best outcomes for your eye health.',
+      image: '/images/lens_fitting.jpeg',
+      title: 'Precision Prescriptions',
+      description: 'Accurate prescription services for eyeglasses and contact lenses. Using advanced refraction technology, we determine the exact prescription you need for clear, comfortable vision. Our certified opticians ensure perfect fit and optimal visual correction.',
       color: colors.success,
       route: '/services',
     },
     {
-      image: '/images/clinic_examination_room_equipment.jpeg',
-      title: 'Quality Vision Solutions',
-      description: 'Complete vision care services including prescription eyewear, contact lenses, and low vision aids. We use high-quality materials and precise techniques to restore function, clarity, and confidence in your vision.',
+      image: '/images/eyeware.jpeg',
+      title: 'Quality Eyewear Solutions',
+      description: 'Wide selection of designer frames, premium lenses, and contact lenses. We offer complete optical services including frame fitting, lens selection, and ongoing care. Our eyewear solutions combine fashion, function, and optimal vision correction.',
       color: colors.warning,
       route: '/services',
     },
     {
-      image: '/images/professional_man_at_desk.jpeg',
-      title: 'Community Eye Health Programs',
-      description: 'Committed to improving eye health in our community. We provide free vision screenings, educational programs, and outreach services to underserved populations. Our community programs help prevent eye diseases and promote eye health awareness.',
+      image: '/images/dryeye.jpeg',
+      title: 'Community Health Initiatives',
+      description: 'Committed to improving eye health in our community. We provide free screenings, educational programs, and outreach services to underserved populations. Our community programs help prevent vision loss and promote eye health awareness.',
       color: colors.primaryDark,
       route: '/services',
     },
@@ -305,9 +313,9 @@ const Home = () => {
   return (
     <Box sx={{ bgcolor: colors.white, minHeight: '100vh', pt: { xs: '56px', sm: '64px' } }}>
       <SEO
-        title="Best Vision EyeCare - Premier Eye Clinic in Tanzania | Comprehensive Eye Care"
-        description="Best Vision EyeCare is the leading eye clinic in Mwanza, Tanzania. We offer comprehensive eye examinations, contact lens services, eyewear, vision therapy, dry eye treatment, cataract screening, and pediatric eye care. Book your appointment today!"
-        keywords="eye clinic Tanzania, optometrist Mwanza, eye examination, contact lenses, eyewear, vision therapy, cataract screening, glaucoma test, low vision aids, Best Vision EyeCare, eye care Tanzania, family eye care"
+        title="BestVision Eyecare - Premier Eye Care Clinic in Tanzania | Comprehensive Eye Examinations"
+        description="BestVision Eyecare is the leading eye care clinic in Dar es Salaam, Tanzania. We offer comprehensive eye examinations, diagnosis & treatment of eye disorders, spectacles dispensing, contact lens fitting, and community eye outreach programs. Book your appointment today!"
+        keywords="eye care Tanzania, optometrist Dar es Salaam, eye examination, eye clinic, contact lens fitting, spectacles Tanzania, eye treatment, BestVision Eyecare, eye doctor Tanzania, vision care, comprehensive eye exam, eye disorders treatment"
       />
       <Navbar />
 
@@ -400,7 +408,7 @@ const Home = () => {
                   wordBreak: 'break-word',
                 }}
               >
-                One of the best eye clinics in Mwanza, delivering expert eye care through precision, advanced technology, and trust. Your vision is our priority.
+                One of the best eye clinics in Dar es Salaam, delivering expert eye care through precision, advanced technology, and trust. Your vision is our priority.
               </Typography>
 
               <Stack
@@ -1020,7 +1028,7 @@ const Home = () => {
                         lineHeight: 1.7,
                       }}
                     >
-                      Comprehensive eye care services
+                      Comprehensive vision care services
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
@@ -1046,7 +1054,7 @@ const Home = () => {
                         lineHeight: 1.7,
                       }}
                     >
-                      Affordable & transparent pricing
+                      Extensive collection of quality eyewear
                     </Typography>
                   </Box>
                 </Stack>
@@ -1136,7 +1144,7 @@ const Home = () => {
                     letterSpacing: '-0.02em',
                   }}
                 >
-                  Patient Education & Resources
+                  Order Books/Journal
                 </Typography>
                 <Typography
                   variant="body1"
@@ -1147,7 +1155,7 @@ const Home = () => {
                     mb: 3,
                   }}
                 >
-                  Access our comprehensive collection of eye health education materials. Stay informed about proper eye care, treatment options, and preventive practices for optimal vision health.
+                  Access our comprehensive collection of eye care books and journals. Stay updated with the latest research, treatment protocols, and clinical guidelines in ophthalmology and optometry.
                 </Typography>
                 <Stack spacing={2} sx={{ mb: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -1159,7 +1167,7 @@ const Home = () => {
                         color: `${colors.textDarkGray} !important`,
                       }}
                     >
-                      Vision hygiene guides
+                      Latest research publications
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -1171,7 +1179,7 @@ const Home = () => {
                         color: `${colors.textDarkGray} !important`,
                       }}
                     >
-                      Treatment information leaflets
+                      Clinical practice guidelines
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -1183,7 +1191,7 @@ const Home = () => {
                         color: `${colors.textDarkGray} !important`,
                       }}
                     >
-                      Preventive care resources
+                      Educational resources for professionals
                     </Typography>
                   </Box>
                 </Stack>
@@ -1191,7 +1199,7 @@ const Home = () => {
                   variant="contained"
                   size="large"
                   endIcon={<ArrowForwardIcon />}
-                  onClick={() => navigate('/patient-info')}
+                  onClick={() => navigate('/books')}
                   sx={{
                     bgcolor: colors.primary,
                     color: 'white',
@@ -1211,7 +1219,7 @@ const Home = () => {
                     mt: 'auto',
                   }}
                 >
-                  Learn More
+                  Order Now
                 </Button>
                 </Box>
               </Card>
@@ -1266,7 +1274,7 @@ const Home = () => {
                 lineHeight: 1.7,
               }}
             >
-              Visit our clinic in Mwanza, Tanzania. We're conveniently located and easily accessible.
+              Visit our clinic at Natta-Mwanza, Tanzania. We're conveniently located and easily accessible.
             </Typography>
           </Box>
 
@@ -1299,7 +1307,7 @@ const Home = () => {
                   <Box
                     component="img"
                     src="/images/clinic_exterior_with_insurance_promo.jpeg"
-                    alt="Best Vision EyeCare Building"
+                    alt="BestVision Eyecare Clinic Building"
                     sx={{
                       width: '100%',
                       height: '100%',
@@ -1332,7 +1340,7 @@ const Home = () => {
                         mb: 0.5,
                       }}
                     >
-                      Best Vision EyeCare
+                      BestVision Eyecare Clinic
                     </Typography>
                     <Typography
                       variant="body2"
@@ -1341,7 +1349,7 @@ const Home = () => {
                         fontSize: { xs: '0.875rem', md: '0.95rem' },
                       }}
                     >
-                      Mwanza, Tanzania
+                      Natta-Mwanza, Tanzania
                     </Typography>
                   </Box>
                 </Box>
@@ -1384,7 +1392,7 @@ const Home = () => {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Best Vision EyeCare Location - Mwanza, Tanzania"
+                    title="BestVision Eyecare Location - Natta-Mwanza, Tanzania"
                   />
                   <Box
                     sx={{
@@ -1530,7 +1538,7 @@ const Home = () => {
       >
         <IconButton
           component="a"
-          href="https://www.instagram.com/bestvisioneyecare"
+          href="https://www.instagram.com/bestvision_eyecare"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Follow us on Instagram"

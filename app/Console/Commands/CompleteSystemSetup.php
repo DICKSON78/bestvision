@@ -53,9 +53,9 @@ class CompleteSystemSetup extends Command
             $departments = [
                 ['name' => 'Administration', 'description' => 'Administrative department'],
                 ['name' => 'Reception', 'description' => 'Patient reception and registration'],
-                ['name' => 'Consultation', 'description' => 'Eye consultations and examinations'],
-                ['name' => 'Optical Lab', 'description' => 'Optical laboratory services and eyewear'],
-                ['name' => 'Radiology', 'description' => 'Ophthalmic imaging and diagnostic services'],
+                ['name' => 'Consultation', 'description' => 'Doctor consultations and examinations'],
+                ['name' => 'Optician', 'description' => 'Optical services and lens fitting'],
+                ['name' => 'Laboratory', 'description' => 'Lab tests and diagnostics'],
                 ['name' => 'Pharmacy', 'description' => 'Medicine dispensing and inventory'],
                 ['name' => 'Surgery', 'description' => 'Surgical procedures and operations'],
                 ['name' => 'Emergency', 'description' => 'Emergency medical services'],
@@ -82,11 +82,11 @@ class CompleteSystemSetup extends Command
             $this->info('3. Creating comprehensive job titles...');
             $jobTitles = [
                 ['name' => 'Administrator', 'description' => 'System administrator'],
-                ['name' => 'Optometrist', 'description' => 'Eye care doctor'],
-                ['name' => 'Optician', 'description' => 'Registered optician'],
+                ['name' => 'Doctor', 'description' => 'Medical doctor'],
+                ['name' => 'Nurse', 'description' => 'Registered nurse'],
                 ['name' => 'Receptionist', 'description' => 'Front desk staff'],
-                ['name' => 'Optical Technician', 'description' => 'Optical lab technician'],
-                ['name' => 'Optometric Assistant', 'description' => 'Chair-side assistant'],
+                ['name' => 'Optician', 'description' => 'Optical specialist'],
+                ['name' => 'Technician', 'description' => 'Technical staff'],
                 ['name' => 'Pharmacist', 'description' => 'Medicine specialist'],
                 ['name' => 'Manager', 'description' => 'Department manager'],
                 ['name' => 'Cashier', 'description' => 'Payment processing staff'],
@@ -114,29 +114,29 @@ class CompleteSystemSetup extends Command
                 [
                     'first_name' => 'Dr. John',
                     'last_name' => 'Smith',
-                    'username' => 'optometrist1',
-                    'role' => 'Optometrist',
+                    'username' => 'doctor1',
+                    'role' => 'Doctor',
                     'department_id' => 3, // Consultation
-                    'job_title_id' => 2, // Optometrist
-                    'designation' => 'Senior Optometrist',
+                    'job_title_id' => 2, // Doctor
+                    'designation' => 'Senior Doctor',
                 ],
                 [
                     'first_name' => 'Mary',
                     'last_name' => 'Johnson',
-                    'username' => 'optician1',
-                    'role' => 'Optician',
-                    'department_id' => 3, // Consultation
-                    'job_title_id' => 3, // Optician
-                    'designation' => 'Senior Optician',
+                    'username' => 'nurse1',
+                    'role' => 'Nurse',
+                    'department_id' => 11, // Nursing
+                    'job_title_id' => 3, // Nurse
+                    'designation' => 'Senior Nurse',
                 ],
                 [
                     'first_name' => 'Robert',
                     'last_name' => 'Wilson',
-                    'username' => 'optotech1',
-                    'role' => 'Optical Technician',
-                    'department_id' => 4, // Optical Lab
-                    'job_title_id' => 4, // Optical Technician
-                    'designation' => 'Senior Optical Technician',
+                    'username' => 'optician1',
+                    'role' => 'Optician',
+                    'department_id' => 4, // Optician
+                    'job_title_id' => 5, // Optician
+                    'designation' => 'Senior Optician',
                 ],
                 [
                     'first_name' => 'Sarah',
@@ -144,7 +144,7 @@ class CompleteSystemSetup extends Command
                     'username' => 'reception1',
                     'role' => 'Receptionist',
                     'department_id' => 2, // Reception
-                    'job_title_id' => 5, // Receptionist
+                    'job_title_id' => 4, // Receptionist
                     'designation' => 'Senior Receptionist',
                 ],
             ];
@@ -165,7 +165,7 @@ class CompleteSystemSetup extends Command
                         'gender' => 'Female',
                         'national_id' => null,
                         'phone' => '0000000000',
-                        'email' => $userData['username'] . '@bestvision-eyecare.co.tz',
+                        'email' => $userData['username'] . '@eyecare.com',
                         'username' => $userData['username'],
                         'password' => Hash::make('password123'),
                         'remember_token' => null,
@@ -283,10 +283,10 @@ class CompleteSystemSetup extends Command
             $consultationTypes = [
                 ['name' => 'General Consultation', 'description' => 'General eye examination'],
                 ['name' => 'Follow-up', 'description' => 'Follow-up consultation'],
-                ['name' => 'Emergency', 'description' => 'Emergency eye consultation'],
+                ['name' => 'Emergency', 'description' => 'Emergency consultation'],
                 ['name' => 'Surgery Consultation', 'description' => 'Pre-surgery consultation'],
                 ['name' => 'Post-surgery', 'description' => 'Post-surgery follow-up'],
-                ['name' => 'Vision Review', 'description' => 'Vision treatment review'],
+                ['name' => 'VIP Consultation', 'description' => 'VIP patient consultation'],
             ];
 
             foreach ($consultationTypes as $type) {
@@ -305,21 +305,21 @@ class CompleteSystemSetup extends Command
             // Create diseases
             $this->info('9. Creating common eye diseases...');
             $diseases = [
-                'Refractive Error',
                 'Cataract',
                 'Glaucoma',
+                'Diabetic Retinopathy',
+                'Macular Degeneration',
+                'Refractive Errors',
                 'Conjunctivitis',
                 'Dry Eye Syndrome',
-                'Pterygium',
                 'Blepharitis',
-                'Corneal Ulcer',
-                'Stye (Hordeolum)',
-                'Macular Degeneration',
-                'Diabetic Retinopathy',
-                'Amblyopia',
-                'Keratitis',
-                'Uveitis',
+                'Stye',
+                'Corneal Abrasion',
                 'Retinal Detachment',
+                'Uveitis',
+                'Keratoconus',
+                'Amblyopia',
+                'Strabismus',
             ];
 
             foreach ($diseases as $disease) {
@@ -327,6 +327,7 @@ class CompleteSystemSetup extends Command
                     ['name' => $disease],
                     [
                         'name' => $disease,
+                        'description' => 'Eye condition: ' . $disease,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]
@@ -337,9 +338,9 @@ class CompleteSystemSetup extends Command
             // Create comprehensive preferences
             $this->info('10. Creating comprehensive system preferences...');
             $preferences = [
-                ['key' => 'CLINIC_NAME', 'value' => 'Best Vision EyeCare'],
+                ['key' => 'CLINIC_NAME', 'value' => 'Best Vision Eye Care'],
                 ['key' => 'CLINIC_PHONE', 'value' => '0678110376'],
-                ['key' => 'CLINIC_EMAIL', 'value' => 'info@bestvision-eyecare.co.tz'],
+                ['key' => 'CLINIC_EMAIL', 'value' => 'info@bestvision.com'],
                 ['key' => 'CLINIC_ADDRESS', 'value' => 'Natta, Mwanza'],
                 ['key' => 'SYSTEM_VERSION', 'value' => '1.0.0'],
                 ['key' => 'MAINTENANCE_MODE', 'value' => 'No'],
