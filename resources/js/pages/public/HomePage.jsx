@@ -120,7 +120,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      <section className="visit-us container">
+      <section className="visit-us">
+        <div className="container">
         <div className="visit-wrap">
           <div className="visit-card">
             <h2>Visit Us</h2>
@@ -141,6 +142,7 @@ const HomePage = () => {
           <div className="visit-photo">
             <img alt="Best Vision Eye Care Building" src="/assets/img/visit-us.jpg" />
           </div>
+        </div>
         </div>
       </section>
     </>

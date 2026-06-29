@@ -47,7 +47,7 @@ const BlogShowPage = () => {
   return (
     <>
       <section className="blog-header" style={{ borderBottom: "none", marginBottom: 0, paddingBottom: 0 }}>
-        <div className="container" style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div className="container" style={{ textAlign: "center" }}>
           <Link to="/blog" className="blog-back-link">&larr; Back to News</Link>
           {post.category && <span className="blog-cat" style={{ marginTop: 14, fontSize: 12 }}>{post.category}</span>}
           <h1 style={{ font: "700 36px/1.15 Georgia, serif", margin: "6px 0 14px", color: "var(--text)" }}>{post.title}</h1>
@@ -76,7 +76,7 @@ const BlogShowPage = () => {
       </section>
 
       <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container" style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div className="container">
           <hr className="sep" />
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
             <Link className="blog-back-link" to="/blog">&larr; Back to News</Link>
