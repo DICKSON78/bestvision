@@ -24,6 +24,7 @@ use App\Http\Controllers\ItemsController;
 use App\Http\Controllers\ItemTypesController;
 use App\Http\Controllers\JobTitlesController;
 use App\Http\Controllers\LensTypesController;
+use App\Http\Controllers\Marketing\BlogPostsController;
 use App\Http\Controllers\Marketing\CommunicationLogsController;
 use App\Http\Controllers\Marketing\DailyActivitiesController;
 use App\Http\Controllers\Marketing\EventsController;
@@ -89,6 +90,10 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 // Public routes - accessible without authentication
 Route::get('/units-of-measure', [UnitsOfMeasureController::class, 'index']);
+
+// Public blog routes
+Route::get('/blog', [\App\Http\Controllers\PublicBlogController::class, 'index']);
+Route::get('/blog/{slug}', [\App\Http\Controllers\PublicBlogController::class, 'show']);
 
 // Temporary public dispensing dashboard for testing
 Route::get('/dispensing-dashboard-public', [\App\Http\Controllers\DispensingDashboardController::class, '__invoke']);
@@ -297,6 +302,7 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
         $router->apiResource('/marketing-strategies', MarketingStrategiesController::class);
         $router->apiResource('/information-sources', InformationSourcesController::class);
         $router->apiResource('/communication-logs', CommunicationLogsController::class);
+        $router->apiResource('/blog-posts', BlogPostsController::class);
     });
     
     $router->prefix('consultation-room')->group(function ($router) {

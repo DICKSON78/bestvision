@@ -81,6 +81,7 @@
     </script>
 
     <link href="{{ \Illuminate\Support\Facades\URL::to('/') . '/css/fonts.css' }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
 
     @env('local')
         @viteReactRefresh

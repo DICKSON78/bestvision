@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import {
   BrowserRouter as Router,
-  Navigate,
   Route,
   Routes,
 } from "react-router-dom";
@@ -16,11 +15,29 @@ import darkTheme from "../themes/dark";
 
 import AuthLayout from "../layouts/Auth";
 import DefaultLayout from "../layouts/Default";
+import PublicLayout from "../layouts/PublicLayout";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
+import HomePage from "../pages/public/HomePage";
+import AboutPage from "../pages/public/AboutPage";
+import ServicesPage from "../pages/public/ServicesPage";
+import ProductsPage from "../pages/public/ProductsPage";
+import FacilityPage from "../pages/public/FacilityPage";
+import WhyChooseUsPage from "../pages/public/WhyChooseUsPage";
+import TeamPage from "../pages/public/TeamPage";
+import ContactPage from "../pages/public/ContactPage";
+import BookAppointmentPage from "../pages/public/BookAppointmentPage";
+import FAQPage from "../pages/public/FAQPage";
+import PrivacyPage from "../pages/public/PrivacyPage";
+import TermsPage from "../pages/public/TermsPage";
+import OutreachPage from "../pages/public/OutreachPage";
+import PartnersPage from "../pages/public/PartnersPage";
+import BlogIndexPage from "../pages/public/BlogIndexPage";
+import BlogShowPage from "../pages/public/BlogShowPage";
 import ReceptionRoutes from "../pages/reception/ReceptionRoutes";
 import PaymentCenterRoutes from "../pages/payment-center/PaymentCenterRoutes";
 import ConsultationRoomRoutes from "../pages/consultation-room/ConsultationRoomRoutes";
+import OpticianCenterRoutes from "../pages/optician-center/OpticianCenterRoutes";
 import DentalLabRoutes from "../pages/dental-lab/DentalLabRoutes";
 import MedicineCenterRoutes from "../pages/medicine-center/MedicineCenterRoutes";
 import ProcedureRoomRoutes from "../pages/procedure-room/ProcedureRoomRoutes";
@@ -69,22 +86,33 @@ const App = () => {
               }}
             >
           <Routes>
-            <Route
-              path="/"
-              exact
-              element={<Navigate to="/login" />}
-            />
-            <Route
-              path="/"
-              element={<AuthLayout />}
-            >
-              <Route
-                path="/login"
-                element={<Login />}
-              />
+            {/* Public website */}
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/facility" element={<FacilityPage />} />
+              <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
+              <Route path="/team" element={<TeamPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/book" element={<BookAppointmentPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/outreach" element={<OutreachPage />} />
+              <Route path="/partners" element={<PartnersPage />} />
+              <Route path="/blog" element={<BlogIndexPage />} />
+              <Route path="/blog/:slug" element={<BlogShowPage />} />
             </Route>
+
+            {/* Login */}
+            <Route path="/login" element={<AuthLayout />}>
+              <Route index element={<Login />} />
+            </Route>
+
+            {/* Admin */}
             <Route
-              path="/"
               element={
                 <DefaultLayout
                   setUser={setUser}
@@ -92,126 +120,144 @@ const App = () => {
                 />
               }
             >
-              <React.Fragment>
-                <Route
-                  path="dashboard"
-                  element={<Dashboard setSmsBalance={setSmsBalance} />}
-                />
-                <Route
-                  path="patient-records/*"
-                  element={<PatientRecordsRoutes />}
-                />
-                <Route
-                  path="reception/*"
-                  element={
-                    user?.privileges?.reception ? <ReceptionRoutes /> : null
-                  }
-                />
-                <Route
-                  path="payment-center/*"
-                  element={
-                    user?.privileges?.payment_center ? (
-                      <PaymentCenterRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="consultation-room/*"
-                  element={
-                    user?.privileges?.consultation_room ? (
-                      <ConsultationRoomRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="optician-center/*"
-                  element={null}
-                />
-                <Route
-                  path="dental-lab/*"
-                  element={<DentalLabRoutes />}
-                />
-                <Route
-                  path="medicine-center/*"
-                  element={
-                    user?.privileges?.medicine_center ? (
-                      <MedicineCenterRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="dispensing/*"
-                  element={<DispensingMainRoutes />}
-                />
-                <Route
-                  path="procedure-room/*"
-                  element={
-                    user?.privileges?.procedure_room ? (
-                      <ProcedureRoomRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="other-dispensing/*"
-                  element={
-                    user?.privileges?.other_dispensing ? (
-                      <OtherDispensingRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="inventory-management/*"
-                  element={
-                    user?.privileges?.inventory_management ? (
-                      <InventoryManagementRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="marketing/*"
-                  element={
-                    user?.privileges?.marketing ? <MarketingRoutes /> : null
-                  }
-                />
-                <Route
-                  path="financial-management/*"
-                  element={
-                    user?.privileges?.financial_management ? (
-                      <FinancialManagementRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="user-management/*"
-                  element={
-                    user?.privileges?.user_management ? (
-                      <UserManagementRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="settings/*"
-                  element={
-                    user?.privileges?.settings ? <SettingsRoutes /> : null
-                  }
-                />
-                <Route
-                  path="reports/dental-morbidity"
-                  element={
-                    user?.privileges?.consultation_room ? (
-                      <DentalMorbidityReport />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="dental-appointments"
-                  element={<DentalAppointments />}
-                />
-                <Route
-                  path="moh-reports/*"
-                  element={<MohReportsRoutes />}
-                />
-              </React.Fragment>
+              <Route
+                path="/dashboard"
+                element={
+                  user?.privileges?.dashboard ? (
+                    <Dashboard setSmsBalance={setSmsBalance} />
+                  ) : null
+                }
+              />
+              <Route
+                path="/patient-records/*"
+                element={<PatientRecordsRoutes />}
+              />
+              <Route
+                path="/reception/*"
+                element={
+                  user?.privileges?.reception ? <ReceptionRoutes /> : null
+                }
+              />
+              <Route
+                path="/payment-center/*"
+                element={
+                  user?.privileges?.payment_center ? (
+                    <PaymentCenterRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/consultation-room/*"
+                element={
+                  user?.privileges?.consultation_room ? (
+                    <ConsultationRoomRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/optician-center/*"
+                element={
+                  user?.privileges?.optician_center ? (
+                    <OpticianCenterRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/medicine-center/*"
+                element={
+                  user?.privileges?.medicine_center ? (
+                    <MedicineCenterRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/dispensing/*"
+                element={
+                  <>
+                    {user?.privileges?.dispensing ? (
+                      <DispensingMainRoutes />
+                    ) : (
+                      <div>No dispensing privileges</div>
+                    )}
+                  </>
+                }
+              />
+              <Route
+                path="/procedure-room/*"
+                element={
+                  user?.privileges?.procedure_room ? (
+                    <ProcedureRoomRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/other-dispensing/*"
+                element={
+                  user?.privileges?.other_dispensing ? (
+                    <OtherDispensingRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/inventory-management/*"
+                element={
+                  user?.privileges?.inventory_management ? (
+                    <InventoryManagementRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/marketing/*"
+                element={
+                  user?.privileges?.marketing ? <MarketingRoutes /> : null
+                }
+              />
+              <Route
+                path="/financial-management/*"
+                element={
+                  user?.privileges?.financial_management ? (
+                    <FinancialManagementRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/user-management/*"
+                element={
+                  user?.privileges?.user_management ? (
+                    <UserManagementRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/settings/*"
+                element={
+                  user?.privileges?.settings ? <SettingsRoutes /> : null
+                }
+              />
+              <Route
+                path="/dental-lab/*"
+                element={
+                  user?.privileges?.dental_lab ? (
+                    <DentalLabRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="/reports/dental-morbidity"
+                element={
+                  user?.privileges?.consultation_room ? (
+                    <DentalMorbidityReport />
+                  ) : null
+                }
+              />
+              <Route
+                path="/dental-appointments"
+                element={<DentalAppointments />}
+              />
+              <Route
+                path="/moh-reports/*"
+                element={<MohReportsRoutes />}
+              />
             </Route>
           </Routes>
             </Router>

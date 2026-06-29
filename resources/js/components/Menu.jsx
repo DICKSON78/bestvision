@@ -28,6 +28,7 @@ import {
   LightbulbRounded as IdeaDevelopmentIcon,
   LibraryBooksRounded as ReportsIcon,
   LocalActivityRounded as OutreachProgrammesIcon,
+  ArticleRounded as BlogIcon,
   LocalHospitalRounded as ClinicsIcon,
   LocationSearchingRounded as MarketResearchIcon,
   ManageAccountsRounded as UserManagementIcon,
@@ -843,6 +844,12 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           title: "Communication Logs",
           icon: <CommunicationLogsIcon />,
           to: "/marketing/communication-logs",
+          show: user.privileges.marketing,
+        },
+        {
+          title: "Blog Posts",
+          icon: <BlogIcon />,
+          to: "/marketing/blog",
           show: user.privileges.marketing,
         },
         {

@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Marketing\BlogPost;
+use Illuminate\Http\Request;
+
+class PublicBlogController extends Controller
+{
+    public function index(Request $request)
+    {
+        $per_page = min((int)($request->per_page ?? 12), 50);
+        $posts = BlogPost::published()
+            ->with('creator:id,name')
+            ->orderBy('published_at', 'desc')
+            ->paginate($per_page);
+
+        return response()->json($posts);
+    }
+
+    public function show($slug)
+    {
+        $post = BlogPost::published()
+            ->with('creator:id,name')
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return response()->json($post);
+    }
+}
