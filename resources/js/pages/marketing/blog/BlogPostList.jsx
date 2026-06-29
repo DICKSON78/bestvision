@@ -44,7 +44,7 @@ const BlogPostList = () => {
   const statusColor = (s) => s === "published" ? "success" : "warning";
 
   return (
-    <Box>
+    <Box pt={{ xs: 2, sm: 3 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Box>
           <Typography variant="h5">Blog Content Portal</Typography>
