@@ -85,7 +85,7 @@ const Footer = () => {
       return;
     }
 
-    handlePost("api/office-calendar/subscribers", { email });
+    handlePost("/api/newsletter/subscribe", { email });
   };
 
   const handleCloseSuccessDialog = () => {

@@ -3,7 +3,7 @@ import {
   Box, Button, Card, Chip, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography,
 } from "@mui/material";
-import { Add, Delete, Edit, Visibility } from "@mui/icons-material";
+import { Add, Delete, Edit, OpenInNew, Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const BlogPostList = () => {
@@ -17,7 +17,7 @@ const BlogPostList = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await window.axios.get("/marketing/blog-posts", {
+      const res = await window.axios.get("/api/marketing/blog-posts", {
         params: { per_page: rowsPerPage, page: page + 1 },
       });
       setData(res.data.data?.data || []);
@@ -34,7 +34,7 @@ const BlogPostList = () => {
   const handleDelete = async (id) => {
     if (!confirm("Delete this post?")) return;
     try {
-      await window.axios.delete(`/marketing/blog-posts/${id}`);
+      await window.axios.delete(`/api/marketing/blog-posts/${id}`);
       fetchData();
     } catch (e) {
       console.error(e);
@@ -46,10 +46,24 @@ const BlogPostList = () => {
   return (
     <Box>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h5">Blog Posts</Typography>
-        <Button variant="contained" startIcon={<Add />} onClick={() => navigate("/marketing/blog/create")}>
-          New Post
-        </Button>
+        <Box>
+          <Typography variant="h5">Blog Content Portal</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Manage content for the public blog — create, edit, and publish posts
+          </Typography>
+        </Box>
+        <Box display="flex" gap={1}>
+          <Button
+            variant="outlined"
+            startIcon={<OpenInNew />}
+            onClick={() => window.open("/blog", "_blank")}
+          >
+            View Blog
+          </Button>
+          <Button variant="contained" startIcon={<Add />} onClick={() => navigate("/marketing/blog/create")}>
+            New Post
+          </Button>
+        </Box>
       </Box>
       <Card>
         {loading ? <Box p={3} textAlign="center">Loading...</Box> : (
@@ -77,6 +91,13 @@ const BlogPostList = () => {
                       <TableCell align="center">
                         <Tooltip title="View"><IconButton size="small" onClick={() => navigate(`/marketing/blog/${row.id}`)}><Visibility /></IconButton></Tooltip>
                         <Tooltip title="Edit"><IconButton size="small" onClick={() => navigate(`/marketing/blog/${row.id}/edit`)}><Edit /></IconButton></Tooltip>
+                        {row.status === "published" && (
+                          <Tooltip title="View on site">
+                            <IconButton size="small" onClick={() => window.open(`/blog/${row.slug}`, "_blank")}>
+                              <OpenInNew />
+                            </IconButton>
+                          </Tooltip>
+                        )}
                         <Tooltip title="Delete"><IconButton size="small" onClick={() => handleDelete(row.id)}><Delete /></IconButton></Tooltip>
                       </TableCell>
                     </TableRow>

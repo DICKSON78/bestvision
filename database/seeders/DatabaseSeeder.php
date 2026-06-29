@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Clinic;
 use App\Models\ConsultationType;
 use App\Models\ItemType;
@@ -198,6 +197,10 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
         ]);
+
+        $this->call(CategorySeeder::class);
+        $this->call(BlogPostSeeder::class);
+        $this->call(AnnouncementSeeder::class);
 
         // Add sample doctor tasks
         \App\Models\DoctorTask::insert([

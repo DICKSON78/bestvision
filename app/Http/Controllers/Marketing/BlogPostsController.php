@@ -119,4 +119,19 @@ class BlogPostsController extends Controller
         $data->delete();
         return $this->sendResponse($data, Response::HTTP_OK, 'Deleted successfully.');
     }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        ]);
+
+        $file = $request->file('image');
+        $filename = time() . '_' . uniqid() . '.' . $file->extension();
+        $file->move(public_path('uploads/blog'), $filename);
+
+        return $this->sendResponse([
+            'url' => url('uploads/blog/' . $filename),
+        ], Response::HTTP_OK, 'Uploaded successfully.');
+    }
 }

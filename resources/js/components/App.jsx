@@ -109,129 +109,127 @@ const App = () => {
             </Route>
 
             {/* Admin */}
-            <Route path="/" element={<DefaultLayout
+            <Route path="/*" element={<DefaultLayout
                   setThemeMode={setThemeMode}
                   setUser={setUser}
                   smsBalance={smsBalance}
                 />
               }
             >
-              <React.Fragment>
-                <Route
-                  path="dashboard"
-                  element={
-                    user?.privileges?.dashboard ? (
-                      <Dashboard setSmsBalance={setSmsBalance} />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="patient-records/*"
-                  element={<PatientRecordsRoutes />}
-                />
-                <Route
-                  path="reception/*"
-                  element={
-                    user?.privileges?.reception ? <ReceptionRoutes /> : null
-                  }
-                />
-                <Route
-                  path="payment-center/*"
-                  element={
-                    user?.privileges?.payment_center ? (
-                      <PaymentCenterRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="consultation-room/*"
-                  element={
-                    user?.privileges?.consultation_room ? (
-                      <ConsultationRoomRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="optician-center/*"
-                  element={
-                    user?.privileges?.optician_center ? (
-                      <OpticianCenterRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="medicine-center/*"
-                  element={
-                    user?.privileges?.medicine_center ? (
-                      <MedicineCenterRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="dispensing/*"
-                  element={
-                    <>
-                      {user?.privileges?.dispensing ? (
-                        <DispensingMainRoutes />
-                      ) : (
-                        <div>No dispensing privileges</div>
-                      )}
-                    </>
-                  }
-                />
-                <Route
-                  path="procedure-room/*"
-                  element={
-                    user?.privileges?.procedure_room ? (
-                      <ProcedureRoomRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="other-dispensing/*"
-                  element={
-                    user?.privileges?.other_dispensing ? (
-                      <OtherDispensingRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="inventory-management/*"
-                  element={
-                    user?.privileges?.inventory_management ? (
-                      <InventoryManagementRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="marketing/*"
-                  element={
-                    user?.privileges?.marketing ? <MarketingRoutes /> : null
-                  }
-                />
-                <Route
-                  path="financial-management/*"
-                  element={
-                    user?.privileges?.financial_management ? (
-                      <FinancialManagementRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="user-management/*"
-                  element={
-                    user?.privileges?.user_management ? (
-                      <UserManagementRoutes />
-                    ) : null
-                  }
-                />
-                <Route
-                  path="settings/*"
-                  element={
-                    user?.privileges?.settings ? <SettingsRoutes /> : null
-                  }
-                />
-              </React.Fragment>
+              <Route
+                path="dashboard"
+                element={
+                  user?.privileges?.dashboard ? (
+                    <Dashboard setSmsBalance={setSmsBalance} />
+                  ) : null
+                }
+              />
+              <Route
+                path="patient-records/*"
+                element={<PatientRecordsRoutes />}
+              />
+              <Route
+                path="reception/*"
+                element={
+                  user?.privileges?.reception ? <ReceptionRoutes /> : null
+                }
+              />
+              <Route
+                path="payment-center/*"
+                element={
+                  user?.privileges?.payment_center ? (
+                    <PaymentCenterRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="consultation-room/*"
+                element={
+                  user?.privileges?.consultation_room ? (
+                    <ConsultationRoomRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="optician-center/*"
+                element={
+                  user?.privileges?.optician_center ? (
+                    <OpticianCenterRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="medicine-center/*"
+                element={
+                  user?.privileges?.medicine_center ? (
+                    <MedicineCenterRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="dispensing/*"
+                element={
+                  <>
+                    {user?.privileges?.dispensing ? (
+                      <DispensingMainRoutes />
+                    ) : (
+                      <div>No dispensing privileges</div>
+                    )}
+                  </>
+                }
+              />
+              <Route
+                path="procedure-room/*"
+                element={
+                  user?.privileges?.procedure_room ? (
+                    <ProcedureRoomRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="other-dispensing/*"
+                element={
+                  user?.privileges?.other_dispensing ? (
+                    <OtherDispensingRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="inventory-management/*"
+                element={
+                  user?.privileges?.inventory_management ? (
+                    <InventoryManagementRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="marketing/*"
+                element={
+                  user?.privileges?.marketing ? <MarketingRoutes /> : null
+                }
+              />
+              <Route
+                path="financial-management/*"
+                element={
+                  user?.privileges?.financial_management ? (
+                    <FinancialManagementRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="user-management/*"
+                element={
+                  user?.privileges?.user_management ? (
+                    <UserManagementRoutes />
+                  ) : null
+                }
+              />
+              <Route
+                path="settings/*"
+                element={
+                  user?.privileges?.settings ? <SettingsRoutes /> : null
+                }
+              />
             </Route>
           </Routes>
             </Router>

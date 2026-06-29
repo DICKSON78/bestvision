@@ -11,6 +11,8 @@ import SettingsRoutes from "./settings/SettingsRoutes";
 import BlogPostList from "./blog/BlogPostList";
 import BlogPostForm from "./blog/BlogPostForm";
 import BlogPostView from "./blog/BlogPostView";
+import AnnouncementList from "./announcements/AnnouncementList";
+import AnnouncementForm from "./announcements/AnnouncementForm";
 import ReportsRoutes from "./reports/ReportsRoutes";
 
 const MarketingRoutes = () => {
@@ -67,6 +69,18 @@ const MarketingRoutes = () => {
       <Route
         path="/blog/:id/edit"
         element={<BlogPostForm />}
+      />
+      <Route
+        path="/announcements"
+        element={<AnnouncementList />}
+      />
+      <Route
+        path="/announcements/create"
+        element={<AnnouncementForm />}
+      />
+      <Route
+        path="/announcements/:id/edit"
+        element={<AnnouncementForm />}
       />
       <Route
         path="/settings/*"

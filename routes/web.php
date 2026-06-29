@@ -60,8 +60,22 @@ Route::get('/build/{filename}', function ($filename) {
 });
 
 Route::get('/login', function () {
+    \Illuminate\Support\Facades\Log::info('LOGIN ACCESS', [
+        'referer' => request()->header('referer'),
+        'url' => request()->fullUrl(),
+        'session' => session()->all(),
+    ]);
     return view('app');
 })->name('login');
+
+// Announcement file download
+Route::get('/downloads/{filename}', function ($filename) {
+    $path = storage_path("app/public/downloads/{$filename}");
+    if (file_exists($path)) {
+        return response()->download($path);
+    }
+    abort(404, 'File not found');
+});
 
 // Test route
 Route::get('/test', function () {

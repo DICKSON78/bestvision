@@ -88,6 +88,15 @@ Route::get('/units-of-measure', [UnitsOfMeasureController::class, 'index']);
 Route::get('/blog', [\App\Http\Controllers\PublicBlogController::class, 'index']);
 Route::get('/blog/{slug}', [\App\Http\Controllers\PublicBlogController::class, 'show']);
 
+// Public announcements routes
+Route::get('/announcements', [\App\Http\Controllers\PublicAnnouncementController::class, 'index']);
+
+// Public appointment booking
+Route::post('/appointments', [\App\Http\Controllers\PublicAppointmentsController::class, 'store']);
+
+// Public newsletter subscription
+Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe']);
+
 // Temporary public dispensing dashboard for testing
 Route::get('/dispensing-dashboard-public', [\App\Http\Controllers\DispensingDashboardController::class, '__invoke']);
 
@@ -263,6 +272,9 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
         $router->apiResource('/information-sources', InformationSourcesController::class);
         $router->apiResource('/communication-logs', CommunicationLogsController::class);
         $router->apiResource('/blog-posts', \App\Http\Controllers\Marketing\BlogPostsController::class);
+        $router->post('/blog-posts/upload-image', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'uploadImage']);
+        $router->apiResource('/announcements', \App\Http\Controllers\Marketing\AnnouncementsController::class);
+        $router->apiResource('/categories', \App\Http\Controllers\Marketing\CategoriesController::class)->only(['index', 'store', 'destroy']);
     });
     
     $router->prefix('consultation-room')->group(function ($router) {

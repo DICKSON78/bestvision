@@ -68,10 +68,17 @@ const drawerClosedMixin = (theme) => ({
   whiteSpace: "nowrap",
 });
 
-const Default = ({ setThemeMode, setUser, smsBalance }) => {
+const ADMIN_PREFIXES = [
+  "/dashboard", "/patient-records", "/reception", "/payment-center",
+  "/consultation-room", "/optician-center", "/medicine-center",
+  "/dispensing", "/procedure-room", "/other-dispensing",
+  "/inventory-management", "/marketing", "/financial-management",
+  "/user-management", "/settings",
+];
+
+const DefaultInner = ({ setThemeMode, setUser, smsBalance }) => {
   const notificationsTimer = useRef();
   const modalRef = useRef();
-  const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
   const breakpointDownMedium = useMediaQuery(theme.breakpoints.down("md"));
@@ -92,7 +99,6 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
   const [splashLoading, setSplashLoading] = useState(true);
 
   useEffect(() => {
-    // Force splash screen to stay for at least 7 seconds
     const timer = setTimeout(() => {
       setSplashLoading(false);
     }, 7000);
@@ -112,7 +118,6 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
     if (user) {
       window.user = user;
       setUser(user);
-      // Trigger a notification refresh once user is present to ensure authenticated fetch
       try {
         if (window.notificationEvents && typeof window.notificationEvents.refresh === 'function') {
           window.notificationEvents.refresh();
@@ -123,7 +128,6 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
 
   useEffect(() => {
     if (error && !loading) {
-      // Redirect to login if authentication fails
       navigate("/login");
     }
   }, [error, loading, navigate]);
@@ -468,6 +472,13 @@ const Default = ({ setThemeMode, setUser, smsBalance }) => {
       </MuiModal>
     </React.Fragment>
   );
+};
+
+const Default = ({ setThemeMode, setUser, smsBalance }) => {
+  const location = useLocation();
+  const isAdminPath = ADMIN_PREFIXES.some(p => location.pathname === p || location.pathname.startsWith(p + "/"));
+  if (!isAdminPath) return null;
+  return <DefaultInner setThemeMode={setThemeMode} setUser={setUser} smsBalance={smsBalance} />;
 };
 
 export default Default;

@@ -164,14 +164,13 @@ export const NotificationProvider = ({ children }) => {
     // Also check for token changes within the same tab
     const checkToken = () => {
       const token = localStorage.getItem('token');
-      if (token && !notifications || Object.values(notifications).every(v => v === 0)) {
+      if (token) {
         console.log('NotificationContext: Token found, fetching notifications...');
         fetchNotifications({});
       }
     };
 
-    // Check every 2 seconds for token changes
-    const interval = setInterval(checkToken, 2000);
+    const interval = setInterval(checkToken, 10000);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);

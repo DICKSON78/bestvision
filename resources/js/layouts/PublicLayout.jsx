@@ -1,14 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+
+const dict = {
+  "nav.home": { en: "Home", sw: "Mwanzo" },
+  "nav.about": { en: "About", sw: "Kuhusu" },
+  "nav.services": { en: "Services", sw: "Huduma" },
+  "nav.products": { en: "Products", sw: "Bidhaa" },
+  "nav.facility": { en: "Facility", sw: "Vituo" },
+  "nav.why": { en: "Why Choose Us", sw: "Kwa Nini Utuchague" },
+  "nav.contact": { en: "Contact", sw: "Wasiliana" },
+  "nav.blog": { en: "Blog", sw: "Blog" },
+  "cta.book": { en: "Book Appointment", sw: "Panga Miadi" },
+  "cta.open_maps": { en: "Open in Google Maps", sw: "Fungua kwenye Google Maps" },
+  "cta.subscribe": { en: "Subscribe", sw: "Jisajili" },
+  "ph.email": { en: "Your email", sw: "Barua pepe yako" },
+  "footer.services": { en: "Our Services", sw: "Huduma Zetu" },
+  "footer.stay": { en: "Stay in Touch", sw: "Endelea Kuwasiliana" },
+  "footer.stay_desc": { en: "Get updates and clinic information.", sw: "Pata taarifa na habari za kliniki." },
+};
+
+const applyLang = (lang) => {
+  document.documentElement.setAttribute("lang", lang);
+  localStorage.setItem("bv_lang", lang);
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    const entry = dict[key];
+    if (!entry) return;
+    const attr = el.getAttribute("data-i18n-attr");
+    const value = entry[lang] || entry.en || "";
+    if (attr) el.setAttribute(attr, value);
+    else el.textContent = value;
+  });
+  document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
+    btn.classList.toggle("active", btn.getAttribute("data-lang-btn") === lang);
+  });
+};
 
 const PublicLayout = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const path = location.pathname.replace(/^\//, "") || "/";
+    const path = location.pathname;
     document.querySelectorAll("[data-nav]").forEach((a) => {
       const href = a.getAttribute("href") || "";
-      if (href === path || (path === "/" && href === "/")) {
+      if (href === path || (path.startsWith(href + "/") && href !== "/")) {
         a.setAttribute("aria-current", "page");
       } else {
         a.removeAttribute("aria-current");
@@ -17,47 +52,11 @@ const PublicLayout = () => {
   }, [location]);
 
   useEffect(() => {
-    const saved = localStorage.getItem("bv_lang");
-    const lang = saved || "en";
-    const sel = document.querySelector(".lang-select");
-    if (sel) {
-      sel.value = lang;
-    }
-    const dict = {
-      "nav.home": { en: "Home", sw: "Mwanzo" },
-      "nav.about": { en: "About", sw: "Kuhusu" },
-      "nav.services": { en: "Services", sw: "Huduma" },
-      "nav.products": { en: "Products", sw: "Bidhaa" },
-      "nav.facility": { en: "Facility", sw: "Vituo" },
-      "nav.why": { en: "Why Choose Us", sw: "Kwa Nini Utuchague" },
-      "nav.contact": { en: "Contact", sw: "Wasiliana" },
-      "cta.book": { en: "Book Appointment", sw: "Panga Miadi" },
-      "cta.open_maps": { en: "Open in Google Maps", sw: "Fungua kwenye Google Maps" },
-      "cta.subscribe": { en: "Subscribe", sw: "Jisajili" },
-      "ph.email": { en: "Your email", sw: "Barua pepe yako" },
-      "footer.services": { en: "Our Services", sw: "Huduma Zetu" },
-      "footer.stay": { en: "Stay in Touch", sw: "Endelea Kuwasiliana" },
-      "footer.stay_desc": { en: "Get updates and clinic information.", sw: "Pata taarifa na habari za kliniki." },
-    };
-    function applyLang(lang) {
-      document.documentElement.setAttribute("lang", lang);
-      localStorage.setItem("bv_lang", lang);
-      document.querySelectorAll("[data-i18n]").forEach((el) => {
-        const key = el.getAttribute("data-i18n");
-        const entry = dict[key];
-        if (!entry) return;
-        const attr = el.getAttribute("data-i18n-attr");
-        const value = entry[lang] || entry.en || "";
-        if (attr) {
-          el.setAttribute(attr, value);
-        } else {
-          el.textContent = value;
-        }
-      });
-    }
-    if (sel) {
-      sel.addEventListener("change", (e) => applyLang(e.target.value));
-    }
+    const saved = localStorage.getItem("bv_lang") || "en";
+    applyLang(saved);
+  }, []);
+
+  const switchLang = useCallback((lang) => {
     applyLang(lang);
   }, []);
 
@@ -66,13 +65,19 @@ const PublicLayout = () => {
       <div className="topbar">
         <div className="container">
           <div className="row">
-            <div>
-              <span className="badge">Nata–Mwanza, Tanzania</span>
-              <span style={{ marginLeft: 10 }}>Call Center: <a href="tel:+255678110376">+255 678 110 376</a></span>
-            </div>
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-              <a href="mailto:info@bestvisioneyecare.com">info@bestvisioneyecare.com</a>
-              <a href="https://www.bestvisioneyecare.com" rel="noopener noreferrer" target="_blank">www.bestvisioneyecare.com</a>
+            <div className="topbar-info">
+              <span>
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                Nata–Mwanza, Tanzania
+              </span>
+              <span>
+                <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.85 21 3 13.15 3 3a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/></svg>
+                <a href="tel:+255678110376">+255 678 110 376</a>
+              </span>
+              <span>
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <a href="mailto:info@bestvisioneyecare.com">info@bestvisioneyecare.com</a>
+              </span>
             </div>
           </div>
         </div>
@@ -91,13 +96,17 @@ const PublicLayout = () => {
               <Link data-i18n="nav.facility" data-nav="" to="/facility">Facility</Link>
               <Link data-i18n="nav.why" data-nav="" to="/why-choose-us">Why Choose Us</Link>
               <Link data-i18n="nav.contact" data-nav="" to="/contact">Contact</Link>
+              <Link data-i18n="nav.blog" data-nav="" to="/blog">Blog</Link>
             </nav>
             <div className="nav-cta">
               <div className="lang-switch">
-                <select aria-label="Language" className="lang-select">
-                  <option value="en">EN</option>
-                  <option value="sw">SW</option>
-                </select>
+                <button type="button" data-lang-btn="en" className="lang-flag" title="English" onClick={() => switchLang("en")}>
+                  <img src="/assets/img/flags/uk.svg" alt="English" width="20" height="14" />
+                </button>
+                <span className="lang-sep">/</span>
+                <button type="button" data-lang-btn="sw" className="lang-flag" title="Kiswahili" onClick={() => switchLang("sw")}>
+                  <img src="/assets/img/flags/tz.svg" alt="Kiswahili" width="20" height="14" />
+                </button>
               </div>
               <Link className="btn btn-primary" data-i18n="cta.book" to="/book">Book Appointment</Link>
             </div>
@@ -159,8 +168,21 @@ const PublicLayout = () => {
           <div className="footer-col">
             <h4 data-i18n="footer.stay">Stay in Touch</h4>
             <p data-i18n="footer.stay_desc">Get updates and clinic information.</p>
-            <form className="footer-newsletter" onSubmit={(e) => { e.preventDefault(); alert("Thank you!"); }}>
-              <input data-i18n="ph.email" data-i18n-attr="placeholder" placeholder="Your email" required type="email" />
+            <form className="footer-newsletter" onSubmit={async (e) => {
+              e.preventDefault();
+              const email = e.target.email.value;
+              try {
+                const res = await fetch("/api/newsletter/subscribe", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json", Accept: "application/json" },
+                  body: JSON.stringify({ email }),
+                });
+                const json = await res.json();
+                if (res.ok) { alert("Thank you for subscribing!"); e.target.reset(); }
+                else { alert(json.message || "Subscription failed"); }
+              } catch { alert("Network error. Please try again."); }
+            }}>
+              <input name="email" data-i18n="ph.email" data-i18n-attr="placeholder" placeholder="Your email" required type="email" />
               <button className="btn btn-primary" data-i18n="cta.subscribe" type="submit">Subscribe</button>
             </form>
             <div className="footer-social">

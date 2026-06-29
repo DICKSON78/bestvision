@@ -1,19 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 
 const BookAppointmentPage = () => {
-  const handleSubmit = (e) => {
+  const [sending, setSending] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSending(true);
     const form = e.target;
-    const name = form.full_name.value;
-    const phone = form.phone.value;
-    const email = form.email.value;
-    const date = form.date.value;
-    const time = form.time.value;
-    const service = form.service.value;
-    const message = form.message.value;
-    const body = `Appointment Request%0A%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AEmail: ${encodeURIComponent(email)}%0ADate: ${encodeURIComponent(date)}%0ATime: ${encodeURIComponent(time)}%0AService: ${encodeURIComponent(service)}%0AMessage: ${encodeURIComponent(message)}`;
-    window.open(`https://wa.me/255678110376?text=${body}`, "_blank");
+    const body = {
+      full_name: form.full_name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      preferred_date: form.date.value,
+      preferred_time: form.time.value,
+      service: form.service.value,
+      message: form.message.value,
+    };
+    try {
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || "Something went wrong");
+      setDone(true);
+      form.reset();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSending(false);
+    }
   };
+
+  if (done) {
+    return (
+      <>
+        <section className="hero">
+          <div className="container">
+            <span className="badge">BOOK APPOINTMENT</span>
+            <h1>Request Sent!</h1>
+            <p className="lead">Thank you! Your appointment request has been received. We will contact you shortly to confirm.</p>
+            <button className="btn btn-primary" onClick={() => setDone(false)} style={{ marginTop: 16 }}>Book Another</button>
+          </div>
+        </section>
+      </>
+    );
+  }
 
   return (
     <>
@@ -21,7 +57,7 @@ const BookAppointmentPage = () => {
         <div className="container">
           <span className="badge">BOOK APPOINTMENT</span>
           <h1>Appointment Request</h1>
-          <p className="lead">Send your appointment request to the clinic call center via email.</p>
+          <p className="lead">Send your appointment request to the clinic call center.</p>
         </div>
       </section>
       <section className="section">
@@ -29,6 +65,7 @@ const BookAppointmentPage = () => {
           <div className="grid grid-2">
             <div className="card">
               <h2 style={{ margin: "0 0 10px" }}>Booking Form</h2>
+              {error && <div className="alert alert-error" style={{ color: "#b91c1c", background: "#fee2e2", padding: "8px 12px", borderRadius: 4, marginBottom: 12 }}>{error}</div>}
               <form className="form" id="bookingForm" onSubmit={handleSubmit}>
                 <div className="field">
                   <label htmlFor="full_name">Full name</label>
@@ -69,7 +106,9 @@ const BookAppointmentPage = () => {
                   <label htmlFor="message">Additional notes</label>
                   <textarea id="message" name="message" placeholder="Symptoms, prescription details, or special needs"></textarea>
                 </div>
-                <button className="btn btn-primary" type="submit">Send Booking Request</button>
+                <button className="btn btn-primary" type="submit" disabled={sending}>
+                  {sending ? "Sending..." : "Send Booking Request"}
+                </button>
                 <div className="notice">Staff will confirm by call/WhatsApp.</div>
               </form>
             </div>

@@ -12,7 +12,7 @@ const BlogPostView = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await window.axios.get(`/marketing/blog-posts/${id}`);
+        const res = await window.axios.get(`/api/marketing/blog-posts/${id}`);
         setPost(res.data.data);
       } catch (e) { console.error(e); }
       finally { setLoading(false); }

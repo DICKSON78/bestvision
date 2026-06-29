@@ -3,8 +3,15 @@
     "file": "loader-80d3ba24.svg",
     "src": "resources/images/loader.svg"
   },
+  "resources/js/app.css": {
+    "file": "app-cf9a4bd4.css",
+    "src": "resources/js/app.css"
+  },
   "resources/js/app.jsx": {
-    "file": "app-c6ef0f5b.js",
+    "css": [
+      "app-cf9a4bd4.css"
+    ],
+    "file": "app-6bcc5e4f.js",
     "isEntry": true,
     "src": "resources/js/app.jsx"
   }

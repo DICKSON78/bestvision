@@ -15,6 +15,7 @@ import { useNotificationContext } from "../contexts/NotificationContext";
 import {
   AddRounded as AddIcon,
   ArticleRounded as ArticleIcon,
+  CampaignRounded as AnnouncementIcon,
   BadgeRounded as JobTitlesIcon,
   ContactsRounded as ClinicDetailsIcon,
   DoneAllRounded as DoneIcon,
@@ -789,6 +790,12 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           title: "Blog Posts",
           icon: <ArticleIcon />,
           to: "/marketing/blog",
+          show: user.privileges.marketing,
+        },
+        {
+          title: "Announcements",
+          icon: <AnnouncementIcon />,
+          to: "/marketing/announcements",
           show: user.privileges.marketing,
         },
         {
