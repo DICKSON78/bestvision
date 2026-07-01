@@ -113,6 +113,7 @@ const Report = ({
             {
               field: "index",
               headerName: "S/N",
+              tableCellProps: { sx: { width: 50 } },
               valueGetter: (item, index) => perPage * (page - 1) + index + 1,
             },
             ...(columns || []),
@@ -134,6 +135,7 @@ const Report = ({
                       {
                         field: "index",
                         headerName: "S/N",
+                        tableCellProps: { sx: { width: 50 } },
                         valueGetter: (item, index) => index + 1,
                       },
                       ...(nestedColumns || []),
