@@ -3,7 +3,7 @@ import {
   Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent,
   DialogTitle, IconButton, MenuItem, TextField, Typography,
 } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { Add, Delete } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
