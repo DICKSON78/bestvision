@@ -260,14 +260,11 @@ const BlogPostForm = () => {
               <Box>
                 <Typography variant="subtitle2" mb={0.5}>Social Media Links</Typography>
                 <Typography variant="caption" color="text.secondary" display="block" mb={1}>
-                  Paste URLs (one per line) — platform inatambulika moja kwa moja
+                  Paste URLs (one per line) — platform auto-detected
                 </Typography>
                 <Box display="flex" gap={1} alignItems="flex-start">
                   <TextField
                     fullWidth
-                    multiline
-                    minRows={2}
-                    maxRows={4}
                     placeholder="https://instagram.com/..."
                     value={socialText}
                     onChange={(e) => setSocialText(e.target.value)}
