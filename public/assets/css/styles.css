@@ -1427,7 +1427,6 @@ input, select, textarea{
   gap:0;
   text-decoration:none;
   color:inherit;
-  background:#fff;
 }
 .blog-featured-img{
   overflow:hidden;
@@ -1450,6 +1449,8 @@ input, select, textarea{
 .blog-featured-title{
   font:700 26px/1.2 Poppins, sans-serif;
   margin:6px 0 10px;
+  padding-bottom:8px;
+  border-bottom:2px solid var(--brand);
   color:var(--text);
 }
 .blog-featured-link:hover .blog-featured-title{color:var(--brand)}
@@ -1506,6 +1507,8 @@ input, select, textarea{
 .blog-card-title-news{
   font:700 17px/1.3 Poppins, sans-serif;
   margin:4px 0 6px;
+  padding-bottom:6px;
+  border-bottom:2px solid var(--brand);
   color:var(--text);
   transition:color .15s;
 }
@@ -1574,6 +1577,28 @@ input, select, textarea{
   object-fit:cover;
   display:block;
 }
+/* Blog video player (YouTube-style) */
+.blog-article-video{
+  margin:0 auto 24px;
+  max-width:900px;
+}
+.blog-video-player{
+  position:relative;
+  width:100%;
+  padding-top:56.25%;
+  background:#000;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,.15);
+}
+.blog-video-player video{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
 .blog-article-content{
   max-width:720px;
   margin:0 auto;
@@ -1606,3 +1631,17 @@ input, select, textarea{
 @keyframes blog-spin{to{transform:rotate(360deg)}}
 .blog-empty{text-align:center;padding:80px 0}
 .blog-empty h2{font:700 22px Poppins, sans-serif;margin:0 0 8px}
+
+/* Blog social links (blue text before date) */
+.blog-social-links{display:flex;gap:8px}
+.blog-social-link{
+  color:var(--brand);
+  text-decoration:none;
+  font-size:12px;
+  font-weight:600;
+  transition:color .15s;
+}
+.blog-social-link:hover{color:#0d47a1;text-decoration:underline}
+.social-instagram{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)}
+.social-tiktok{background:#000}
+.social-facebook{background:#1877f2}

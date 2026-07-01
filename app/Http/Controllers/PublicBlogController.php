@@ -11,6 +11,7 @@ class PublicBlogController extends Controller
     {
         $per_page = min((int)($request->per_page ?? 12), 50);
         $posts = BlogPost::published()
+            ->where('published_at', '>=', now()->subMonth())
             ->with('creator:id,first_name,last_name')
             ->orderBy('published_at', 'desc')
             ->paginate($per_page);
@@ -21,6 +22,7 @@ class PublicBlogController extends Controller
     public function show($slug)
     {
         $post = BlogPost::published()
+            ->where('published_at', '>=', now()->subMonth())
             ->with('creator:id,first_name,last_name')
             ->where('slug', $slug)
             ->firstOrFail();

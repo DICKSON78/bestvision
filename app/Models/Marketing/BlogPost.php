@@ -16,10 +16,12 @@ class BlogPost extends Model
 
     protected $fillable = [
         'title', 'slug', 'excerpt', 'content', 'featured_image',
-        'category', 'tags', 'status', 'created_by', 'published_at',
+        'video_url', 'social_links', 'category', 'tags', 'status',
+        'created_by', 'published_at',
     ];
 
     protected $casts = [
+        'social_links' => 'array',
         'published_at' => 'datetime:Y-m-d H:i',
     ];
 
@@ -27,7 +29,25 @@ class BlogPost extends Model
     {
         static::creating(function ($post) {
             if (empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
+                $base = Str::slug($post->title);
+                $slug = $base;
+                $i = 1;
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $base . '-' . $i++;
+                }
+                $post->slug = $slug;
+            }
+        });
+
+        static::updating(function ($post) {
+            if ($post->isDirty('title') && !$post->isDirty('slug')) {
+                $base = Str::slug($post->title);
+                $slug = $base;
+                $i = 1;
+                while (static::where('slug', $slug)->where('id', '!=', $post->id)->exists()) {
+                    $slug = $base . '-' . $i++;
+                }
+                $post->slug = $slug;
             }
         });
     }

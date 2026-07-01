@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box, Button, Card, CardContent, Chip, IconButton, MenuItem, Table, TableBody, TableCell,
+  Box, Button, Card, CardContent, Chip, Dialog, DialogActions, DialogContent,
+  DialogTitle, IconButton, MenuItem, Table, TableBody, TableCell,
   TableContainer, TableHead, TablePagination, TableRow, TextField, Tooltip, Typography,
 } from "@mui/material";
 import { Add, Delete, Edit, OpenInNew } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../../hooks";
 
 const AnnouncementList = () => {
   const navigate = useNavigate();
+  const addToast = useToast();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -15,6 +18,7 @@ const AnnouncementList = () => {
   const [total, setTotal] = useState(0);
   const [categoryFilter, setCategoryFilter] = useState("");
   const [categories, setCategories] = useState([]);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -42,13 +46,15 @@ const AnnouncementList = () => {
 
   useEffect(() => { fetchData(); }, [page, rowsPerPage, categoryFilter]);
 
-  const handleDelete = async (id) => {
-    if (!confirm("Delete this announcement?")) return;
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
     try {
-      await window.axios.delete(`/api/marketing/announcements/${id}`);
+      await window.axios.delete(`/api/marketing/announcements/${deleteTarget}`);
+      addToast({ message: "Announcement deleted successfully", severity: "success" });
+      setDeleteTarget(null);
       fetchData();
     } catch (e) {
-      console.error(e);
+      addToast({ message: "Error deleting announcement", severity: "error" });
     }
   };
 
@@ -108,7 +114,7 @@ const AnnouncementList = () => {
                         <TableCell>{row.published_at ? new Date(row.published_at).toLocaleDateString() : "-"}</TableCell>
                         <TableCell align="center">
                           <Tooltip title="Edit"><IconButton size="small" onClick={() => navigate(`/marketing/announcements/${row.id}/edit`)}><Edit /></IconButton></Tooltip>
-                          <Tooltip title="Delete"><IconButton size="small" onClick={() => handleDelete(row.id)}><Delete /></IconButton></Tooltip>
+                          <Tooltip title="Delete"><IconButton size="small" onClick={() => setDeleteTarget(row.id)}><Delete /></IconButton></Tooltip>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -127,6 +133,14 @@ const AnnouncementList = () => {
           </>
         )}
       </Card>
+      <Dialog open={Boolean(deleteTarget)} onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
+        <DialogTitle>Delete Announcement</DialogTitle>
+        <DialogContent>Are you sure you want to delete this announcement?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteTarget(null)}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

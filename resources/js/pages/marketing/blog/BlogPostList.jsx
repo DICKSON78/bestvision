@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box, Button, Card, Chip, IconButton, Table, TableBody, TableCell,
+  Box, Button, Card, Chip, Dialog, DialogActions, DialogContent,
+  DialogTitle, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography,
 } from "@mui/material";
 import { Add, Delete, Edit, OpenInNew, Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../../hooks";
 
 const BlogPostList = () => {
   const navigate = useNavigate();
+  const addToast = useToast();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [total, setTotal] = useState(0);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -31,12 +35,15 @@ const BlogPostList = () => {
 
   useEffect(() => { fetchData(); }, [page, rowsPerPage]);
 
-  const handleDelete = async (id) => {
-    if (!confirm("Delete this post?")) return;
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
     try {
-      await window.axios.delete(`/api/marketing/blog-posts/${id}`);
+      await window.axios.delete(`/api/marketing/blog-posts/${deleteTarget}`);
+      addToast({ message: "Post deleted successfully", severity: "success" });
+      setDeleteTarget(null);
       fetchData();
     } catch (e) {
+      addToast({ message: "Error deleting post", severity: "error" });
       console.error(e);
     }
   };
@@ -98,7 +105,7 @@ const BlogPostList = () => {
                             </IconButton>
                           </Tooltip>
                         )}
-                        <Tooltip title="Delete"><IconButton size="small" onClick={() => handleDelete(row.id)}><Delete /></IconButton></Tooltip>
+                        <Tooltip title="Delete"><IconButton size="small" onClick={() => setDeleteTarget(row.id)}><Delete /></IconButton></Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -116,6 +123,14 @@ const BlogPostList = () => {
           </>
         )}
       </Card>
+      <Dialog open={Boolean(deleteTarget)} onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
+        <DialogTitle>Delete Post</DialogTitle>
+        <DialogContent>Are you sure you want to delete this post?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteTarget(null)}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

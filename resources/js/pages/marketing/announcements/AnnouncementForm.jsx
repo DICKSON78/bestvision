@@ -7,10 +7,12 @@ import { Add } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useToast } from "../../../hooks";
 
 const AnnouncementForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const addToast = useToast();
   const isEdit = Boolean(id);
   const fileRef = useRef();
   const [loading, setLoading] = useState(isEdit);
@@ -60,7 +62,7 @@ const AnnouncementForm = () => {
       setDialogOpen(false);
       setNewCategory({ name: "", description: "" });
     } catch (e) {
-      alert("Error creating category");
+      addToast({ message: "Error creating category", severity: "error" });
     }
   };
 
@@ -90,10 +92,11 @@ const AnnouncementForm = () => {
       await window.axios.post(url, fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      addToast({ message: isEdit ? "Announcement updated successfully" : "Announcement created successfully", severity: "success" });
       navigate("/marketing/announcements");
     } catch (e) {
       console.error(e);
-      alert("Error saving announcement");
+      addToast({ message: "Error saving announcement", severity: "error" });
     } finally {
       setSaving(false);
     }

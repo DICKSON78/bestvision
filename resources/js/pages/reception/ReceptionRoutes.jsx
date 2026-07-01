@@ -10,6 +10,7 @@ import SentMessages from "./sent-messages/Messages";
 import ReportsRoutes from "./reports/ReportsRoutes";
 import VipPatients from "./vip-patients/VipPatients";
 import PatientWaitingTime from "./patient-waiting-timePatientWaitingTime";
+import Appointments from "./appointments/Appointments";
 
 const ReceptionRoutes = () => {
   return (
@@ -54,6 +55,10 @@ const ReceptionRoutes = () => {
       <Route
         path="/reports/*"
         element={<ReportsRoutes />}
+      />
+      <Route
+        path="/appointments"
+        element={<Appointments />}
       />
     </Routes>
   );

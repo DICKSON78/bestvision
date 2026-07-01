@@ -298,7 +298,7 @@ const ClinicalNotes = ({ patient, consultation }) => {
               border: '1px solid #bbdefb', 
               borderRadius: 2, 
               overflow: 'hidden',
-              mb: 2 
+              mb: 0.5 
             }}>
               <Table sx={{ width: '100%' }}>
                 <TableHead>
@@ -324,8 +324,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={chiefComplaintRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         required
                         variant="outlined"
                         size="small"
@@ -348,8 +346,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={historyPresentIllnessRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         variant="outlined"
                         size="small"
                         placeholder="History of Present Illness"
@@ -374,8 +370,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={familyHistoryRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         variant="outlined"
                         size="small"
                         placeholder="Family History"
@@ -403,7 +397,7 @@ const ClinicalNotes = ({ patient, consultation }) => {
               border: '1px solid #bbdefb', 
               borderRadius: 2, 
               overflow: 'hidden',
-              mb: 2 
+              mb: 0.5 
             }}>
               <Table sx={{ width: '100%' }}>
                 <TableHead>
@@ -419,8 +413,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={generalHealthRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         variant="outlined"
                         size="small"
                         placeholder="General Health"
@@ -442,8 +434,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={familyOcularHistoryRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         variant="outlined"
                         size="small"
                         placeholder="Family Ocular History"
@@ -468,8 +458,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={familyGeneralHistoryRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         variant="outlined"
                         size="small"
                         placeholder="Family General History"
@@ -500,7 +488,7 @@ const ClinicalNotes = ({ patient, consultation }) => {
               border: '1px solid #bbdefb', 
               borderRadius: 2, 
               overflow: 'hidden',
-              mb: 2 
+              mb: 0.5 
             }}>
               <Table sx={{ width: '100%' }}>
                 <TableHead>
@@ -516,8 +504,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={pupilsRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         variant="outlined"
                         size="small"
                         placeholder="Pupils Examination"
@@ -539,8 +525,6 @@ const ClinicalNotes = ({ patient, consultation }) => {
                       <TextField
                         ref={extraOcularMusclesRef}
                         fullWidth
-                        multiline
-                        rows={3}
                         variant="outlined"
                         size="small"
                         placeholder="Extraocular Movements"
@@ -694,7 +678,7 @@ const ClinicalNotes = ({ patient, consultation }) => {
                   fullWidth
                   placeholder="Enter any additional notes, observations, or remarks about the patient's condition..."
                   multiline
-                  rows={6}
+                  rows={2}
                   variant="outlined"
                   defaultValue={formData.remarks}
                   onChange={(value) => {

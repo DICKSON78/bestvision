@@ -54,7 +54,6 @@ const BlogShowPage = () => {
           {post.excerpt && <p style={{ font: "400 17px/1.5 Georgia, serif", color: "var(--muted)", margin: "0 0 16px" }}>{post.excerpt}</p>}
           <div className="blog-meta" style={{ fontSize: 13, color: "#999" }}>
             <span>{post.published_at ? new Date(post.published_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : ""}</span>
-            {post.creator && <span>By {post.creator.first_name} {post.creator.last_name}</span>}
           </div>
         </div>
       </section>
@@ -69,7 +68,19 @@ const BlogShowPage = () => {
         </section>
       )}
 
-      <section className="section" style={{ paddingTop: post.featured_image ? 8 : 24 }}>
+      {post.video_url && (
+        <section className="section" style={{ paddingTop: 20, paddingBottom: 0 }}>
+          <div className="container">
+            <div className="blog-article-video">
+              <div className="blog-video-player">
+                <video src={post.video_url} controls playsInline />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="section" style={{ paddingTop: post.featured_image || post.video_url ? 8 : 24 }}>
         <div className="container">
           <div className="blog-article-content" dangerouslySetInnerHTML={{ __html: post.content }} />
         </div>
@@ -78,6 +89,28 @@ const BlogShowPage = () => {
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="container">
           <hr className="sep" />
+          {post.social_links?.length > 0 && (
+            <div style={{ marginBottom: 20 }}>
+              <p style={{ font: "600 14px/1.4 system-ui, sans-serif", margin: "0 0 8px", color: "var(--text)" }}>Follow us</p>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                {post.social_links.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                    padding: "8px 16px", borderRadius: 6, fontSize: 13, fontWeight: 600,
+                    textDecoration: "none", color: "#fff", background: "#1976d2",
+                  }}
+                >
+                  {link.platform}
+                </a>
+              ))}
+            </div>
+          </div>
+          )}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
             <Link className="blog-back-link" to="/blog">&larr; Back to News</Link>
           </div>

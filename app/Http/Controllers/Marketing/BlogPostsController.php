@@ -59,6 +59,8 @@ class BlogPostsController extends Controller
             'content' => 'required',
             'excerpt' => 'nullable',
             'featured_image' => 'nullable',
+            'video_url' => 'nullable',
+            'social_links' => 'nullable|json',
             'category' => 'nullable',
             'tags' => 'nullable',
             'status' => 'sometimes|in:draft,published',
@@ -66,7 +68,6 @@ class BlogPostsController extends Controller
 
         $input = $request->all();
         $input['created_by'] = $request->user()->id;
-        $input['slug'] = Str::slug($request->title);
 
         if ($request->status == 'published') {
             $input['published_at'] = Carbon::now();
@@ -89,6 +90,8 @@ class BlogPostsController extends Controller
             'content' => 'sometimes|required',
             'excerpt' => 'nullable',
             'featured_image' => 'nullable',
+            'video_url' => 'nullable',
+            'social_links' => 'nullable|json',
             'category' => 'nullable',
             'tags' => 'nullable',
             'status' => 'sometimes|in:draft,published',
@@ -96,10 +99,6 @@ class BlogPostsController extends Controller
 
         $data = BlogPost::findOrFail($id);
         $input = $request->all();
-
-        if ($request->has('title') && $request->title != $data->title) {
-            $input['slug'] = Str::slug($request->title);
-        }
 
         if ($request->status == 'published' && $data->status != 'published') {
             $input['published_at'] = Carbon::now();
@@ -127,6 +126,21 @@ class BlogPostsController extends Controller
         ]);
 
         $file = $request->file('image');
+        $filename = time() . '_' . uniqid() . '.' . $file->extension();
+        $file->move(public_path('uploads/blog'), $filename);
+
+        return $this->sendResponse([
+            'url' => url('uploads/blog/' . $filename),
+        ], Response::HTTP_OK, 'Uploaded successfully.');
+    }
+
+    public function uploadVideo(Request $request)
+    {
+        $request->validate([
+            'video' => 'required|mimes:mp4,webm,ogg,mov,avi|max:204800',
+        ]);
+
+        $file = $request->file('video');
         $filename = time() . '_' . uniqid() . '.' . $file->extension();
         $file->move(public_path('uploads/blog'), $filename);
 

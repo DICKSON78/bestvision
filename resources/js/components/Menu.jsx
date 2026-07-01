@@ -295,6 +295,12 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           show: user.privileges.reception,
         },
         {
+          title: "Booked Appointments",
+          icon: <AppointmentsIcon />,
+          to: "/reception/appointments",
+          show: user.privileges.reception,
+        },
+        {
           title: "Reports",
           icon: <ReportsIcon />,
           to: "/reception/reports",

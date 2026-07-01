@@ -103,6 +103,7 @@ const CheckInPatient = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [isPartnerItem, setIsPartnerItem] = useState(false);
   const [collaboratorId, setCollaboratorId] = useState();
+  const canTogglePartner = window.user?.role === "Admin" || window.user?.privileges?.reception === true;
 
   const { data: collaborators, handleFetch: fetchCollaborators } = useFetch(
     "api/collaborators",
@@ -622,8 +623,6 @@ const CheckInPatient = () => {
                           <TextField
                             label="Comments"
                             fullWidth
-                            multiline
-                            rows={4}
                             onChange={(value) => setComments(value)}
                           />
                         </Grid>
@@ -645,6 +644,7 @@ const CheckInPatient = () => {
                             }
                           />
                         </Grid>
+                        {canTogglePartner ? (
                         <Grid
                           item
                           md={1}
@@ -662,6 +662,7 @@ const CheckInPatient = () => {
                             sx={{ ml: 0 }}
                           />
                         </Grid>
+                        ) : null}
                         {isPartnerItem ? (
                           <Grid
                             item

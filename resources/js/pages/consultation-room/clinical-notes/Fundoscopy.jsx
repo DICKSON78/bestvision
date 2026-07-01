@@ -48,8 +48,6 @@ const Fundoscopy = ({ consultation: { id, status, fundoscopy } }, ref) => {
             <TextField
               ref={reRef}
               fullWidth
-              multiline
-              rows={3}
               defaultValue={fundoscopy ? fundoscopy.re : null}
               onChange={(value) => {
                 setFormData({ ...formData, re: value });
@@ -61,8 +59,6 @@ const Fundoscopy = ({ consultation: { id, status, fundoscopy } }, ref) => {
             <TextField
               ref={leRef}
               fullWidth
-              multiline
-              rows={3}
               defaultValue={fundoscopy ? fundoscopy.le : null}
               onChange={(value) => {
                 setFormData({ ...formData, le: value });

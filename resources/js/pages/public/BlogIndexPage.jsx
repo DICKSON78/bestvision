@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 
 const PostMeta = ({ post }) => (
   <div className="blog-meta">
+    {post.social_links?.length > 0 && (
+      <span className="blog-social-links">
+        {post.social_links.map((link, i) => (
+          <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="blog-social-link">{link.platform}</a>
+        ))}
+      </span>
+    )}
     <span className="blog-date">{post.published_at ? new Date(post.published_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : ""}</span>
   </div>
 );
@@ -175,6 +182,8 @@ const BlogIndexPage = () => {
                   </div>
                 </section>
               )}
+
+
             </>
           )}
         </div>
