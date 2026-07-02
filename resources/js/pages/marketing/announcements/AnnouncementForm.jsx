@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import {
   Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent,
-  DialogTitle, MenuItem, TextField, Typography,
+  DialogTitle, MenuItem, TextField, ToggleButton, ToggleButtonGroup, Typography,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, FormatAlignLeft, FormatAlignCenter, FormatAlignRight } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -21,6 +21,114 @@ const AnnouncementForm = () => {
     title: "", description: "", category: "", status: "draft",
   });
   const [file, setFile] = useState(null);
+  const quillRef = useRef(null);
+  const [uploadingContentImage, setUploadingContentImage] = useState(false);
+  const [imgDialogOpen, setImgDialogOpen] = useState(false);
+  const [imgDialogMode, setImgDialogMode] = useState("insert");
+  const [imgUrl, setImgUrl] = useState("");
+  const [imgAlign, setImgAlign] = useState("center");
+  const [imgSize, setImgSize] = useState(80);
+  const [imgTarget, setImgTarget] = useState(null);
+
+  const getImageStyle = (align, size) => {
+    if (align === "center") {
+      return `display: block; margin: 24px auto; width: ${size}%; height: auto; border-radius: 8px; max-height: 500px; object-fit: cover;`;
+    }
+    const margin = align === "left" ? "8px 16px 8px 0" : "8px 0 8px 16px";
+    return `float: ${align}; margin: ${margin}; width: ${size}%; height: auto; border-radius: 8px; max-height: 400px; object-fit: cover;`;
+  };
+
+  const insertImage = (url, align, size) => {
+    const quill = quillRef.current?.getEditor();
+    if (!quill) return;
+    const range = quill.getSelection(true);
+    const style = getImageStyle(align, size);
+    const html = `<img src="${url}" style="${style}" />`;
+    quill.clipboard.dangerouslyPasteHTML(range.index, html, "user");
+  };
+
+  const handleImgFilePick = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadingContentImage(true);
+    const fd = new FormData();
+    fd.append("image", file);
+    window.axios.post("/api/marketing/blog-posts/upload-image", fd, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then((res) => {
+      setImgUrl(res.data.data.url);
+      setImgAlign("center");
+      setImgSize(80);
+      setImgDialogMode("insert");
+      setImgTarget(null);
+      setImgDialogOpen(true);
+    }).catch(() => {
+      addToast({ message: "Image upload failed", severity: "error" });
+    }).finally(() => {
+      setUploadingContentImage(false);
+    });
+  };
+
+  const handleImgReplacePick = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadingContentImage(true);
+    const fd = new FormData();
+    fd.append("image", file);
+    window.axios.post("/api/marketing/blog-posts/upload-image", fd, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then((res) => {
+      setImgUrl(res.data.data.url);
+    }).catch(() => {
+      addToast({ message: "Image upload failed", severity: "error" });
+    }).finally(() => {
+      setUploadingContentImage(false);
+    });
+  };
+
+  const handleImgDialogInsert = () => {
+    if (imgDialogMode === "insert") {
+      insertImage(imgUrl, imgAlign, imgSize);
+    } else if (imgDialogMode === "edit" && imgTarget) {
+      imgTarget.style.cssText = getImageStyle(imgAlign, imgSize);
+      imgTarget.src = imgUrl;
+    }
+    setImgDialogOpen(false);
+    setImgUrl("");
+    setImgTarget(null);
+  };
+
+  const handleImgDialogDelete = () => {
+    if (imgTarget) {
+      imgTarget.remove();
+    }
+    setImgDialogOpen(false);
+    setImgUrl("");
+    setImgTarget(null);
+  };
+
+  useEffect(() => {
+    const el = quillRef.current?.getEditor()?.root;
+    if (!el) return;
+    const handler = (e) => {
+      if (e.target.tagName === "IMG") {
+        e.preventDefault();
+        const img = e.target;
+        const style = img.style || {};
+        const align = style.float === "left" ? "left" : style.float === "right" ? "right" : "center";
+        const size = parseInt(style.width) || 80;
+        setImgUrl(img.src);
+        setImgAlign(align);
+        setImgSize(size);
+        setImgTarget(img);
+        setImgDialogMode("edit");
+        setImgDialogOpen(true);
+      }
+    };
+    el.addEventListener("dblclick", handler);
+    return () => el.removeEventListener("dblclick", handler);
+  }, [form.description]);
+
   const [existingFile, setExistingFile] = useState("");
   const [categories, setCategories] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -103,13 +211,24 @@ const AnnouncementForm = () => {
   };
 
   const quillModules = useMemo(() => ({
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["blockquote", "link"],
-      ["clean"],
-    ],
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["blockquote", "link", "image"],
+        ["clean"],
+      ],
+      handlers: {
+        image: () => {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.accept = "image/*";
+          input.onchange = handleImgFilePick;
+          input.click();
+        },
+      },
+    },
   }), []);
 
   if (loading) return <Box p={3} textAlign="center">Loading...</Box>;
@@ -136,14 +255,23 @@ const AnnouncementForm = () => {
 
               <Box>
                 <Typography variant="subtitle2" mb={0.5}>Description</Typography>
+                {uploadingContentImage && (
+                  <Typography variant="caption" color="primary" display="block" mb={0.5}>
+                    Uploading image...
+                  </Typography>
+                )}
                 <Box sx={{ '& .ql-editor': { minHeight: 250 } }}>
                   <ReactQuill
                     theme="snow"
                     value={form.description}
                     onChange={(v) => setForm({ ...form, description: v })}
                     modules={quillModules}
+                    ref={quillRef}
                   />
                 </Box>
+                <Typography variant="caption" color="text.secondary" mt={0.5}>
+                  Double-click picha kwenye editor ili kubadilisha alignment, size, au kuifuta
+                </Typography>
               </Box>
 
               <Box>
@@ -173,6 +301,76 @@ const AnnouncementForm = () => {
         </CardContent>
       </Card>
 
+      <Dialog open={imgDialogOpen} onClose={() => setImgDialogOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>
+          {imgDialogMode === "insert" ? "Insert Image" : "Edit Image"}
+        </DialogTitle>
+        <DialogContent>
+          <Box display="flex" flexDirection="column" gap={2} pt={1}>
+            {imgUrl && (
+              <Box
+                component="img"
+                src={imgUrl}
+                alt="preview"
+                sx={{
+                  width: "100%", maxHeight: 250, objectFit: "contain",
+                  borderRadius: 2, bgcolor: "#f5f5f5", p: 1,
+                }}
+              />
+            )}
+            <Box display="flex" gap={1} alignItems="center">
+              <TextField
+                fullWidth label="Image URL" size="small"
+                value={imgUrl} onChange={(e) => setImgUrl(e.target.value)}
+              />
+              <Button variant="outlined" size="small" component="label" disabled={uploadingContentImage}>
+                {uploadingContentImage ? "..." : "Replace"}
+                <input type="file" accept="image/*" hidden onChange={handleImgReplacePick} />
+              </Button>
+            </Box>
+            <Box>
+              <Typography variant="caption" display="block" mb={0.5} fontWeight={600}>
+                Alignment
+              </Typography>
+              <ToggleButtonGroup
+                value={imgAlign} exclusive
+                onChange={(_, v) => v && setImgAlign(v)}
+                size="small"
+              >
+                <ToggleButton value="left"><FormatAlignLeft /></ToggleButton>
+                <ToggleButton value="center"><FormatAlignCenter /></ToggleButton>
+                <ToggleButton value="right"><FormatAlignRight /></ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+            <Box>
+              <Typography variant="caption" display="block" mb={0.5} fontWeight={600}>
+                Size: {imgSize}%
+              </Typography>
+              <Box display="flex" gap={0.5} flexWrap="wrap">
+                {[25, 50, 75, 80, 100].map((s) => (
+                  <Button
+                    key={s} size="small"
+                    variant={imgSize === s ? "contained" : "outlined"}
+                    onClick={() => setImgSize(s)}
+                    sx={{ minWidth: 48 }}
+                  >
+                    {s}%
+                  </Button>
+                ))}
+              </Box>
+            </Box>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          {imgDialogMode === "edit" && (
+            <Button color="error" onClick={handleImgDialogDelete}>Delete</Button>
+          )}
+          <Button onClick={() => setImgDialogOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleImgDialogInsert} disabled={!imgUrl}>
+            {imgDialogMode === "insert" ? "Insert" : "Update"}
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>New Category</DialogTitle>
         <DialogContent>
