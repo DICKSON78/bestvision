@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <>
       <section className="home-banner">
-        <img alt="Best Vision Eye Care Team" src="/assets/img/team.jpg" />
+        <img alt="Best Vision Eye Care Team" src="/assets/img/bango.jpeg" />
         <div className="banner-overlay banner-overlay-lower">
           <h2>WE CARE ABOUT YOUR EYES</h2>
           <p>Expert eye care through precision, advanced technology, and trust.</p>
