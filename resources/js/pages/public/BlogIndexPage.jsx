@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 const PostMeta = ({ post }) => (
@@ -17,7 +17,10 @@ const PostMeta = ({ post }) => (
 const BlogIndexPage = () => {
   const [posts, setPosts] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
+  const [topStories, setTopStories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [topLoading, setTopLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
 
@@ -41,6 +44,34 @@ const BlogIndexPage = () => {
     })();
   }, [page]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await window.axios.get("/api/blog/top-stories");
+        const data = res.data?.data ?? res.data ?? [];
+        setTopStories(Array.isArray(data) ? data : []);
+      } catch (e) {
+        console.error("Top stories load error:", e);
+      } finally {
+        setTopLoading(false);
+      }
+    })();
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((p) => (p + 1) % topStories.length);
+  }, [topStories.length]);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((p) => (p - 1 + topStories.length) % topStories.length);
+  }, [topStories.length]);
+
+  useEffect(() => {
+    if (topStories.length <= 1) return;
+    const timer = setInterval(nextSlide, 6000);
+    return () => clearInterval(timer);
+  }, [topStories.length, nextSlide]);
+
   const featured = posts.length > 0 ? posts[0] : null;
   const rest = featured ? posts.slice(1) : [];
 
@@ -51,6 +82,47 @@ const BlogIndexPage = () => {
 
   return (
     <>
+      {/* Top Stories Hero Slider */}
+      {!topLoading && topStories.length > 0 && (
+        <section className="top-stories-section">
+          <div className="container">
+            <div className="top-stories-wrapper">
+              {topStories.map((story, idx) => (
+                <Link
+                  key={story.id}
+                  to={`/blog/${story.slug}`}
+                  className={`top-stories-slide ${idx === currentSlide ? "active" : ""}`}
+                >
+                  <div className="top-stories-img">
+                    <img src={story.featured_image} alt={story.title} loading="lazy" />
+                  </div>
+                  <div className="top-stories-overlay" />
+                  <div className="top-stories-content">
+                    {story.category && <span className="top-stories-badge">{story.category}</span>}
+                    <h2 className="top-stories-title">{story.title}</h2>
+                    <p className="top-stories-excerpt">{story.excerpt}</p>
+                    <PostMeta post={story} />
+                  </div>
+                </Link>
+              ))}
+
+              {topStories.length > 1 && (
+                <>
+                  <button className="top-stories-arrow top-stories-arrow-left" onClick={(e) => { e.preventDefault(); prevSlide(); }}>&#8249;</button>
+                  <button className="top-stories-arrow top-stories-arrow-right" onClick={(e) => { e.preventDefault(); nextSlide(); }}>&#8250;</button>
+                  <div className="top-stories-dots">
+                    {topStories.map((_, idx) => (
+                      <button key={idx} className={`top-stories-dot ${idx === currentSlide ? "active" : ""}`} onClick={(e) => { e.preventDefault(); setCurrentSlide(idx); }} />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Existing Blog Header */}
       <section className="blog-header">
         <div className="container">
           <h1>Latest News & Announcements</h1>

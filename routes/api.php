@@ -86,6 +86,7 @@ Route::get('/units-of-measure', [UnitsOfMeasureController::class, 'index']);
 
 // Public blog routes
 Route::get('/blog', [\App\Http\Controllers\PublicBlogController::class, 'index']);
+Route::get('/blog/top-stories', [\App\Http\Controllers\PublicBlogController::class, 'topStories']);
 Route::get('/blog/{slug}', [\App\Http\Controllers\PublicBlogController::class, 'show']);
 
 // Public announcements routes

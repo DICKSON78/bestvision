@@ -19,6 +19,18 @@ class PublicBlogController extends Controller
         return response()->json($posts);
     }
 
+    public function topStories(Request $request)
+    {
+        $limit = min((int)($request->limit ?? 5), 10);
+        $posts = BlogPost::published()
+            ->with('creator:id,first_name,last_name')
+            ->orderBy('published_at', 'desc')
+            ->limit($limit)
+            ->get();
+
+        return response()->json(['data' => $posts]);
+    }
+
     public function show($slug)
     {
         $post = BlogPost::published()
