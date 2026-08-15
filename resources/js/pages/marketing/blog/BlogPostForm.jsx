@@ -67,6 +67,10 @@ const BlogPostForm = () => {
             social_links: d.social_links || [],
             status: d.status || "draft",
           });
+          if (d.status === "published") {
+            setShareToFacebook(Boolean(d.shared_to_facebook));
+            setShareToInstagram(Boolean(d.shared_to_instagram));
+          }
         } catch (e) { console.error(e); }
         finally { setLoading(false); }
       })();

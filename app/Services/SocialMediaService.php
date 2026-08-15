@@ -241,6 +241,63 @@ class SocialMediaService
         return $this->parseResponse($publish, 'instagram');
     }
 
+    public function deleteFromFacebook($postId)
+    {
+        if (!$this->fbPageToken || !$postId) {
+            return ['success' => false, 'error' => 'Missing credentials or post id'];
+        }
+
+        $token = $this->resolvePageToken();
+        $response = Http::delete("https://graph.facebook.com/v20.0/{$postId}", [
+            'access_token' => $token,
+        ]);
+
+        return $this->parseDeleteResponse($response, 'facebook');
+    }
+
+    public function deleteFromInstagram($postId)
+    {
+        if (!$this->fbPageToken || !$postId) {
+            return ['success' => false, 'error' => 'Missing credentials or post id'];
+        }
+
+        $token = $this->resolvePageToken();
+        // Instagram media deletion also goes through Graph API with the media id
+        $response = Http::delete("https://graph.facebook.com/v20.0/{$postId}", [
+            'access_token' => $token,
+        ]);
+
+        return $this->parseDeleteResponse($response, 'instagram');
+    }
+
+    public function deletePost($post)
+    {
+        $results = [];
+
+        if ($post->shared_to_facebook) {
+            $results['facebook'] = $this->deleteFromFacebook($post->shared_to_facebook);
+        }
+
+        if ($post->shared_to_instagram) {
+            $results['instagram'] = $this->deleteFromInstagram($post->shared_to_instagram);
+        }
+
+        return $results;
+    }
+
+    protected function parseDeleteResponse($response, $platform)
+    {
+        $data = $response->json();
+
+        if ($response->successful() && (($data['success'] ?? false) === true || isset($data['success']))) {
+            Log::info("{$platform} deletion successful");
+            return ['success' => true];
+        }
+
+        Log::warning("{$platform} deletion failed", ['response' => $data]);
+        return ['success' => false, 'error' => $data['error']['message'] ?? 'Unknown error'];
+    }
+
     protected function parseResponse($response, $platform)
     {
         $data = $response->json();

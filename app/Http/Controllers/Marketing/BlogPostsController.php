@@ -126,7 +126,26 @@ class BlogPostsController extends Controller
 
         $data = BlogPost::findOrFail($id);
         $service = new SocialMediaService();
-        $results = $service->sharePost($data, $request->platforms);
+
+        $platforms = $request->platforms;
+        $alreadyShared = [];
+
+        foreach ($platforms as $i => $platform) {
+            if ($data->{"shared_to_{$platform}"}) {
+                $alreadyShared[] = $platform;
+                unset($platforms[$i]);
+            }
+        }
+
+        if (empty($platforms)) {
+            return $this->sendResponse(
+                ['results' => []],
+                Response::HTTP_OK,
+                $alreadyShared ? 'Already shared: ' . implode(', ', $alreadyShared) . '.' : 'No platforms selected.'
+            );
+        }
+
+        $results = $service->sharePost($data, array_values($platforms));
 
         $updates = [];
         foreach ($results as $platform => $result) {
@@ -149,7 +168,18 @@ class BlogPostsController extends Controller
     public function destroy($id)
     {
         $data = BlogPost::findOrFail($id);
+        $service = new SocialMediaService();
+
+        $results = $service->deletePost($data);
+        $failed = collect($results)->filter(fn ($r) => !$r['success']);
+
         $data->delete();
+
+        if ($failed->isNotEmpty()) {
+            $errors = $failed->map(fn ($r) => $r['error'] ?? '')->join('; ');
+            return $this->sendResponse(['social_errors' => $errors], Response::HTTP_OK, "Deleted locally. Social media cleanup: {$errors}");
+        }
+
         return $this->sendResponse($data, Response::HTTP_OK, 'Deleted successfully.');
     }
 
