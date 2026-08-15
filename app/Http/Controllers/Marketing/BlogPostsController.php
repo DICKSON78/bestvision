@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Marketing;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiResponse;
 use App\Models\Marketing\BlogPost;
+use App\Services\SocialMediaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -64,6 +65,8 @@ class BlogPostsController extends Controller
             'category' => 'nullable',
             'tags' => 'nullable',
             'status' => 'sometimes|in:draft,published',
+            'share_to_facebook' => 'sometimes|boolean',
+            'share_to_instagram' => 'sometimes|boolean',
         ]);
 
         $input = $request->all();
@@ -95,6 +98,8 @@ class BlogPostsController extends Controller
             'category' => 'nullable',
             'tags' => 'nullable',
             'status' => 'sometimes|in:draft,published',
+            'share_to_facebook' => 'sometimes|boolean',
+            'share_to_instagram' => 'sometimes|boolean',
         ]);
 
         $data = BlogPost::findOrFail($id);
@@ -110,6 +115,35 @@ class BlogPostsController extends Controller
 
         $data->update($input);
         return $this->sendResponse($data, Response::HTTP_OK, 'Saved successfully.');
+    }
+
+    public function share(Request $request, $id)
+    {
+        $request->validate([
+            'platforms' => 'required|array',
+            'platforms.*' => 'in:facebook,instagram',
+        ]);
+
+        $data = BlogPost::findOrFail($id);
+        $service = new SocialMediaService();
+        $results = $service->sharePost($data, $request->platforms);
+
+        $updates = [];
+        foreach ($results as $platform => $result) {
+            if ($result['success']) {
+                $updates["shared_to_{$platform}"] = $result['post_id'];
+            }
+        }
+        if ($updates) {
+            $updates['shared_at'] = Carbon::now();
+            $data->update($updates);
+        }
+
+        $failed = collect($results)->filter(fn ($r) => !$r['success'])->map(fn ($r) => $r['error'] ?? '');
+        $message = $failed->isEmpty() ? 'Shared successfully.' : 'Partial failure: ' . $failed->join('; ');
+        $status = $failed->isEmpty() ? Response::HTTP_OK : Response::HTTP_UNPROCESSABLE_ENTITY;
+
+        return $this->sendResponse(['results' => $results], $status, $message);
     }
 
     public function destroy($id)

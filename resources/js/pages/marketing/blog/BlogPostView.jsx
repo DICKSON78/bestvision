@@ -31,6 +31,8 @@ const BlogPostView = () => {
           <Box display="flex" gap={1} my={1}>
             {post.category && <Chip label={post.category} size="small" />}
             <Chip label={post.status} size="small" color={post.status === "published" ? "success" : "warning"} />
+            {post.shared_to_facebook && <Chip label="Shared to Facebook" size="small" sx={{ bgcolor: "#1877F2", color: "#fff" }} />}
+            {post.shared_to_instagram && <Chip label="Shared to Instagram" size="small" sx={{ bgcolor: "#E4405F", color: "#fff" }} />}
           </Box>
           <Typography variant="body2" color="text.secondary" mb={2}>
             By {post.creator?.name} {post.published_at ? `• ${new Date(post.published_at).toLocaleDateString()}` : ""}

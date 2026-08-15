@@ -4,7 +4,7 @@ import {
   DialogTitle, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography,
 } from "@mui/material";
-import { Add, Delete, Edit, OpenInNew, Visibility } from "@mui/icons-material";
+import { Add, Delete, Edit, OpenInNew, Share, Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../../hooks";
 
@@ -17,6 +17,7 @@ const BlogPostList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [total, setTotal] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [sharingId, setSharingId] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -45,6 +46,22 @@ const BlogPostList = () => {
     } catch (e) {
       addToast({ message: "Error deleting post", severity: "error" });
       console.error(e);
+    }
+  };
+
+  const handleShare = async (row) => {
+    setSharingId(row.id);
+    try {
+      const res = await window.axios.post(`/api/marketing/blog-posts/${row.id}/share`, {
+        platforms: ["facebook", "instagram"],
+      });
+      addToast({ message: res.data?.message || "Shared successfully", severity: res.status >= 200 && res.status < 300 ? "success" : "warning" });
+      fetchData();
+    } catch (e) {
+      const msg = e.response?.data?.message || "Error sharing to social media";
+      addToast({ message: msg, severity: "warning" });
+    } finally {
+      setSharingId(null);
     }
   };
 
@@ -82,6 +99,7 @@ const BlogPostList = () => {
                     <TableCell>Title</TableCell>
                     <TableCell>Category</TableCell>
                     <TableCell>Status</TableCell>
+                    <TableCell>Social</TableCell>
                     <TableCell>Author</TableCell>
                     <TableCell>Published</TableCell>
                     <TableCell align="center">Actions</TableCell>
@@ -93,9 +111,31 @@ const BlogPostList = () => {
                       <TableCell>{row.title}</TableCell>
                       <TableCell>{row.category || "-"}</TableCell>
                       <TableCell><Chip label={row.status} size="small" color={statusColor(row.status)} /></TableCell>
+                      <TableCell>
+                        <Box display="flex" gap={0.5}>
+                          {row.shared_to_facebook && (
+                            <Tooltip title="Shared to Facebook">
+                              <Chip label="FB" size="small" sx={{ bgcolor: "#1877F2", color: "#fff" }} />
+                            </Tooltip>
+                          )}
+                          {row.shared_to_instagram && (
+                            <Tooltip title="Shared to Instagram">
+                              <Chip label="IG" size="small" sx={{ bgcolor: "#E4405F", color: "#fff" }} />
+                            </Tooltip>
+                          )}
+                          {!row.shared_to_facebook && !row.shared_to_instagram && <span style={{ color: "#999", fontSize: 12 }}>-</span>}
+                        </Box>
+                      </TableCell>
                       <TableCell>{row.creator?.name || "-"}</TableCell>
                       <TableCell>{row.published_at ? new Date(row.published_at).toLocaleDateString() : "-"}</TableCell>
                       <TableCell align="center">
+                        {row.status === "published" && (
+                          <Tooltip title={sharingId === row.id ? "Sharing..." : "Share to Social Media"}>
+                            <IconButton size="small" disabled={sharingId === row.id} onClick={() => handleShare(row)}>
+                              <Share />
+                            </IconButton>
+                          </Tooltip>
+                        )}
                         <Tooltip title="View"><IconButton size="small" onClick={() => navigate(`/marketing/blog/${row.id}`)}><Visibility /></IconButton></Tooltip>
                         <Tooltip title="Edit"><IconButton size="small" onClick={() => navigate(`/marketing/blog/${row.id}/edit`)}><Edit /></IconButton></Tooltip>
                         {row.status === "published" && (

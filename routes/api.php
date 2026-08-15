@@ -275,6 +275,7 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
         $router->apiResource('/blog-posts', \App\Http\Controllers\Marketing\BlogPostsController::class);
         $router->post('/blog-posts/upload-image', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'uploadImage']);
         $router->post('/blog-posts/upload-video', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'uploadVideo']);
+        $router->post('/blog-posts/{id}/share', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'share']);
         $router->apiResource('/announcements', \App\Http\Controllers\Marketing\AnnouncementsController::class);
         $router->apiResource('/categories', \App\Http\Controllers\Marketing\CategoriesController::class)->only(['index', 'store', 'destroy']);
     });

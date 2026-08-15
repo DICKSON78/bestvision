@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import {
-  Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent,
+  Box, Button, Card, CardContent, Checkbox, Dialog, DialogActions, DialogContent,
   DialogTitle, IconButton, MenuItem, TextField, ToggleButton, ToggleButtonGroup, Typography,
 } from "@mui/material";
 import { Add, Delete, FormatAlignLeft, FormatAlignCenter, FormatAlignRight } from "@mui/icons-material";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -31,6 +33,9 @@ const BlogPostForm = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newCategory, setNewCategory] = useState({ name: "", description: "" });
   const [socialText, setSocialText] = useState("");
+  const [shareToFacebook, setShareToFacebook] = useState(false);
+  const [shareToInstagram, setShareToInstagram] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const [form, setForm] = useState({
     title: "", excerpt: "", content: "", category: "", tags: "",
     featured_image: "", video_url: "", social_links: [], status: "draft",
@@ -258,12 +263,33 @@ const BlogPostForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
+    let postId = id;
     try {
       if (isEdit) {
         await window.axios.put(`/api/marketing/blog-posts/${id}`, form);
       } else {
-        await window.axios.post("/api/marketing/blog-posts", form);
+        const res = await window.axios.post("/api/marketing/blog-posts", form);
+        postId = res.data.data?.id;
       }
+
+      if (form.status === "published") {
+        const platforms = [];
+        if (shareToFacebook) platforms.push("facebook");
+        if (shareToInstagram) platforms.push("instagram");
+        if (platforms.length > 0) {
+          setSharing(true);
+          try {
+            const shareRes = await window.axios.post(`/api/marketing/blog-posts/${postId}/share`, { platforms });
+            addToast({ message: shareRes.data?.message || "Shared successfully", severity: shareRes.data?.status === "partial" ? "warning" : "success" });
+          } catch (shareErr) {
+            const msg = shareErr.response?.data?.message || "Error sharing to social media";
+            addToast({ message: msg, severity: "warning" });
+          } finally {
+            setSharing(false);
+          }
+        }
+      }
+
       addToast({ message: isEdit ? "Post updated successfully" : "Post created successfully", severity: "success" });
       navigate("/marketing/blog");
     } catch (e) {
@@ -422,8 +448,37 @@ const BlogPostForm = () => {
                 <MenuItem value="published">Published</MenuItem>
               </TextField>
 
+              {form.status === "published" && (
+                <Box>
+                  <Typography variant="subtitle2" mb={1}>Share to Social Media</Typography>
+                  <Box display="flex" gap={3}>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <Checkbox
+                        checked={shareToFacebook}
+                        onChange={(e) => setShareToFacebook(e.target.checked)}
+                        color="primary"
+                      />
+                      <FacebookIcon sx={{ color: "#1877F2" }} fontSize="small" />
+                      <Typography variant="body2">Facebook</Typography>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <Checkbox
+                        checked={shareToInstagram}
+                        onChange={(e) => setShareToInstagram(e.target.checked)}
+                        color="primary"
+                      />
+                      <InstagramIcon sx={{ color: "#E4405F" }} fontSize="small" />
+                      <Typography variant="body2">Instagram</Typography>
+                    </Box>
+                  </Box>
+                  <Typography variant="caption" color="text.secondary" display="block" mt={0.5}>
+                    {sharing ? "Sharing to social media..." : "Post itachapishwa kwenye platform zilizochaguliwa baada ya kusave"}
+                  </Typography>
+                </Box>
+              )}
+
               <Box display="flex" gap={2}>
-                <Button type="submit" variant="contained" disabled={saving}>
+                <Button type="submit" variant="contained" disabled={saving || sharing}>
                   {saving ? "Saving..." : "Save"}
                 </Button>
                 <Button variant="outlined" onClick={() => navigate("/marketing/blog")}>Cancel</Button>

@@ -31,4 +31,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'facebook' => [
+        'app_id' => env('FB_APP_ID'),
+        'app_secret' => env('FB_APP_SECRET'),
+        'page_id' => env('FB_PAGE_ID'),
+        'page_token' => env('FB_PAGE_ACCESS_TOKEN'),
+        'user_token' => env('FB_USER_TOKEN'),
+    ],
+
+    'instagram' => [
+        'user_id' => env('IG_USER_ID'),
+    ],
+
 ];

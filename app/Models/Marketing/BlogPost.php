@@ -17,7 +17,7 @@ class BlogPost extends Model
     protected $fillable = [
         'title', 'slug', 'excerpt', 'content', 'featured_image',
         'video_url', 'social_links', 'category', 'tags', 'status',
-        'created_by', 'published_at',
+        'created_by', 'published_at', 'shared_to_facebook', 'shared_to_instagram', 'shared_at',
     ];
 
     protected $casts = [
