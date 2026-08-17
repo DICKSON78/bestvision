@@ -1019,10 +1019,16 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           show: user.privileges.settings,
         },
         {
-          title: "System Preferences",
+          title: "Settings",
           icon: <SettingsIcon />,
           to: "/settings/preferences",
           show: user.privileges.settings,
+        },
+        {
+          title: "Social Media Accounts",
+          icon: <SettingsIcon />,
+          to: "/settings/social-accounts",
+          show: user.privileges.marketing,
         },
         {
           title: "Clinics",

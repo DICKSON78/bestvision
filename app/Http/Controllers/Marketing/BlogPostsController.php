@@ -122,12 +122,15 @@ class BlogPostsController extends Controller
         $request->validate([
             'platforms' => 'required|array',
             'platforms.*' => 'in:facebook,instagram',
+            'account_ids' => 'sometimes|array',
+            'account_ids.*' => 'integer',
         ]);
 
         $data = BlogPost::findOrFail($id);
         $service = new SocialMediaService();
 
         $platforms = $request->platforms;
+        $accountIds = $request->account_ids ?? [];
         $alreadyShared = [];
 
         foreach ($platforms as $i => $platform) {
@@ -145,7 +148,7 @@ class BlogPostsController extends Controller
             );
         }
 
-        $results = $service->sharePost($data, array_values($platforms));
+        $results = $service->sharePost($data, array_values($platforms), $accountIds);
 
         $updates = [];
         foreach ($results as $platform => $result) {

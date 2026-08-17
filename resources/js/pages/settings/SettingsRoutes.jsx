@@ -12,6 +12,7 @@ import ClinicDetails from "./ClinicDetails";
 import Preferences from "./Preferences";
 import Clinics from "./clinics/Clinics";
 import Collaborators from "./collaborators/Collaborators";
+import SocialMediaAccounts from "./SocialMediaAccounts";
 
 const SettingsRoutes = () => {
   return (
@@ -59,6 +60,10 @@ const SettingsRoutes = () => {
       <Route
         path="/collaborators"
         element={window.user.privileges.settings ? <Collaborators /> : null}
+      />
+      <Route
+        path="/social-accounts"
+        element={<SocialMediaAccounts />}
       />
     </Routes>
   );
