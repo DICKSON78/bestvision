@@ -78,33 +78,47 @@ class PaymentCenterDashboardController extends Controller
             ->get()
             ->sum(fn($bill) => $bill->amount - $bill->discount);
 
-        // Cash payments - actual cash payments
+        // Cash payments - actual cash payments (excluding partner items)
         $data['summary']['cash_payments'] = PatientItemPayment::query()
+            ->join('patient_payment_cache_items as ppci', function ($join) {
+                $join->on('ppci.item_payment_id', '=', 'patient_item_payments.id')
+                    ->where(function ($q) {
+                        $q->where('ppci.is_partner_item', '!=', true)
+                          ->orWhereNull('ppci.is_partner_item');
+                    });
+            })
             ->when($clinic_id, function ($query) use ($clinic_id) {
                 $query->whereHas('creator', function ($query) use ($clinic_id) {
                     $query->where('clinic_id', $clinic_id);
                 });
             })
-            ->whereDate('created_at', '>=', $start_date)
-            ->whereDate('created_at', '<=', $end_date)
+            ->whereDate('patient_item_payments.created_at', '>=', $start_date)
+            ->whereDate('patient_item_payments.created_at', '<=', $end_date)
             ->whereHas('channel', function ($query) {
                 $query->where('name', 'Cash');
             })
-            ->sum('amount');
+            ->sum('patient_item_payments.amount');
 
-        // Credit payments - actual credit payments
+        // Credit payments - actual credit payments (excluding partner items)
         $data['summary']['credit_payments'] = PatientItemPayment::query()
+            ->join('patient_payment_cache_items as ppci', function ($join) {
+                $join->on('ppci.item_payment_id', '=', 'patient_item_payments.id')
+                    ->where(function ($q) {
+                        $q->where('ppci.is_partner_item', '!=', true)
+                          ->orWhereNull('ppci.is_partner_item');
+                    });
+            })
             ->when($clinic_id, function ($query) use ($clinic_id) {
                 $query->whereHas('creator', function ($query) use ($clinic_id) {
                     $query->where('clinic_id', $clinic_id);
                 });
             })
-            ->whereDate('created_at', '>=', $start_date)
-            ->whereDate('created_at', '<=', $end_date)
+            ->whereDate('patient_item_payments.created_at', '>=', $start_date)
+            ->whereDate('patient_item_payments.created_at', '<=', $end_date)
             ->whereHas('channel', function ($query) {
                 $query->where('name', 'Credit');
             })
-            ->sum('amount');
+            ->sum('patient_item_payments.amount');
 
         // Pending bills count (only PatientItemBill records to match the pending bills page)
         $data['summary']['pending_bills'] = PatientItemBill::query()
@@ -234,15 +248,21 @@ class PaymentCenterDashboardController extends Controller
             ['payment_mode' => 'Cleared Bills', 'total_amount' => $clearedBillsAmount],
         ]);
 
-        // Top paying patients (real data)
+        // Top paying patients (real data, excluding partner items)
         $data['statistics']['top_paying_patients'] = PatientItemPayment::query()
             ->when($clinic_id, function ($query) use ($clinic_id) {
                 $query->whereHas('creator', function ($query) use ($clinic_id) {
                     $query->where('clinic_id', $clinic_id);
                 });
             })
-            ->join('patient_payment_cache_items', 'patient_payment_cache_items.item_payment_id', '=', 'patient_item_payments.id')
-            ->join('patient_payment_cache', 'patient_payment_cache_items.payment_cache_id', '=', 'patient_payment_cache.id')
+            ->join('patient_payment_cache_items as ppci', function ($join) {
+                $join->on('ppci.item_payment_id', '=', 'patient_item_payments.id')
+                    ->where(function ($q) {
+                        $q->where('ppci.is_partner_item', '!=', true)
+                          ->orWhereNull('ppci.is_partner_item');
+                    });
+            })
+            ->join('patient_payment_cache', 'ppci.payment_cache_id', '=', 'patient_payment_cache.id')
             ->join('patient_check_ins', 'patient_payment_cache.check_in_id', '=', 'patient_check_ins.id')
             ->join('patients', 'patient_check_ins.patient_id', '=', 'patients.id')
             ->whereDate('patient_item_payments.created_at', '>=', $start_date)

@@ -466,28 +466,35 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           show: user.privileges.optician_center,
         },
         {
+          title: "Glass Dispensing Requests",
+          icon: <WaitingIcon />,
+          to: "/optician-center/dispensing-requests",
+          badge: Number(notifications?.glass_dispensing_requests) || 0,
+          show: user.privileges.optician_center,
+        },
+        {
           title: "Reports",
           icon: <ReportsIcon />,
           to: "/optician-center/reports",
-          show: false, // hidden per user request
+          show: user.privileges.optician_center,
           items: [
             {
               title: "Items Dispensed Report",
               icon: <ReportsIcon />,
               to: "/optician-center/reports/items-dispensed",
-              show: false, // hidden per user request
+              show: user.privileges.optician_center,
             },
             {
               title: "Items Not Dispensed Report",
               icon: <ReportsIcon />,
               to: "/optician-center/reports/items-not-dispensed",
-              show: false, // hidden per user request
+              show: user.privileges.optician_center,
             },
             {
               title: "Item Balance Report",
               icon: <ReportsIcon />,
               to: "/optician-center/reports/item-balance",
-              show: false, // hidden per user request
+              show: user.privileges.optician_center,
             },
           ],
         },
@@ -537,7 +544,7 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
                   title: "Quantity Dispensed Report",
                   icon: <ReportsIcon />,
                   to: "/medicine-center/reports/stock-management/item-quantity-dispensed",
-                  show: false, // hidden per user request
+                  show: user.privileges.medicine_center,
                 },
               ],
             },

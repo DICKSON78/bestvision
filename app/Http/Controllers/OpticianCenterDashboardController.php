@@ -242,7 +242,7 @@ class OpticianCenterDashboardController extends Controller
             })
             ->count();
 
-        // Total revenue from glass items (use served_at for Served status)
+        // Total revenue from glass items (use served_at for Served status, exclude partner items)
         $data['summary']['total_revenue'] = PatientPaymentCacheItem::query()
             ->when($clinic_id, function ($query) use ($clinic_id) {
                 $query->whereHas('creator', function ($q) use ($clinic_id) {
@@ -253,6 +253,10 @@ class OpticianCenterDashboardController extends Controller
                 $query->where('name', 'Glass');
             })
             ->where('status', 'Served')
+            ->where(function ($q) {
+                $q->where('is_partner_item', '!=', true)
+                  ->orWhereNull('is_partner_item');
+            })
             ->whereBetween('served_at', [$start_date, $end_date])
             ->sum(DB::raw('unit_price * quantity'));
 
@@ -299,7 +303,7 @@ class OpticianCenterDashboardController extends Controller
             ->groupBy('status')
             ->get();
 
-        // Top items dispensed (use served_at)
+        // Top items dispensed (use served_at, exclude partner items)
         $data['statistics']['top_items_dispensed'] = PatientPaymentCacheItem::query()
             ->when($clinic_id, function ($query) use ($clinic_id) {
                 $query->whereHas('creator', function ($q) use ($clinic_id) {
@@ -310,6 +314,10 @@ class OpticianCenterDashboardController extends Controller
                 $query->where('name', 'Glass');
             })
             ->where('patient_payment_cache_items.status', 'Served')
+            ->where(function ($q) {
+                $q->where('patient_payment_cache_items.is_partner_item', '!=', true)
+                  ->orWhereNull('patient_payment_cache_items.is_partner_item');
+            })
             ->whereBetween('patient_payment_cache_items.served_at', [$start_date, $end_date])
             ->join('items', 'patient_payment_cache_items.item_id', '=', 'items.id')
             ->select('items.name as item_name', DB::raw('count(*) as count'), DB::raw('sum(patient_payment_cache_items.unit_price * patient_payment_cache_items.quantity) as total_revenue'))
@@ -318,7 +326,7 @@ class OpticianCenterDashboardController extends Controller
             ->limit(10)
             ->get();
 
-        // Revenue trend (last 7 days) - use served_at
+        // Revenue trend (last 7 days) - use served_at, exclude partner items
         $data['statistics']['revenue_trend'] = [];
         for ($i = 6; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i)->format('Y-m-d');
@@ -332,6 +340,10 @@ class OpticianCenterDashboardController extends Controller
                     $query->where('name', 'Glass');
                 })
                 ->where('status', 'Served')
+                ->where(function ($q) {
+                    $q->where('is_partner_item', '!=', true)
+                      ->orWhereNull('is_partner_item');
+                })
                 ->whereDate('served_at', $date)
                 ->sum(DB::raw('unit_price * quantity'));
 

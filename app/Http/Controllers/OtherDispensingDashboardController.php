@@ -85,7 +85,7 @@ class OtherDispensingDashboardController extends Controller
         ->whereDate('patient_payment_cache.created_at', '<=', $end_date)
         ->sum('patient_payment_cache_items.quantity');
 
-        // Get top dispensed items
+        // Get top dispensed items (exclude partner items)
         $data['statistics']['top_dispensed_items'] = DB::table('patient_payment_cache_items')
         ->join('patient_payment_cache', 'patient_payment_cache_items.payment_cache_id', '=', 'patient_payment_cache.id')
         ->join('consultation_types', 'patient_payment_cache_items.consultation_type_id', '=', 'consultation_types.id')
@@ -94,6 +94,10 @@ class OtherDispensingDashboardController extends Controller
         ->where('consultation_types.name', 'Others')
         ->where('users.clinic_id', $user->clinic_id)
         ->where('patient_payment_cache_items.status', 'Served')
+        ->where(function ($q) {
+            $q->where('patient_payment_cache_items.is_partner_item', '!=', true)
+              ->orWhereNull('patient_payment_cache_items.is_partner_item');
+        })
         ->whereDate('patient_payment_cache.created_at', '>=', $start_date)
         ->whereDate('patient_payment_cache.created_at', '<=', $end_date)
         ->select('items.name', DB::raw('sum(patient_payment_cache_items.quantity) as total_quantity'), DB::raw('sum(patient_payment_cache_items.unit_price * patient_payment_cache_items.quantity) as total_revenue'))

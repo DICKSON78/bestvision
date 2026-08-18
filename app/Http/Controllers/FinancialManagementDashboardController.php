@@ -43,28 +43,42 @@ class FinancialManagementDashboardController extends Controller
         ];
 
         // Get financial statistics
-        // Total revenue: sum of all payments + cleared bills
+        // Total revenue: sum of all payments + cleared bills (excluding partner items)
         $data['summary']['total_revenue'] = PatientItemPayment::query()
+            ->join('patient_payment_cache_items as ppci', function ($join) {
+                $join->on('ppci.item_payment_id', '=', 'patient_item_payments.id')
+                    ->where(function ($q) {
+                        $q->where('ppci.is_partner_item', '!=', true)
+                          ->orWhereNull('ppci.is_partner_item');
+                    });
+            })
             ->when($clinic_id, function ($query) use ($clinic_id) {
                 $query->whereHas('creator', function ($query) use ($clinic_id) {
                     $query->where('clinic_id', $clinic_id);
                 });
             })
-            ->whereDate('created_at', '>=', $start_date)
-            ->whereDate('created_at', '<=', $end_date)
-            ->sum('amount');
+            ->whereDate('patient_item_payments.created_at', '>=', $start_date)
+            ->whereDate('patient_item_payments.created_at', '<=', $end_date)
+            ->sum('patient_item_payments.amount');
 
-        // Add cleared bills to total revenue
+        // Add cleared bills to total revenue (excluding partner items)
         $cleared_bills_revenue = PatientItemBill::query()
+            ->join('patient_payment_cache_items as ppci', function ($join) {
+                $join->on('ppci.bill_id', '=', 'patient_item_bills.id')
+                    ->where(function ($q) {
+                        $q->where('ppci.is_partner_item', '!=', true)
+                          ->orWhereNull('ppci.is_partner_item');
+                    });
+            })
             ->when($clinic_id, function ($query) use ($clinic_id) {
                 $query->whereHas('creator', function ($query) use ($clinic_id) {
                     $query->where('clinic_id', $clinic_id);
                 });
             })
-            ->where('status', 'Cleared')
-            ->whereDate('created_at', '>=', $start_date)
-            ->whereDate('created_at', '<=', $end_date)
-            ->sum('amount');
+            ->where('patient_item_bills.status', 'Cleared')
+            ->whereDate('patient_item_bills.created_at', '>=', $start_date)
+            ->whereDate('patient_item_bills.created_at', '<=', $end_date)
+            ->sum('patient_item_bills.amount');
 
         $data['summary']['total_revenue'] += $cleared_bills_revenue;
 
@@ -102,8 +116,15 @@ class FinancialManagementDashboardController extends Controller
             ['name' => 'Utilities', 'total_amount' => $data['summary']['total_expenses'] * 0.1],
         ]);
 
-        // Get payment trends (last 7 days)
+        // Get payment trends (last 7 days) - exclude partner items
         $paymentQuery = DB::table('patient_item_payments')
+            ->join('patient_payment_cache_items as ppci', function ($join) {
+                $join->on('ppci.item_payment_id', '=', 'patient_item_payments.id')
+                    ->where(function ($q) {
+                        $q->where('ppci.is_partner_item', '!=', true)
+                          ->orWhereNull('ppci.is_partner_item');
+                    });
+            })
             ->join('users', 'patient_item_payments.created_by', '=', 'users.id');
         
         if ($clinic_id) {
