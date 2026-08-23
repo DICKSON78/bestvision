@@ -221,11 +221,17 @@ const ItemsNotDispensed = () => {
               numberFormat(item.quantity_dispensed || 0),
           },
           {
+            field: "partner_quantity",
+            headerName: "Partner Qty",
+            valueGetter: (item, index) =>
+              item.partner_quantity > 0 ? numberFormat(item.partner_quantity) : "-",
+            cellClassName: (item) => item.partner_quantity > 0 ? "partner-highlight" : "",
+          },
+          {
             field: "balance",
             headerName: "Balance",
             valueGetter: (item, index) => {
               const balance = parseFloat(item.item.balance) || 0;
-              // Display 0 instead of negative values to avoid confusion during inspections
               return numberFormat(balance < 0 ? 0 : balance);
             },
           },
@@ -235,12 +241,23 @@ const ItemsNotDispensed = () => {
             valueGetter: (item, index) =>
               numberFormat(item.dispensed_value || 0),
           },
+          {
+            field: "partner_value",
+            headerName: "Partner Value",
+            valueGetter: (item, index) =>
+              item.partner_value > 0 ? numberFormat(item.partner_value) : "-",
+            cellClassName: (item) => item.partner_value > 0 ? "partner-highlight" : "",
+          },
         ]}
         summationFooterColumns={[
           { value: "TOTAL", span: 4, index: 1 },
           {
-            reducer: (acc, item, index) => acc + (parseFloat(item.dispensed_value) || 0),
+            reducer: (acc, item, index) => acc + ((parseFloat(item.dispensed_value) || 0) - (parseFloat(item.partner_value) || 0)),
             index: 5,
+          },
+          {
+            reducer: (acc, item, index) => acc + (parseFloat(item.partner_value) || 0),
+            index: 6,
           },
         ]}
       />

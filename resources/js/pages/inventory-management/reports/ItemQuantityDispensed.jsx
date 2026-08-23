@@ -221,6 +221,13 @@ const ItemQuantityDispensed = () => {
               numberFormat(item.quantity_dispensed || 0),
           },
           {
+            field: "partner_quantity",
+            headerName: "Partner Qty",
+            valueGetter: (item, index) =>
+              item.partner_quantity > 0 ? numberFormat(item.partner_quantity) : "-",
+            cellClassName: (item) => item.partner_quantity > 0 ? "partner-highlight" : "",
+          },
+          {
             field: "balance",
             headerName: "Current Balance",
             valueGetter: (item, index) => {
@@ -250,6 +257,13 @@ const ItemQuantityDispensed = () => {
             valueGetter: (item, index) =>
               numberFormat(item.dispensed_value || 0),
           },
+          {
+            field: "partner_value",
+            headerName: "Partner Value",
+            valueGetter: (item, index) =>
+              item.partner_value > 0 ? numberFormat(item.partner_value) : "-",
+            cellClassName: (item) => item.partner_value > 0 ? "partner-highlight" : "",
+          },
         ]}
         summationFooterColumns={[
           { value: "TOTAL", span: 5, index: 0 },
@@ -275,8 +289,12 @@ const ItemQuantityDispensed = () => {
             index: 7,
           },
           {
-            reducer: (acc, item, index) => acc + (parseFloat(item.dispensed_value) || 0),
+            reducer: (acc, item, index) => acc + ((parseFloat(item.dispensed_value) || 0) - (parseFloat(item.partner_value) || 0)),
             index: 8,
+          },
+          {
+            reducer: (acc, item, index) => acc + (parseFloat(item.partner_value) || 0),
+            index: 9,
           },
         ]}
       />

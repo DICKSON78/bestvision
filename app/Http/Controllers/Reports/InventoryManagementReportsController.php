@@ -79,7 +79,7 @@ class InventoryManagementReportsController extends Controller
 
             $data->orderBy('created_at', 'desc');
             $data->groupBy('item_id');
-            $data->selectRaw('item_id, sum(quantity) as quantity_dispensed, sum(unit_price * quantity) as dispensed_value');
+            $data->selectRaw('item_id, sum(quantity) as quantity_dispensed, sum(unit_price * quantity) as dispensed_value, SUM(CASE WHEN is_partner_item = 1 THEN quantity ELSE 0 END) as partner_quantity, SUM(CASE WHEN is_partner_item = 1 THEN unit_price * quantity ELSE 0 END) as partner_value');
 
             $data = $data->paginate($per_page);
             // Ensure balance-like fields exist for frontend reducers (defensive)

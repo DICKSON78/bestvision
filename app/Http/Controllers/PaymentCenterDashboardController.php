@@ -73,6 +73,9 @@ class PaymentCenterDashboardController extends Controller
                 });
             })
             ->where('status', 'Cleared')
+            ->whereDoesntHave('items', function ($query) {
+                $query->where('is_partner_item', true);
+            })
             ->whereDate('cleared_at', '>=', $start_date)
             ->whereDate('cleared_at', '<=', $end_date)
             ->get()
@@ -181,6 +184,11 @@ class PaymentCenterDashboardController extends Controller
                     $query->where('clinic_id', $clinic_id);
                 });
             })
+            ->whereHas('items', function ($q) {
+                $q->where(function ($qq) {
+                    $qq->where('is_partner_item', '!=', true)->orWhereNull('is_partner_item');
+                });
+            })
             ->whereDate('created_at', Carbon::today())
             ->sum('amount');
 
@@ -191,6 +199,9 @@ class PaymentCenterDashboardController extends Controller
                 });
             })
             ->where('status', 'Cleared')
+            ->whereDoesntHave('items', function ($query) {
+                $query->where('is_partner_item', true);
+            })
             ->whereDate('cleared_at', Carbon::today())
             ->get()
             ->sum(fn($bill) => $bill->amount - $bill->discount);
@@ -219,6 +230,9 @@ class PaymentCenterDashboardController extends Controller
                     });
                 })
                 ->where('status', 'Cleared')
+                ->whereDoesntHave('items', function ($query) {
+                    $query->where('is_partner_item', true);
+                })
                 ->whereDate('cleared_at', $date)
                 ->get()
                 ->sum(fn($bill) => $bill->amount - $bill->discount);
@@ -237,6 +251,9 @@ class PaymentCenterDashboardController extends Controller
                 });
             })
             ->where('status', 'Cleared')
+            ->whereDoesntHave('items', function ($query) {
+                $query->where('is_partner_item', true);
+            })
             ->whereDate('cleared_at', '>=', $start_date)
             ->whereDate('cleared_at', '<=', $end_date)
             ->get()

@@ -35,12 +35,12 @@ const BlogPostForm = () => {
   const [categories, setCategories] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newCategory, setNewCategory] = useState({ name: "", description: "" });
-  const [socialText, setSocialText] = useState("");
   const [shareToFacebook, setShareToFacebook] = useState(false);
   const [shareToInstagram, setShareToInstagram] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [connectedAccounts, setConnectedAccounts] = useState([]);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [noAccountsReminderOpen, setNoAccountsReminderOpen] = useState(false);
   const [selectedAccounts, setSelectedAccounts] = useState({});
   const [pendingPostId, setPendingPostId] = useState(null);
   const [form, setForm] = useState({
@@ -219,35 +219,6 @@ const BlogPostForm = () => {
     }
   };
 
-  const detectPlatform = (url) => {
-    const u = url.toLowerCase();
-    if (u.includes("instagram")) return "Instagram";
-    if (u.includes("tiktok")) return "TikTok";
-    if (u.includes("facebook") || u.includes("fb.com")) return "Facebook";
-    if (u.includes("youtube") || u.includes("youtu.be")) return "YouTube";
-    if (u.includes("wa.me") || u.includes("whatsapp")) return "WhatsApp";
-    if (u.includes("twitter") || u.includes("x.com")) return "X";
-    if (u.includes("linkedin")) return "LinkedIn";
-    return "Social";
-  };
-
-  const handleSocialPaste = () => {
-    const urls = socialText
-      .split("\n")
-      .map((s) => s.trim())
-      .filter((s) => s.startsWith("http"));
-    const links = urls.map((url) => ({ platform: detectPlatform(url), url }));
-    setForm({ ...form, social_links: [...form.social_links, ...links] });
-    setSocialText("");
-  };
-
-  const handleRemoveSocialLink = (index) => {
-    setForm({
-      ...form,
-      social_links: form.social_links.filter((_, i) => i !== index),
-    });
-  };
-
   const handleCreateCategory = async () => {
     try {
       const res = await window.axios.post("/api/marketing/categories", newCategory);
@@ -296,6 +267,8 @@ const BlogPostForm = () => {
       if (form.status === "published" && connectedAccounts.length > 0) {
         setPendingPostId(postId);
         setShareModalOpen(true);
+      } else if (form.status === "published" && connectedAccounts.length === 0) {
+        setNoAccountsReminderOpen(true);
       } else {
         navigate("/marketing/blog");
       }
@@ -446,37 +419,6 @@ const BlogPostForm = () => {
                 )}
               </Box>
 
-              <Box>
-                <Typography variant="subtitle2" mb={0.5}>Social Media Links</Typography>
-                <Typography variant="caption" color="text.secondary" display="block" mb={1}>
-                  Paste URLs (one per line) — platform auto-detected
-                </Typography>
-                <Box display="flex" gap={1} alignItems="flex-start">
-                  <TextField
-                    fullWidth
-                    placeholder="https://instagram.com/..."
-                    value={socialText}
-                    onChange={(e) => setSocialText(e.target.value)}
-                  />
-                  <Button variant="contained" onClick={handleSocialPaste} disabled={!socialText.trim()}>
-                    Add
-                  </Button>
-                </Box>
-                {form.social_links?.length > 0 && (
-                  <Box display="flex" flexDirection="column" gap={0.5} mt={1}>
-                    {form.social_links.map((link, i) => (
-                      <Box key={i} display="flex" alignItems="center" gap={1}>
-                        <Typography variant="body2" sx={{ minWidth: 80, fontWeight: 600 }}>{link.platform}</Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ flex: 1, wordBreak: "break-all" }}>{link.url}</Typography>
-                        <IconButton size="small" color="error" onClick={() => handleRemoveSocialLink(i)}>
-                          <Delete fontSize="small" />
-                        </IconButton>
-                      </Box>
-                    ))}
-                  </Box>
-                )}
-              </Box>
-
               <TextField fullWidth select label="Status" name="status" value={form.status} onChange={handleChange}>
                 <MenuItem value="draft">Draft</MenuItem>
                 <MenuItem value="published">Published</MenuItem>
@@ -485,6 +427,11 @@ const BlogPostForm = () => {
               {form.status === "published" && connectedAccounts.length > 0 && (
                 <Typography variant="caption" color="text.secondary">
                   Post will be saved, then you can choose social accounts to share to.
+                </Typography>
+              )}
+              {form.status === "published" && connectedAccounts.length === 0 && (
+                <Typography variant="caption" color="text.secondary">
+                  Post will be published. Add social accounts in Settings to auto-share.
                 </Typography>
               )}
 
@@ -616,6 +563,20 @@ const BlogPostForm = () => {
           <Button onClick={() => { setShareModalOpen(false); navigate("/marketing/blog"); }}>Skip</Button>
           <Button variant="contained" onClick={handleShareFromModal} disabled={sharing}>
             {sharing ? "Sharing..." : "Share"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={noAccountsReminderOpen} onClose={() => { setNoAccountsReminderOpen(false); navigate("/marketing/blog"); }} maxWidth="xs" fullWidth>
+        <DialogTitle>Post Published</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary">
+            Your post has been published, but no social media accounts are connected yet. Go to Settings &gt; Social Media Accounts to add accounts for auto-sharing.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={() => { setNoAccountsReminderOpen(false); navigate("/marketing/blog"); }}>
+            OK
           </Button>
         </DialogActions>
       </Dialog>

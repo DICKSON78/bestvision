@@ -165,6 +165,10 @@ class MedicineCenterDashboardController extends Controller
         $data['statistics']['top_medicines'] = $this->safe(function () use ($topMedicinesQuery, $start_date, $end_date) {
             return $topMedicinesQuery
                 ->where('patient_payment_cache_items.status', 'Served')
+                ->where(function ($q) {
+                    $q->where('patient_payment_cache_items.is_partner_item', '!=', true)
+                      ->orWhereNull('patient_payment_cache_items.is_partner_item');
+                })
                 ->whereDate('patient_payment_cache.created_at', '>=', $start_date)
                 ->whereDate('patient_payment_cache.created_at', '<=', $end_date)
                 ->select(

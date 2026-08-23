@@ -11,3 +11,10 @@ body {
 * {
   font-size: inherit;
 }
+
+/* Partner item highlight in DataGrid */
+.partner-highlight {
+  background-color: #fff3e0 !important;
+  color: #e65100 !important;
+  font-weight: 600 !important;
+}
