@@ -86,7 +86,12 @@ const SocialMediaAccounts = () => {
       <Card>
         <CardContent>
           {accounts.length === 0 ? (
-            <Typography color="text.secondary">No accounts connected. Click "Add Account" to get started.</Typography>
+            <Box textAlign="center" py={4}>
+              <Typography color="text.secondary" mb={2}>No accounts connected.</Typography>
+              <Button variant="contained" startIcon={<Add />} onClick={() => handleOpen()}>
+                Add Account
+              </Button>
+            </Box>
           ) : (
             <Table size="small">
               <TableHead>
