@@ -2,35 +2,24 @@
 
 namespace App\Services;
 
-use App\Models\SocialMediaAccount;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class SocialMediaService
 {
-    public function sharePost($post, array $platforms = [], array $accountIds = [])
+    public function sharePost($post, array $platforms = [])
     {
         $results = [];
-        $accounts = SocialMediaAccount::active()->whereIn('platform', $platforms)->get();
 
-        if (!empty($accountIds)) {
-            $accounts = $accounts->whereIn('id', $accountIds);
-        }
-
-        foreach ($accounts as $account) {
-            if ($account->platform === 'facebook') {
-                $results['facebook_' . $account->id] = $this->postToFacebook($post, $account);
-            } elseif ($account->platform === 'instagram') {
-                $results['instagram_' . $account->id] = $this->postToInstagram($post, $account);
+        foreach ($platforms as $platform) {
+            if ($platform === 'facebook') {
+                $results['facebook'] = $this->postToFacebook($post);
+            } elseif ($platform === 'instagram') {
+                $results['instagram'] = $this->postToInstagram($post);
             }
         }
 
         return $results;
-    }
-
-    public function getConnectedAccounts()
-    {
-        return SocialMediaAccount::active()->get();
     }
 
     protected function buildMessage($post)
@@ -43,14 +32,14 @@ class SocialMediaService
         return trim($message);
     }
 
-    public function postToFacebook($post, SocialMediaAccount $account)
+    public function postToFacebook($post)
     {
-        $token = $account->access_token;
-        $pageId = $account->page_id;
+        $token = config('services.facebook.page_token');
+        $pageId = config('services.facebook.page_id');
 
         if (!$token || !$pageId) {
-            Log::warning('Facebook credentials missing for account', ['account_id' => $account->id]);
-            return ['success' => false, 'error' => 'Facebook credentials missing'];
+            Log::warning('Facebook credentials missing in config');
+            return ['success' => false, 'error' => 'Facebook credentials not configured'];
         }
 
         $message = $this->buildMessage($post);
@@ -138,14 +127,14 @@ class SocialMediaService
         return null;
     }
 
-    public function postToInstagram($post, SocialMediaAccount $account)
+    public function postToInstagram($post)
     {
-        $token = $account->access_token;
-        $igUserId = $account->page_id;
+        $token = config('services.facebook.user_token');
+        $igUserId = config('services.instagram.user_id');
 
         if (!$token || !$igUserId) {
-            Log::warning('Instagram credentials missing for account', ['account_id' => $account->id]);
-            return ['success' => false, 'error' => 'Instagram credentials missing'];
+            Log::warning('Instagram credentials missing in config');
+            return ['success' => false, 'error' => 'Instagram credentials not configured'];
         }
 
         if (!$post->featured_image) {
@@ -181,13 +170,13 @@ class SocialMediaService
 
     public function deleteFromFacebook($postId)
     {
-        $account = SocialMediaAccount::active()->where('platform', 'facebook')->first();
-        if (!$account || !$postId) {
-            return ['success' => false, 'error' => 'Missing credentials or post id'];
+        $token = config('services.facebook.page_token');
+        if (!$token || !$postId) {
+            return ['success' => false, 'error' => 'Missing Facebook credentials or post id'];
         }
 
         $response = Http::delete("https://graph.facebook.com/v20.0/{$postId}", [
-            'access_token' => $account->access_token,
+            'access_token' => $token,
         ]);
 
         return $this->parseDeleteResponse($response, 'facebook');
@@ -195,13 +184,13 @@ class SocialMediaService
 
     public function deleteFromInstagram($postId)
     {
-        $account = SocialMediaAccount::active()->where('platform', 'instagram')->first();
-        if (!$account || !$postId) {
-            return ['success' => false, 'error' => 'Missing credentials or post id'];
+        $token = config('services.facebook.user_token');
+        if (!$token || !$postId) {
+            return ['success' => false, 'error' => 'Missing Instagram credentials or post id'];
         }
 
         $response = Http::delete("https://graph.facebook.com/v20.0/{$postId}", [
-            'access_token' => $account->access_token,
+            'access_token' => $token,
         ]);
 
         return $this->parseDeleteResponse($response, 'instagram');
@@ -220,6 +209,28 @@ class SocialMediaService
         }
 
         return $results;
+    }
+
+    public function deleteFromPlatform($post, $platform)
+    {
+        $postId = $post->{"shared_to_{$platform}"};
+        if (!$postId) {
+            return ['success' => false, 'error' => 'Not shared to ' . $platform];
+        }
+
+        if ($platform === 'facebook') {
+            $result = $this->deleteFromFacebook($postId);
+        } elseif ($platform === 'instagram') {
+            $result = $this->deleteFromInstagram($postId);
+        } else {
+            return ['success' => false, 'error' => 'Unknown platform'];
+        }
+
+        if ($result['success']) {
+            $post->update(["shared_to_{$platform}" => null]);
+        }
+
+        return $result;
     }
 
     protected function parseDeleteResponse($response, $platform)

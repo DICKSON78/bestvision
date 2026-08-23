@@ -1032,12 +1032,6 @@ const Menu = ({ drawerOpen, setDrawerOpen, user, ...rest }) => {
           show: user.privileges.settings,
         },
         {
-          title: "Social Media Accounts",
-          icon: <SettingsIcon />,
-          to: "/settings/social-accounts",
-          show: user.privileges.marketing,
-        },
-        {
           title: "Clinics",
           icon: <ClinicsIcon />,
           to: "/settings/clinics",

@@ -122,15 +122,12 @@ class BlogPostsController extends Controller
         $request->validate([
             'platforms' => 'required|array',
             'platforms.*' => 'in:facebook,instagram',
-            'account_ids' => 'sometimes|array',
-            'account_ids.*' => 'integer',
         ]);
 
         $data = BlogPost::findOrFail($id);
         $service = new SocialMediaService();
 
         $platforms = $request->platforms;
-        $accountIds = $request->account_ids ?? [];
         $alreadyShared = [];
 
         foreach ($platforms as $i => $platform) {
@@ -148,7 +145,7 @@ class BlogPostsController extends Controller
             );
         }
 
-        $results = $service->sharePost($data, array_values($platforms), $accountIds);
+        $results = $service->sharePost($data, array_values($platforms));
 
         $updates = [];
         foreach ($results as $platform => $result) {
@@ -184,6 +181,24 @@ class BlogPostsController extends Controller
         }
 
         return $this->sendResponse($data, Response::HTTP_OK, 'Deleted successfully.');
+    }
+
+    public function unshare(Request $request, $id, $platform)
+    {
+        $request->validate([
+            'platform' => 'required|in:facebook,instagram',
+        ]);
+
+        $data = BlogPost::findOrFail($id);
+        $service = new SocialMediaService();
+
+        $result = $service->deleteFromPlatform($data, $platform);
+
+        if ($result['success']) {
+            return $this->sendResponse($data->fresh(), Response::HTTP_OK, "Unshared from {$platform}.");
+        }
+
+        return $this->sendResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY, $result['error'] ?? "Failed to unshare from {$platform}.");
     }
 
     public function uploadImage(Request $request)

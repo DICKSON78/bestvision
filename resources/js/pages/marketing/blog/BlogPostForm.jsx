@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useMemo } from "react";
 import {
   Box, Button, Card, CardContent, Checkbox, Dialog, DialogActions, DialogContent,
   DialogTitle, IconButton, MenuItem, TextField, ToggleButton, ToggleButtonGroup, Typography,
-  FormControlLabel, FormGroup, Divider,
+  FormControlLabel, FormGroup,
 } from "@mui/material";
 import { Add, Delete, FormatAlignLeft, FormatAlignCenter, FormatAlignRight } from "@mui/icons-material";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -12,15 +12,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useToast } from "../../../hooks";
 
-const platformIcons = { facebook: <FacebookIcon sx={{ color: "#1877F2" }} fontSize="small" />, instagram: <InstagramIcon sx={{ color: "#E4405F" }} fontSize="small" /> };
-
 const BlogPostForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const addToast = useToast();
   const isEdit = Boolean(id);
   const fileRef = useRef();
-  const editorRef = useRef(null);
   const [imgDialogOpen, setImgDialogOpen] = useState(false);
   const [imgDialogMode, setImgDialogMode] = useState("insert");
   const [imgUrl, setImgUrl] = useState("");
@@ -38,10 +35,7 @@ const BlogPostForm = () => {
   const [shareToFacebook, setShareToFacebook] = useState(false);
   const [shareToInstagram, setShareToInstagram] = useState(false);
   const [sharing, setSharing] = useState(false);
-  const [connectedAccounts, setConnectedAccounts] = useState([]);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const [noAccountsReminderOpen, setNoAccountsReminderOpen] = useState(false);
-  const [selectedAccounts, setSelectedAccounts] = useState({});
   const [pendingPostId, setPendingPostId] = useState(null);
   const [form, setForm] = useState({
     title: "", excerpt: "", content: "", category: "", tags: "",
@@ -51,16 +45,8 @@ const BlogPostForm = () => {
   useEffect(() => {
     (async () => {
       try {
-        const [catRes, accRes] = await Promise.all([
-          window.axios.get("/api/marketing/categories"),
-          window.axios.get("/api/marketing/social-accounts/connected"),
-        ]);
-        setCategories(catRes.data.data || []);
-        const accounts = accRes.data.data || [];
-        setConnectedAccounts(accounts);
-        const initial = {};
-        accounts.forEach((a) => { initial[a.id] = false; });
-        setSelectedAccounts(initial);
+        const res = await window.axios.get("/api/marketing/categories");
+        setCategories(res.data.data || []);
       } catch (e) { console.error(e); }
     })();
   }, []);
@@ -264,11 +250,11 @@ const BlogPostForm = () => {
 
       addToast({ message: isEdit ? "Post updated successfully" : "Post created successfully", severity: "success" });
 
-      if (form.status === "published" && connectedAccounts.length > 0) {
+      if (form.status === "published") {
         setPendingPostId(postId);
+        setShareToFacebook(false);
+        setShareToInstagram(false);
         setShareModalOpen(true);
-      } else if (form.status === "published" && connectedAccounts.length === 0) {
-        setNoAccountsReminderOpen(true);
       } else {
         navigate("/marketing/blog");
       }
@@ -281,20 +267,20 @@ const BlogPostForm = () => {
   };
 
   const handleShareFromModal = async () => {
-    const selectedIds = Object.entries(selectedAccounts).filter(([_, v]) => v).map(([k]) => Number(k));
-    if (selectedIds.length === 0) {
+    if (!shareToFacebook && !shareToInstagram) {
       setShareModalOpen(false);
       navigate("/marketing/blog");
       return;
     }
 
-    const platforms = [...new Set(connectedAccounts.filter((a) => selectedIds.includes(a.id)).map((a) => a.platform))];
+    const platforms = [];
+    if (shareToFacebook) platforms.push("facebook");
+    if (shareToInstagram) platforms.push("instagram");
 
     setSharing(true);
     try {
       const shareRes = await window.axios.post(`/api/marketing/blog-posts/${pendingPostId}/share`, {
         platforms,
-        account_ids: selectedIds,
       });
       addToast({ message: shareRes.data?.message || "Shared successfully", severity: "success" });
     } catch (shareErr) {
@@ -424,17 +410,6 @@ const BlogPostForm = () => {
                 <MenuItem value="published">Published</MenuItem>
               </TextField>
 
-              {form.status === "published" && connectedAccounts.length > 0 && (
-                <Typography variant="caption" color="text.secondary">
-                  Post will be saved, then you can choose social accounts to share to.
-                </Typography>
-              )}
-              {form.status === "published" && connectedAccounts.length === 0 && (
-                <Typography variant="caption" color="text.secondary">
-                  Post will be published. Add social accounts in Settings to auto-share.
-                </Typography>
-              )}
-
               <Box display="flex" gap={2}>
                 <Button type="submit" variant="contained" disabled={saving || sharing}>
                   {saving ? "Saving..." : "Save"}
@@ -533,50 +508,45 @@ const BlogPostForm = () => {
         <DialogTitle>Share to Social Media</DialogTitle>
         <DialogContent>
           <Typography variant="body2" color="text.secondary" mb={2}>
-            Choose which accounts to share this post to:
+            Choose where to share this post:
           </Typography>
-          {connectedAccounts.length === 0 ? (
-            <Typography color="text.secondary">No social media accounts connected. Add accounts in Settings.</Typography>
-          ) : (
-            <FormGroup>
-              {connectedAccounts.map((account) => (
-                <FormControlLabel
-                  key={account.id}
-                  control={
-                    <Checkbox
-                      checked={selectedAccounts[account.id] || false}
-                      onChange={(e) => setSelectedAccounts({ ...selectedAccounts, [account.id]: e.target.checked })}
-                    />
-                  }
-                  label={
-                    <Box display="flex" alignItems="center" gap={1}>
-                      {platformIcons[account.platform]}
-                      <Typography variant="body2">{account.account_name}</Typography>
-                    </Box>
-                  }
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={shareToFacebook}
+                  onChange={(e) => setShareToFacebook(e.target.checked)}
+                  sx={{ color: "#1877F2", "&.Mui-checked": { color: "#1877F2" } }}
                 />
-              ))}
-            </FormGroup>
-          )}
+              }
+              label={
+                <Box display="flex" alignItems="center" gap={1}>
+                  <FacebookIcon sx={{ color: "#1877F2" }} />
+                  <Typography variant="body2">Facebook</Typography>
+                </Box>
+              }
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={shareToInstagram}
+                  onChange={(e) => setShareToInstagram(e.target.checked)}
+                  sx={{ color: "#E4405F", "&.Mui-checked": { color: "#E4405F" } }}
+                />
+              }
+              label={
+                <Box display="flex" alignItems="center" gap={1}>
+                  <InstagramIcon sx={{ color: "#E4405F" }} />
+                  <Typography variant="body2">Instagram</Typography>
+                </Box>
+              }
+            />
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => { setShareModalOpen(false); navigate("/marketing/blog"); }}>Skip</Button>
           <Button variant="contained" onClick={handleShareFromModal} disabled={sharing}>
             {sharing ? "Sharing..." : "Share"}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={noAccountsReminderOpen} onClose={() => { setNoAccountsReminderOpen(false); navigate("/marketing/blog"); }} maxWidth="xs" fullWidth>
-        <DialogTitle>Post Published</DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" color="text.secondary">
-            Your post has been published, but no social media accounts are connected yet. Go to Settings &gt; Social Media Accounts to add accounts for auto-sharing.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={() => { setNoAccountsReminderOpen(false); navigate("/marketing/blog"); }}>
-            OK
           </Button>
         </DialogActions>
       </Dialog>

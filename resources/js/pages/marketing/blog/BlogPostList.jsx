@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box, Button, Card, Chip, Dialog, DialogActions, DialogContent,
-  DialogTitle, IconButton, Table, TableBody, TableCell,
+  Box, Button, Card, Checkbox, Chip, Dialog, DialogActions, DialogContent,
+  DialogTitle, FormControlLabel, FormGroup, IconButton, Table, TableBody, TableCell,
   TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography,
 } from "@mui/material";
 import { Add, Delete, Edit, OpenInNew, Share, Visibility } from "@mui/icons-material";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../../hooks";
 
@@ -18,6 +20,10 @@ const BlogPostList = () => {
   const [total, setTotal] = useState(0);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [sharingId, setSharingId] = useState(null);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [sharePostId, setSharePostId] = useState(null);
+  const [shareFB, setShareFB] = useState(false);
+  const [shareIG, setShareIG] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -49,19 +55,47 @@ const BlogPostList = () => {
     }
   };
 
-  const handleShare = async (row) => {
-    setSharingId(row.id);
+  const handleShareClick = (row) => {
+    setSharePostId(row.id);
+    setShareFB(false);
+    setShareIG(false);
+    setShareModalOpen(true);
+  };
+
+  const handleShareFromModal = async () => {
+    if (!shareFB && !shareIG) {
+      setShareModalOpen(false);
+      return;
+    }
+
+    const platforms = [];
+    if (shareFB) platforms.push("facebook");
+    if (shareIG) platforms.push("instagram");
+
+    setSharingId(sharePostId);
+    setShareModalOpen(false);
     try {
-      const res = await window.axios.post(`/api/marketing/blog-posts/${row.id}/share`, {
-        platforms: ["facebook", "instagram"],
-      });
-      addToast({ message: res.data?.message || "Shared successfully", severity: res.status >= 200 && res.status < 300 ? "success" : "warning" });
+      const res = await window.axios.post(`/api/marketing/blog-posts/${sharePostId}/share`, { platforms });
+      addToast({ message: res.data?.message || "Shared successfully", severity: "success" });
       fetchData();
     } catch (e) {
       const msg = e.response?.data?.message || "Error sharing to social media";
       addToast({ message: msg, severity: "warning" });
     } finally {
       setSharingId(null);
+    }
+  };
+
+  const handleUnshare = async (row, platform) => {
+    const label = platform === "facebook" ? "Facebook" : "Instagram";
+    if (!confirm(`Remove this post from ${label}?`)) return;
+
+    try {
+      await window.axios.post(`/api/marketing/blog-posts/${row.id}/unshare/${platform}`);
+      addToast({ message: `Unshared from ${label}`, severity: "success" });
+      fetchData();
+    } catch (e) {
+      addToast({ message: e.response?.data?.message || `Error unsharing from ${label}`, severity: "error" });
     }
   };
 
@@ -112,16 +146,28 @@ const BlogPostList = () => {
                       <TableCell>{row.category || "-"}</TableCell>
                       <TableCell><Chip label={row.status} size="small" color={statusColor(row.status)} /></TableCell>
                       <TableCell>
-                        <Box display="flex" gap={0.5}>
+                        <Box display="flex" gap={0.5} alignItems="center">
                           {row.shared_to_facebook && (
-                            <Tooltip title="Shared to Facebook">
-                              <Chip label="FB" size="small" sx={{ bgcolor: "#1877F2", color: "#fff" }} />
-                            </Tooltip>
+                            <Chip
+                              icon={<FacebookIcon sx={{ color: "#fff !important", fontSize: 16 }} />}
+                              label="FB"
+                              size="small"
+                              deletable
+                              onDelete={() => handleUnshare(row, "facebook")}
+                              deleteIcon={<Delete sx={{ fontSize: 14 }} />}
+                              sx={{ bgcolor: "#1877F2", color: "#fff", "& .MuiChip-deleteIcon": { color: "rgba(255,255,255,0.7)", "&:hover": { color: "#fff" } } }}
+                            />
                           )}
                           {row.shared_to_instagram && (
-                            <Tooltip title="Shared to Instagram">
-                              <Chip label="IG" size="small" sx={{ bgcolor: "#E4405F", color: "#fff" }} />
-                            </Tooltip>
+                            <Chip
+                              icon={<InstagramIcon sx={{ color: "#fff !important", fontSize: 16 }} />}
+                              label="IG"
+                              size="small"
+                              deletable
+                              onDelete={() => handleUnshare(row, "instagram")}
+                              deleteIcon={<Delete sx={{ fontSize: 14 }} />}
+                              sx={{ bgcolor: "#E4405F", color: "#fff", "& .MuiChip-deleteIcon": { color: "rgba(255,255,255,0.7)", "&:hover": { color: "#fff" } } }}
+                            />
                           )}
                           {!row.shared_to_facebook && !row.shared_to_instagram && <span style={{ color: "#999", fontSize: 12 }}>-</span>}
                         </Box>
@@ -131,7 +177,7 @@ const BlogPostList = () => {
                       <TableCell align="center">
                         {row.status === "published" && (
                           <Tooltip title={sharingId === row.id ? "Sharing..." : "Share to Social Media"}>
-                            <IconButton size="small" disabled={sharingId === row.id} onClick={() => handleShare(row)}>
+                            <IconButton size="small" disabled={sharingId === row.id} onClick={() => handleShareClick(row)}>
                               <Share />
                             </IconButton>
                           </Tooltip>
@@ -163,9 +209,59 @@ const BlogPostList = () => {
           </>
         )}
       </Card>
+
+      <Dialog open={shareModalOpen} onClose={() => setShareModalOpen(false)} maxWidth="xs" fullWidth>
+        <DialogTitle>Share to Social Media</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" color="text.secondary" mb={2}>
+            Choose where to share this post:
+          </Typography>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={shareFB}
+                  onChange={(e) => setShareFB(e.target.checked)}
+                  sx={{ color: "#1877F2", "&.Mui-checked": { color: "#1877F2" } }}
+                />
+              }
+              label={
+                <Box display="flex" alignItems="center" gap={1}>
+                  <FacebookIcon sx={{ color: "#1877F2" }} />
+                  <Typography variant="body2">Facebook</Typography>
+                </Box>
+              }
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={shareIG}
+                  onChange={(e) => setShareIG(e.target.checked)}
+                  sx={{ color: "#E4405F", "&.Mui-checked": { color: "#E4405F" } }}
+                />
+              }
+              label={
+                <Box display="flex" alignItems="center" gap={1}>
+                  <InstagramIcon sx={{ color: "#E4405F" }} />
+                  <Typography variant="body2">Instagram</Typography>
+                </Box>
+              }
+            />
+          </FormGroup>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShareModalOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleShareFromModal}>Share</Button>
+        </DialogActions>
+      </Dialog>
+
       <Dialog open={Boolean(deleteTarget)} onClose={() => setDeleteTarget(null)} maxWidth="xs" fullWidth>
         <DialogTitle>Delete Post</DialogTitle>
-        <DialogContent>Are you sure you want to delete this post?</DialogContent>
+        <DialogContent>
+          <Typography variant="body2">
+            Are you sure you want to delete this post? This will also remove it from any connected social media accounts.
+          </Typography>
+        </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteTarget(null)}>Cancel</Button>
           <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>

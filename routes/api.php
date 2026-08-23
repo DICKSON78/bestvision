@@ -276,12 +276,9 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
         $router->post('/blog-posts/upload-image', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'uploadImage']);
         $router->post('/blog-posts/upload-video', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'uploadVideo']);
         $router->post('/blog-posts/{id}/share', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'share']);
+        $router->post('/blog-posts/{id}/unshare/{platform}', [\App\Http\Controllers\Marketing\BlogPostsController::class, 'unshare']);
         $router->apiResource('/announcements', \App\Http\Controllers\Marketing\AnnouncementsController::class);
         $router->apiResource('/categories', \App\Http\Controllers\Marketing\CategoriesController::class)->only(['index', 'store', 'destroy']);
-        // Social Media Accounts
-        $router->apiResource('/social-accounts', \App\Http\Controllers\SocialMediaAccountController::class);
-        $router->patch('/social-accounts/{id}/toggle', [\App\Http\Controllers\SocialMediaAccountController::class, 'toggle']);
-        $router->get('/social-accounts/connected', [\App\Http\Controllers\SocialMediaAccountController::class, 'connected']);
     });
     
     $router->prefix('consultation-room')->group(function ($router) {
