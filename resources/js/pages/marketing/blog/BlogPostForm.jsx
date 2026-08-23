@@ -35,8 +35,6 @@ const BlogPostForm = () => {
   const [shareToFacebook, setShareToFacebook] = useState(false);
   const [shareToInstagram, setShareToInstagram] = useState(false);
   const [sharing, setSharing] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = useState(false);
-  const [pendingPostId, setPendingPostId] = useState(null);
   const [form, setForm] = useState({
     title: "", excerpt: "", content: "", category: "", tags: "",
     featured_image: "", video_url: "", social_links: [], status: "draft",
@@ -250,46 +248,29 @@ const BlogPostForm = () => {
 
       addToast({ message: isEdit ? "Post updated successfully" : "Post created successfully", severity: "success" });
 
-      if (form.status === "published") {
-        setPendingPostId(postId);
-        setShareToFacebook(false);
-        setShareToInstagram(false);
-        setShareModalOpen(true);
-      } else {
-        navigate("/marketing/blog");
+      const platforms = [];
+      if (shareToFacebook) platforms.push("facebook");
+      if (shareToInstagram) platforms.push("instagram");
+
+      if (form.status === "published" && platforms.length > 0) {
+        setSharing(true);
+        try {
+          const shareRes = await window.axios.post(`/api/marketing/blog-posts/${postId}/share`, { platforms });
+          addToast({ message: shareRes.data?.message || "Shared successfully", severity: "success" });
+        } catch (shareErr) {
+          const msg = shareErr.response?.data?.message || "Error sharing to social media";
+          addToast({ message: msg, severity: "warning" });
+        } finally {
+          setSharing(false);
+        }
       }
+
+      navigate("/marketing/blog");
     } catch (e) {
       console.error(e);
       addToast({ message: "Error saving post", severity: "error" });
     } finally {
       setSaving(false);
-    }
-  };
-
-  const handleShareFromModal = async () => {
-    if (!shareToFacebook && !shareToInstagram) {
-      setShareModalOpen(false);
-      navigate("/marketing/blog");
-      return;
-    }
-
-    const platforms = [];
-    if (shareToFacebook) platforms.push("facebook");
-    if (shareToInstagram) platforms.push("instagram");
-
-    setSharing(true);
-    try {
-      const shareRes = await window.axios.post(`/api/marketing/blog-posts/${pendingPostId}/share`, {
-        platforms,
-      });
-      addToast({ message: shareRes.data?.message || "Shared successfully", severity: "success" });
-    } catch (shareErr) {
-      const msg = shareErr.response?.data?.message || "Error sharing to social media";
-      addToast({ message: msg, severity: "warning" });
-    } finally {
-      setSharing(false);
-      setShareModalOpen(false);
-      navigate("/marketing/blog");
     }
   };
 
@@ -410,6 +391,42 @@ const BlogPostForm = () => {
                 <MenuItem value="published">Published</MenuItem>
               </TextField>
 
+              <Box>
+                <Typography variant="subtitle2" mb={0.5}>Share to Social Media</Typography>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={shareToFacebook}
+                        onChange={(e) => setShareToFacebook(e.target.checked)}
+                        sx={{ color: "#1877F2", "&.Mui-checked": { color: "#1877F2" } }}
+                      />
+                    }
+                    label={
+                      <Box display="flex" alignItems="center" gap={0.5}>
+                        <FacebookIcon sx={{ color: "#1877F2", fontSize: 20 }} />
+                        <Typography variant="body2">Facebook</Typography>
+                      </Box>
+                    }
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={shareToInstagram}
+                        onChange={(e) => setShareToInstagram(e.target.checked)}
+                        sx={{ color: "#E4405F", "&.Mui-checked": { color: "#E4405F" } }}
+                      />
+                    }
+                    label={
+                      <Box display="flex" alignItems="center" gap={0.5}>
+                        <InstagramIcon sx={{ color: "#E4405F", fontSize: 20 }} />
+                        <Typography variant="body2">Instagram</Typography>
+                      </Box>
+                    }
+                  />
+                </FormGroup>
+              </Box>
+
               <Box display="flex" gap={2}>
                 <Button type="submit" variant="contained" disabled={saving || sharing}>
                   {saving ? "Saving..." : "Save"}
@@ -501,53 +518,6 @@ const BlogPostForm = () => {
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
           <Button variant="contained" onClick={handleCreateCategory} disabled={!newCategory.name}>Create</Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={shareModalOpen} onClose={() => { setShareModalOpen(false); navigate("/marketing/blog"); }} maxWidth="xs" fullWidth>
-        <DialogTitle>Share to Social Media</DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" color="text.secondary" mb={2}>
-            Choose where to share this post:
-          </Typography>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={shareToFacebook}
-                  onChange={(e) => setShareToFacebook(e.target.checked)}
-                  sx={{ color: "#1877F2", "&.Mui-checked": { color: "#1877F2" } }}
-                />
-              }
-              label={
-                <Box display="flex" alignItems="center" gap={1}>
-                  <FacebookIcon sx={{ color: "#1877F2" }} />
-                  <Typography variant="body2">Facebook</Typography>
-                </Box>
-              }
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={shareToInstagram}
-                  onChange={(e) => setShareToInstagram(e.target.checked)}
-                  sx={{ color: "#E4405F", "&.Mui-checked": { color: "#E4405F" } }}
-                />
-              }
-              label={
-                <Box display="flex" alignItems="center" gap={1}>
-                  <InstagramIcon sx={{ color: "#E4405F" }} />
-                  <Typography variant="body2">Instagram</Typography>
-                </Box>
-              }
-            />
-          </FormGroup>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => { setShareModalOpen(false); navigate("/marketing/blog"); }}>Skip</Button>
-          <Button variant="contained" onClick={handleShareFromModal} disabled={sharing}>
-            {sharing ? "Sharing..." : "Share"}
-          </Button>
         </DialogActions>
       </Dialog>
     </Box>
