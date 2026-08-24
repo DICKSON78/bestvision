@@ -385,13 +385,6 @@ const PatientItems = ({
             valueGetter: (item, index) => numberFormat(item.unit_price || 0),
           },
           {
-            field: "is_partner_item",
-            headerName: "Partner",
-            valueGetter: (item, index) =>
-              item.is_partner_item ? item.collaborator_name || "Yes" : "-",
-            cellClassName: (item) => item.is_partner_item ? "partner-highlight" : "",
-          },
-          {
             field: "dosage",
             headerName: "Dosage",
             show: consultationType === "Pharmacy",

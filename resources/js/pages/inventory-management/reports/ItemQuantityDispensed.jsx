@@ -221,48 +221,10 @@ const ItemQuantityDispensed = () => {
               numberFormat(item.quantity_dispensed || 0),
           },
           {
-            field: "partner_quantity",
-            headerName: "Partner Qty",
-            valueGetter: (item, index) =>
-              item.partner_quantity > 0 ? numberFormat(item.partner_quantity) : "-",
-            cellClassName: (item) => item.partner_quantity > 0 ? "partner-highlight" : "",
-          },
-          {
-            field: "balance",
-            headerName: "Current Balance",
-            valueGetter: (item, index) => {
-              const balance = parseFloat(item.balance) || 0;
-              return numberFormat(balance < 0 ? 0 : balance);
-            },
-          },
-          {
-            field: "new_balance",
-            headerName: "Remaining Stock",
-            valueGetter: (item, index) => {
-              const remaining = parseFloat(item.new_balance) || 0;
-              return numberFormat(remaining < 0 ? 0 : remaining);
-            },
-          },
-          {
-            field: "total_balance",
-            headerName: "Final Stock Level",
-            valueGetter: (item, index) => {
-              const remaining = parseFloat(item.new_balance) || 0;
-              return numberFormat(remaining < 0 ? 0 : remaining);
-            },
-          },
-          {
             field: "dispensed_value",
             headerName: "Dispensed Value",
             valueGetter: (item, index) =>
               numberFormat(item.dispensed_value || 0),
-          },
-          {
-            field: "partner_value",
-            headerName: "Partner Value",
-            valueGetter: (item, index) =>
-              item.partner_value > 0 ? numberFormat(item.partner_value) : "-",
-            cellClassName: (item) => item.partner_value > 0 ? "partner-highlight" : "",
           },
         ]}
         summationFooterColumns={[
@@ -289,12 +251,8 @@ const ItemQuantityDispensed = () => {
             index: 7,
           },
           {
-            reducer: (acc, item, index) => acc + ((parseFloat(item.dispensed_value) || 0) - (parseFloat(item.partner_value) || 0)),
+            reducer: (acc, item, index) => acc + (parseFloat(item.dispensed_value) || 0),
             index: 8,
-          },
-          {
-            reducer: (acc, item, index) => acc + (parseFloat(item.partner_value) || 0),
-            index: 9,
           },
         ]}
       />

@@ -744,19 +744,6 @@ const CheckInPatient = () => {
                           headerName: "Comments",
                         },
                         {
-                          field: "partner",
-                          headerName: "Partner",
-                          renderCell: (item) =>
-                            item.is_partner_item ? (
-                              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                                <CheckCircleIcon color="success" fontSize="small" />
-                                <Typography variant="caption" color="success.main">
-                                  {item.collaborator_name || "Partner"}
-                                </Typography>
-                              </Box>
-                            ) : null,
-                        },
-                        {
                           field: "actions",
                           headerName: "Actions",
                           renderCell: (item, index) => (

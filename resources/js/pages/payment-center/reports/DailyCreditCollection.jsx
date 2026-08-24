@@ -237,13 +237,6 @@ const DailyCreditCollection = ({ module }) => {
               numberFormat(item.unit_price * item.quantity),
           },
           {
-            field: "is_partner_item",
-            headerName: "Partner",
-            valueGetter: (item, index) =>
-              item.is_partner_item ? item.collaborator_name || "Yes" : "-",
-            cellClassName: (item) => item.is_partner_item ? "partner-highlight" : "",
-          },
-          {
             field: "created_by",
             headerName: "Created By",
             valueGetter: (item) => item.creator?.full_name,
@@ -257,7 +250,6 @@ const DailyCreditCollection = ({ module }) => {
           { value: "TOTAL", span: 6, index: 1 },
           {
             reducer: (acc, item, index) => {
-              if (item.is_partner_item) return acc;
               return acc + item.unit_price * item.quantity;
             },
             index: 6,
