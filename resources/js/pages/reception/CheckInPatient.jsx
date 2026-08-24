@@ -644,7 +644,7 @@ const CheckInPatient = () => {
                             }
                           />
                         </Grid>
-                        {/* Partner checkbox hidden for now
+                        {/* Partner checkbox - hidden from reports, functional in form */}
                         {canTogglePartner ? (
                         <Grid
                           item
@@ -683,7 +683,6 @@ const CheckInPatient = () => {
                             />
                           </Grid>
                         ) : null}
-                        */} {/* End partner hidden */}
                         <Grid
                           item
                           md={1}
