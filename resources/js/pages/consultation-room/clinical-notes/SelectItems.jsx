@@ -479,6 +479,7 @@ const SelectItems = ({
                         />
                       </Grid>
                     ) : null}
+                    {/* Partner Frame hidden for now
                     {consultationType === "Glass" && itemType === "Frame" ? (
                       <React.Fragment>
                         <Grid
@@ -518,6 +519,7 @@ const SelectItems = ({
                         ) : null}
                       </React.Fragment>
                     ) : null}
+                    */} {/* End partner hidden */}
                     <Grid
                       item
                       md={6}
