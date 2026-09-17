@@ -255,8 +255,6 @@ class PaymentCenterReportsController extends Controller
             'items.*.quantity' => 'required|integer|min:0',
         ]);
 
-        $amount = 0;
-
         if ($type === 'cash') {
             $payment = PatientItemPayment::findOrFail($id);
 
@@ -265,9 +263,14 @@ class PaymentCenterReportsController extends Controller
                 if ($item) {
                     $item->quantity = $req['quantity'];
                     $item->save();
-                    $amount += ($item->unit_price * $item->quantity);
                 }
             }
+
+            $amount = PatientPaymentCacheItem::where('item_payment_id', $id)
+                ->get()
+                ->sum(function ($item) {
+                    return $item->unit_price * $item->quantity;
+                });
 
             $payment->amount = $amount;
             $payment->save();
@@ -283,9 +286,14 @@ class PaymentCenterReportsController extends Controller
                 if ($item) {
                     $item->quantity = $req['quantity'];
                     $item->save();
-                    $amount += ($item->unit_price * $item->quantity);
                 }
             }
+
+            $amount = PatientPaymentCacheItem::where('bill_id', $id)
+                ->get()
+                ->sum(function ($item) {
+                    return $item->unit_price * $item->quantity;
+                });
 
             $bill->amount = $amount;
             $bill->save();
