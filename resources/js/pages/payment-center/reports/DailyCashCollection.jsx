@@ -60,6 +60,7 @@ const DailyCashCollection = ({ module }) => {
   const [deleteRemoveItems, setDeleteRemoveItems] = useState(false);
   const [savingEdit, setSavingEdit] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showActions, setShowActions] = useState(false);
 
   useEffect(() => {
     document.title = `Daily Cash Collection Report - ${window.APP_NAME}`;
@@ -274,6 +275,14 @@ const DailyCashCollection = ({ module }) => {
                 </Grid>
               </CardContent>
             </Card>
+            <Grid container spacing={1} sx={{ mt: 0.5 }}>
+              <Grid item xs="auto">
+                <Checkbox
+                  checked={showActions}
+                  onChange={(e) => setShowActions(e.target.checked)}
+                />
+              </Grid>
+            </Grid>
           </React.Fragment>
         }
         columns={[
@@ -326,37 +335,41 @@ const DailyCashCollection = ({ module }) => {
             field: "transaction_type",
             headerName: "Transaction Type",
           },
-          {
-            field: "actions",
-            headerName: "Actions",
-            webOnly: true,
-            tableCellProps: { align: "center" },
-            renderCell: (item) => (
-              <Box display="flex" justifyContent="center">
-                <Tooltip title="View">
-                  <IconButton size="small" onClick={() => handleView(item)}>
-                    <ViewIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Edit">
-                  <IconButton size="small" onClick={() => handleEdit(item)}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <IconButton
-                    size="small"
-                    onClick={() => {
-                      setDeleteRecord(item);
-                      setDeleteRemoveItems(false);
-                    }}
-                  >
-                    <DeleteIcon fontSize="small" color="error" />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            ),
-          },
+          ...(showActions
+              ? [
+                  {
+                    field: "actions",
+                    headerName: "Actions",
+                    webOnly: true,
+                    tableCellProps: { align: "center" },
+                    renderCell: (item) => (
+                      <Box display="flex" justifyContent="center">
+                        <Tooltip title="View">
+                          <IconButton size="small" onClick={() => handleView(item)}>
+                            <ViewIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Edit">
+                          <IconButton size="small" onClick={() => handleEdit(item)}>
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <IconButton
+                            size="small"
+                            onClick={() => {
+                              setDeleteRecord(item);
+                              setDeleteRemoveItems(false);
+                            }}
+                          >
+                            <DeleteIcon fontSize="small" color="error" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    ),
+                  },
+                ]
+              : []),
         ]}
         summationFooterColumns={[
           { value: "TOTAL", span: 4, index: 1 },
