@@ -324,13 +324,23 @@ class PaymentCenterReportsController extends Controller
         return $this->sendResponse(null, Response::HTTP_NOT_FOUND, 'Record not found.');
     }
 
-    public function deleteCashCollectionRecord($type, $id)
+    public function deleteCashCollectionRecord(Request $request, $type, $id)
     {
+        $request->validate([
+            'mode' => 'sometimes|in:pending,delete',
+        ]);
+
+        $mode = $request->mode ?? 'pending';
+
         if ($type === 'cash') {
             $payment = PatientItemPayment::findOrFail($id);
 
-            PatientPaymentCacheItem::where('item_payment_id', $id)
-                ->update(['item_payment_id' => null, 'status' => 'Pending']);
+            if ($mode === 'delete') {
+                PatientPaymentCacheItem::where('item_payment_id', $id)->delete();
+            } else {
+                PatientPaymentCacheItem::where('item_payment_id', $id)
+                    ->update(['item_payment_id' => null, 'status' => 'Pending']);
+            }
 
             $payment->delete();
 
@@ -342,8 +352,12 @@ class PaymentCenterReportsController extends Controller
 
             PatientItemBillPayment::where('bill_id', $id)->delete();
 
-            PatientPaymentCacheItem::where('bill_id', $id)
-                ->update(['bill_id' => null, 'status' => 'Pending']);
+            if ($mode === 'delete') {
+                PatientPaymentCacheItem::where('bill_id', $id)->delete();
+            } else {
+                PatientPaymentCacheItem::where('bill_id', $id)
+                    ->update(['bill_id' => null, 'status' => 'Pending']);
+            }
 
             $bill->delete();
 

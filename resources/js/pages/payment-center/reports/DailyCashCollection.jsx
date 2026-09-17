@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import {
   Box, Button, Card, CardContent, Checkbox, Dialog, DialogActions, DialogContent,
-  DialogTitle, FormControlLabel, Grid, IconButton, InputAdornment, Table as MuiTable,
-  TableBody, TableCell, TableHead, TableRow, Tooltip, Typography,
+  DialogTitle, FormControlLabel, Grid, IconButton, InputAdornment, Stack,
+  Table as MuiTable, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/SearchRounded";
 import {
   DeleteRounded as DeleteIcon,
+  DeleteSweepRounded as DeleteSweepIcon,
   EditRounded as EditIcon,
+  RestoreRounded as RestoreIcon,
   VisibilityRounded as ViewIcon,
 } from "@mui/icons-material";
 import Page from "../../../components/Page";
@@ -162,11 +164,12 @@ const DailyCashCollection = ({ module }) => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (mode) => {
     setDeleting(true);
     try {
       await window.axios.delete(
-        `/api/reports/payment-center/cash-collection/${getType(deleteRecord)}/${deleteRecord.source_id}`
+        `/api/reports/payment-center/cash-collection/${getType(deleteRecord)}/${deleteRecord.source_id}`,
+        { data: { mode } }
       );
       addToast({ message: "Deleted successfully", severity: "success" });
       setDeleteRecord(null);
@@ -556,15 +559,46 @@ const DailyCashCollection = ({ module }) => {
       <Dialog open={Boolean(deleteRecord)} onClose={() => setDeleteRecord(null)} maxWidth="xs" fullWidth>
         <DialogTitle>Delete Record</DialogTitle>
         <DialogContent>
-          <Typography variant="body2">
-            Delete this record? This will remove it from the daily cash collection and reset its items back to Pending.
+          <Typography variant="body2" mb={2}>
+            This record will be removed from the daily cash collection. Choose how its items should be handled:
           </Typography>
+          <Stack spacing={1.5}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              fullWidth
+              startIcon={<RestoreIcon />}
+              disabled={deleting}
+              onClick={() => handleDelete("pending")}
+              sx={{ justifyContent: "flex-start", textAlign: "left" }}
+            >
+              <Box>
+                <Typography variant="body2" fontWeight="bold">Return to Pending</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Keep the items in the system but unlink them (back to Pending).
+                </Typography>
+              </Box>
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              fullWidth
+              startIcon={<DeleteSweepIcon />}
+              disabled={deleting}
+              onClick={() => handleDelete("delete")}
+              sx={{ justifyContent: "flex-start", textAlign: "left" }}
+            >
+              <Box>
+                <Typography variant="body2" fontWeight="bold">Remove All (Start Fresh)</Typography>
+                <Typography variant="caption">
+                  Completely delete the items along with the record.
+                </Typography>
+              </Box>
+            </Button>
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteRecord(null)}>Cancel</Button>
-          <Button variant="contained" color="error" onClick={handleDelete} disabled={deleting}>
-            {deleting ? "Deleting..." : "Delete"}
-          </Button>
+          <Button onClick={() => setDeleteRecord(null)} disabled={deleting}>Cancel</Button>
         </DialogActions>
       </Dialog>
     </Page>
