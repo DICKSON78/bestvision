@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import {
-  Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent,
-  DialogTitle, Grid, IconButton, InputAdornment, Table as MuiTable,
+  Box, Button, Card, CardContent, Checkbox, Dialog, DialogActions, DialogContent,
+  DialogTitle, FormControlLabel, Grid, IconButton, InputAdornment, Table as MuiTable,
   TableBody, TableCell, TableHead, TableRow, Tooltip, Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/SearchRounded";
@@ -103,7 +103,8 @@ const DailyCashCollection = ({ module }) => {
           id: it.id,
           item: it.item?.name || "Unknown",
           unit_price: parseFloat(it.unit_price) || 0,
-          quantity: parseInt(it.quantity) || 0,
+          quantity: parseInt(it.quantity) || 1,
+          removed: false,
         }))
       );
     } catch (e) {
@@ -113,25 +114,45 @@ const DailyCashCollection = ({ module }) => {
   };
 
   const handleQuantityChange = (index, value) => {
-    const qty = Math.max(0, parseInt(value) || 0);
+    const qty = Math.max(1, parseInt(value) || 1);
     setEditItems((prev) =>
       prev.map((it, i) => (i === index ? { ...it, quantity: qty } : it))
     );
   };
 
+  const handleRemoveToggle = (index) => {
+    setEditItems((prev) =>
+      prev.map((it, i) => (i === index ? { ...it, removed: !it.removed } : it))
+    );
+  };
+
   const getEditedTotal = () =>
-    editItems.reduce((acc, it) => acc + (it.unit_price * it.quantity), 0);
+    editItems
+      .filter((it) => !it.removed)
+      .reduce((acc, it) => acc + (it.unit_price * it.quantity), 0);
 
   const handleSaveEdit = async () => {
+    const keptItems = editItems.filter((it) => !it.removed);
+    if (keptItems.length === 0) {
+      addToast({
+        message: "At least one item must remain. Use Delete to remove the whole purchase.",
+        severity: "error",
+      });
+      return;
+    }
     setSavingEdit(true);
     try {
       await window.axios.put(
         `/api/reports/payment-center/cash-collection/${editType}/${editRecord.source_id}`,
         {
-          items: editItems.map((it) => ({ id: it.id, quantity: it.quantity })),
+          items: keptItems.map((it) => ({ id: it.id, quantity: it.quantity })),
+          remove_items: editItems
+            .filter((it) => it.removed)
+            .map((it) => it.id),
         }
       );
       addToast({ message: "Updated successfully", severity: "success" });
+      setEditItems(keptItems.map((it) => ({ ...it, removed: false })));
       setEditOpen(false);
       setParams((p) => ({ ...p, refreshKey: (p.refreshKey || 0) + 1 }));
     } catch (e) {
@@ -155,39 +176,6 @@ const DailyCashCollection = ({ module }) => {
     } finally {
       setDeleting(false);
     }
-  };
-
-  const renderRecordItems = (record) => {
-    if (!record) return null;
-    const rows = record.items || [];
-    return (
-      <Box sx={{ overflowX: "auto", mt: 2 }}>
-        <MuiTable size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell>Item</TableCell>
-              <TableCell align="right">Unit Price</TableCell>
-              <TableCell align="right">Qty</TableCell>
-              <TableCell align="right">Subtotal</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row, i) => (
-              <TableRow key={i}>
-                <TableCell>{i + 1}</TableCell>
-                <TableCell>{row.item?.name || "Unknown"}</TableCell>
-                <TableCell align="right">{numberFormat(row.unit_price)}</TableCell>
-                <TableCell align="right">{row.quantity}</TableCell>
-                <TableCell align="right">
-                  {numberFormat((parseFloat(row.unit_price) || 0) * (parseInt(row.quantity) || 0))}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </MuiTable>
-      </Box>
-    );
   };
 
   return (
@@ -373,43 +361,108 @@ const DailyCashCollection = ({ module }) => {
         ]}
       />
 
-      {/* View Dialog */}
-      <Dialog open={viewOpen} onClose={() => setViewOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Cash Collection Details</DialogTitle>
+      {/* View Dialog (receipt style) */}
+      <Dialog open={viewOpen} onClose={() => setViewOpen(false)} maxWidth="xs" fullWidth>
         <DialogContent>
           {!viewRecord ? (
-            <Typography variant="body2" color="text.secondary">Loading...</Typography>
+            <Typography variant="body2" color="text.secondary" align="center">Loading...</Typography>
           ) : (
-            <Box>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="bold">Patient</Typography>
-                  <Typography variant="body2">{getPatientFromRecord(viewRecord)}</Typography>
+            <Box
+              sx={{
+                borderTop: "3px solid #00225f",
+                borderBottom: "3px solid #d71a20",
+                px: 2,
+                py: 2,
+              }}
+            >
+              <Box textAlign="center" mb={1}>
+                <Box
+                  component="img"
+                  src={
+                    window?.user?.clinic?.logo
+                      ? (window.user.clinic.logo.startsWith("http") ? window.user.clinic.logo : `${window.location.origin}${window.user.clinic.logo}`)
+                      : `${window.location.origin}/images/logo.png`
+                  }
+                  alt="logo"
+                  sx={{ maxWidth: 90, maxHeight: 50, objectFit: "contain", mx: "auto" }}
+                />
+                <Typography variant="subtitle1" fontWeight="bold" textTransform="uppercase" mt={0.5}>
+                  {window?.user?.clinic?.name || window.APP_NAME}
+                </Typography>
+                <Typography variant="caption" display="block" color="text.secondary">
+                  {[window?.user?.clinic?.address, window?.user?.clinic?.phone ? `Phone: ${window.user.clinic.phone}` : null]
+                    .filter(Boolean)
+                    .join("  •  ")}
+                </Typography>
+                <Typography variant="body2" fontWeight="bold" letterSpacing={1} mt={0.5}>
+                  PAYMENT RECEIPT
+                </Typography>
+              </Box>
+
+              <Grid container spacing={1} sx={{ mt: 0.25 }}>
+                <Grid item xs={6}>
+                  <Typography variant="caption" color="text.secondary">Customer Name</Typography>
+                  <Typography variant="body2" fontWeight="bold">{getPatientFromRecord(viewRecord)}</Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="bold">Channel</Typography>
-                  <Typography variant="body2">{viewRecord.channel?.name || viewRecord.channel_id || "-"}</Typography>
+                <Grid item xs={6}>
+                  <Typography variant="caption" color="text.secondary">Receipt Number</Typography>
+                  <Typography variant="body2" fontWeight="bold">#{viewRecord.source_id}</Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="bold">Amount</Typography>
-                  <Typography variant="body2">{numberFormat(viewRecord.amount)}</Typography>
+                <Grid item xs={6}>
+                  <Typography variant="caption" color="text.secondary">Created By</Typography>
+                  <Typography variant="body2">{viewRecord.creator?.full_name || "-"}</Typography>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="bold">Discount</Typography>
-                  <Typography variant="body2">{numberFormat(viewRecord.discount)}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="bold">Subtotal</Typography>
-                  <Typography variant="body2">
-                    {numberFormat((parseFloat(viewRecord.amount) || 0) - (parseFloat(viewRecord.discount) || 0))}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="bold">Date</Typography>
+                <Grid item xs={6}>
+                  <Typography variant="caption" color="text.secondary">Date Created</Typography>
                   <Typography variant="body2">{viewRecord.created_at}</Typography>
                 </Grid>
               </Grid>
-              {renderRecordItems(viewRecord)}
+
+              <MuiTable size="small" sx={{ mt: 1 }}>
+                <TableHead>
+                  <TableRow sx={{ "& th": { bgcolor: "action.hover", py: 0.5 } }}>
+                    <TableCell sx={{ fontWeight: "bold", width: 30, px: 1 }}>S/N</TableCell>
+                    <TableCell sx={{ fontWeight: "bold", px: 1 }}>Item Name</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: "bold", px: 1 }}>Qty</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: "bold", px: 1 }}>Subtotal</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {(viewRecord.items || []).map((row, i) => (
+                    <TableRow key={i}>
+                      <TableCell sx={{ px: 1 }}>{i + 1}</TableCell>
+                      <TableCell sx={{ px: 1 }}>{row.item?.name || "Unknown"}</TableCell>
+                      <TableCell align="center" sx={{ px: 1 }}>{row.quantity}</TableCell>
+                      <TableCell align="right" sx={{ px: 1 }}>
+                        {numberFormat((parseFloat(row.unit_price) || 0) * (parseInt(row.quantity) || 0))}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </MuiTable>
+
+              <Grid container spacing={1} sx={{ mt: 0.5 }}>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">Receipt Amount</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" align="right">{numberFormat(viewRecord.amount)}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">Discount</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" align="right">- {numberFormat(viewRecord.discount)}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" fontWeight="bold">GRAND TOTAL</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" fontWeight="bold" align="right">
+                    {numberFormat((parseFloat(viewRecord.amount) || 0) - (parseFloat(viewRecord.discount) || 0))}
+                  </Typography>
+                </Grid>
+              </Grid>
             </Box>
           )}
         </DialogContent>
@@ -427,33 +480,54 @@ const DailyCashCollection = ({ module }) => {
           ) : (
             <Box>
               <Typography variant="body2" color="text.secondary" mb={1}>
-                Adjust item quantities. Total will be recalculated automatically.
+                Adjust item quantities (min 1) or tick Remove to drop an item. Total recalculates automatically.
               </Typography>
               <MuiTable size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Item</TableCell>
                     <TableCell align="right">Unit Price</TableCell>
-                    <TableCell align="center" sx={{ width: 120 }}>Qty</TableCell>
+                    <TableCell align="center" sx={{ width: 100 }}>Qty</TableCell>
                     <TableCell align="right">Subtotal</TableCell>
+                    <TableCell align="center" sx={{ width: 90 }}>Remove</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {editItems.map((row, i) => (
-                    <TableRow key={i}>
+                    <TableRow
+                      key={i}
+                      sx={{
+                        opacity: row.removed ? 0.45 : 1,
+                        "& td": { textDecoration: row.removed ? "line-through" : "none" },
+                      }}
+                    >
                       <TableCell>{row.item}</TableCell>
                       <TableCell align="right">{numberFormat(row.unit_price)}</TableCell>
-                      <TableCell align="center" sx={{ width: 120 }}>
+                      <TableCell align="center" sx={{ width: 100 }}>
                         <TextField
                           fullWidth
                           type="number"
-                          inputProps={{ min: 0 }}
+                          inputProps={{ min: 1 }}
                           size="small"
                           value={row.quantity}
+                          disabled={row.removed}
                           onChange={(value) => handleQuantityChange(i, value)}
                         />
                       </TableCell>
-                      <TableCell align="right">{numberFormat(row.unit_price * row.quantity)}</TableCell>
+                      <TableCell align="right">
+                        {numberFormat(row.removed ? 0 : row.unit_price * row.quantity)}
+                      </TableCell>
+                      <TableCell align="center" sx={{ width: 90 }}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={row.removed}
+                              onChange={() => handleRemoveToggle(i)}
+                            />
+                          }
+                          label=""
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -252,7 +252,9 @@ class PaymentCenterReportsController extends Controller
         $request->validate([
             'items' => 'required|array',
             'items.*.id' => 'required|integer|exists:patient_payment_cache_items,id',
-            'items.*.quantity' => 'required|integer|min:0',
+            'items.*.quantity' => 'required|integer|min:1',
+            'remove_items' => 'sometimes|array',
+            'remove_items.*' => 'integer|exists:patient_payment_cache_items,id',
         ]);
 
         if ($type === 'cash') {
@@ -262,6 +264,15 @@ class PaymentCenterReportsController extends Controller
                 $item = PatientPaymentCacheItem::where('item_payment_id', $id)->find($req['id']);
                 if ($item) {
                     $item->quantity = $req['quantity'];
+                    $item->save();
+                }
+            }
+
+            foreach ($request->remove_items ?? [] as $removeId) {
+                $item = PatientPaymentCacheItem::where('item_payment_id', $id)->find($removeId);
+                if ($item) {
+                    $item->item_payment_id = null;
+                    $item->status = 'Pending';
                     $item->save();
                 }
             }
@@ -285,6 +296,15 @@ class PaymentCenterReportsController extends Controller
                 $item = PatientPaymentCacheItem::where('bill_id', $id)->find($req['id']);
                 if ($item) {
                     $item->quantity = $req['quantity'];
+                    $item->save();
+                }
+            }
+
+            foreach ($request->remove_items ?? [] as $removeId) {
+                $item = PatientPaymentCacheItem::where('bill_id', $id)->find($removeId);
+                if ($item) {
+                    $item->bill_id = null;
+                    $item->status = 'Pending';
                     $item->save();
                 }
             }
