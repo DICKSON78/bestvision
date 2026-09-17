@@ -325,6 +325,9 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     $router->prefix('reports')->group(function ($router) {
         $router->controller(PaymentCenterReportsController::class)->prefix('payment-center')->group(function ($router) {
             $router->get('/cash-collection', 'getCashCollectionReport');
+            $router->get('/cash-collection/{type}/{id}', 'getCashCollectionRecord');
+            $router->put('/cash-collection/{type}/{id}', 'updateCashCollectionRecord');
+            $router->delete('/cash-collection/{type}/{id}', 'deleteCashCollectionRecord');
             $router->get('/partner-frame-payments', 'getPartnerFramePaymentsReport');
         });
         $router->controller(InventoryManagementReportsController::class)->prefix('inventory-management')->group(function ($router) {

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Reports;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiResponse;
+use App\Models\PatientItemBill;
 use App\Models\PatientItemBillPayment;
 use App\Models\PatientItemPayment;
+use App\Models\PatientPaymentCacheItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -184,6 +186,7 @@ class PaymentCenterReportsController extends Controller
 
         $item_payments->select(
             DB::raw("'Cash' as transaction_type"),
+            'patient_item_payments.id as source_id',
             'pt.first_name', 'pt.middle_name', 'pt.last_name',
             'pch.patient_id', 'channel_id',
             'patient_item_payments.amount',
@@ -196,6 +199,7 @@ class PaymentCenterReportsController extends Controller
         // Bill payments - GROUP BY pib.id ili ionyeshe mstari MMOJA na jumla ya deni lote
         $bill_payments->select(
             DB::raw("'Installment Completed' as transaction_type"),
+            'pib.id as source_id',
             'pt.first_name', 'pt.middle_name', 'pt.last_name',
             'pch.patient_id',
             DB::raw('NULL as channel_id'),
@@ -211,5 +215,113 @@ class PaymentCenterReportsController extends Controller
         $data->orderBy('created_at', 'desc');
         $data = $data->paginate($per_page);
         return $this->sendResponse($data, Response::HTTP_OK, 'Success.');
+    }
+
+    public function getCashCollectionRecord($type, $id)
+    {
+        if ($type === 'cash') {
+            $payment = PatientItemPayment::with([
+                'channel',
+                'creator',
+                'items' => function ($query) {
+                    $query->with(['item:id,name,code', 'payment_cache.check_in.patient']);
+                },
+            ])->findOrFail($id);
+
+            return $this->sendResponse($payment, Response::HTTP_OK, 'Success.');
+        }
+
+        if ($type === 'installment') {
+            $bill = PatientItemBill::with([
+                'creator',
+                'items' => function ($query) {
+                    $query->with(['item:id,name,code', 'payment_cache.check_in.patient']);
+                },
+            ])->findOrFail($id);
+
+            $bill->amount_paid = $bill->payments()->sum('amount');
+
+            return $this->sendResponse($bill, Response::HTTP_OK, 'Success.');
+        }
+
+        return $this->sendResponse(null, Response::HTTP_NOT_FOUND, 'Record not found.');
+    }
+
+    public function updateCashCollectionRecord(Request $request, $type, $id)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.id' => 'required|integer|exists:patient_payment_cache_items,id',
+            'items.*.quantity' => 'required|integer|min:0',
+        ]);
+
+        $amount = 0;
+
+        if ($type === 'cash') {
+            $payment = PatientItemPayment::findOrFail($id);
+
+            foreach ($request->items as $req) {
+                $item = PatientPaymentCacheItem::where('item_payment_id', $id)->find($req['id']);
+                if ($item) {
+                    $item->quantity = $req['quantity'];
+                    $item->save();
+                    $amount += ($item->unit_price * $item->quantity);
+                }
+            }
+
+            $payment->amount = $amount;
+            $payment->save();
+
+            return $this->sendResponse($payment, Response::HTTP_OK, 'Payment updated successfully.');
+        }
+
+        if ($type === 'installment') {
+            $bill = PatientItemBill::findOrFail($id);
+
+            foreach ($request->items as $req) {
+                $item = PatientPaymentCacheItem::where('bill_id', $id)->find($req['id']);
+                if ($item) {
+                    $item->quantity = $req['quantity'];
+                    $item->save();
+                    $amount += ($item->unit_price * $item->quantity);
+                }
+            }
+
+            $bill->amount = $amount;
+            $bill->save();
+
+            return $this->sendResponse($bill, Response::HTTP_OK, 'Bill updated successfully.');
+        }
+
+        return $this->sendResponse(null, Response::HTTP_NOT_FOUND, 'Record not found.');
+    }
+
+    public function deleteCashCollectionRecord($type, $id)
+    {
+        if ($type === 'cash') {
+            $payment = PatientItemPayment::findOrFail($id);
+
+            PatientPaymentCacheItem::where('item_payment_id', $id)
+                ->update(['item_payment_id' => null, 'status' => 'Pending']);
+
+            $payment->delete();
+
+            return $this->sendResponse($payment, Response::HTTP_OK, 'Payment deleted successfully.');
+        }
+
+        if ($type === 'installment') {
+            $bill = PatientItemBill::findOrFail($id);
+
+            PatientItemBillPayment::where('bill_id', $id)->delete();
+
+            PatientPaymentCacheItem::where('bill_id', $id)
+                ->update(['bill_id' => null, 'status' => 'Pending']);
+
+            $bill->delete();
+
+            return $this->sendResponse($bill, Response::HTTP_OK, 'Bill deleted successfully.');
+        }
+
+        return $this->sendResponse(null, Response::HTTP_NOT_FOUND, 'Record not found.');
     }
 }
