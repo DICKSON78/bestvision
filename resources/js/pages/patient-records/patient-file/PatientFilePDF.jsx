@@ -166,20 +166,20 @@ const PDFReportDocument = ({ consultation, patient }) => {
             { label: "Address", value: patient.address },
             {
               label: "Payment Mode",
-              value: consultation.payment_cache_item.payment_mode.name,
+              value: consultation.payment_cache_item?.payment_mode.name,
             },
             {
               label: "Consultation Item",
-              value: consultation.payment_cache_item.item.name,
+              value: consultation.payment_cache_item?.item.name,
             },
             {
               label: "Consultant",
-              value: consultation.payment_cache_item.consultant?.full_name,
+              value: consultation.payment_cache_item?.consultant?.full_name,
             },
             {
               label: "Consultation Date",
               value:
-                consultation.payment_cache_item.served_at ||
+                consultation.payment_cache_item?.served_at ||
                 consultation.created_at,
             },
             { label: "Require Spectacle", value: consultation.require_glass },

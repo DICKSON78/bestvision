@@ -175,21 +175,21 @@ const ConsultationPatients = () => {
                 field: "full_name",
                 headerName: "Patient Name",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient
+                  item.payment_cache_item?.payment_cache?.check_in.patient
                     .full_name,
               },
               {
                 field: "patient_id",
                 headerName: "Patient Number",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient_id,
+                  item.payment_cache_item?.payment_cache?.check_in.patient_id,
               },
               {
                 field: "date_of_birth",
                 headerName: "Age",
                 valueGetter: (item, index) =>
                   getAge(
-                    item.payment_cache_item.payment_cache.check_in.patient
+                    item.payment_cache_item?.payment_cache?.check_in.patient
                       .date_of_birth
                   ),
               },
@@ -197,13 +197,13 @@ const ConsultationPatients = () => {
                 field: "gender",
                 headerName: "Gender",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient.gender,
+                  item.payment_cache_item?.payment_cache?.check_in.patient.gender,
               },
               {
                 field: "phone",
                 headerName: "Phone Number",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient.phone,
+                  item.payment_cache_item?.payment_cache?.check_in.patient.phone,
               },
               {
                 field: "created_by",
@@ -215,19 +215,19 @@ const ConsultationPatients = () => {
                 field: "consultant",
                 headerName: "Consultant",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.consultant?.full_name,
+                  item.payment_cache_item?.consultant?.full_name,
               },
               {
                 field: "created_at",
                 headerName:
                   status === "pending" ? "Date Sent" : "Date Consulted",
                 valueGetter: (item) =>
-                  item.payment_cache_item.served_at || item.created_at,
+                  item.payment_cache_item?.served_at || item.created_at,
               },
               {
                 field: "item_name",
                 headerName: "Consultation Item",
-                valueGetter: (item, index) => item.payment_cache_item.item.name,
+                valueGetter: (item, index) => item.payment_cache_item?.item.name,
               },
               {
                 field: "actions",
@@ -249,7 +249,7 @@ const ConsultationPatients = () => {
                       size="small"
                       onClick={() =>
                         navigate(
-                          `/consultation-room/consultation-patients/${status}/${item.payment_cache_item.payment_cache.check_in.patient_id}/${item.id}/clinical-notes`
+                          `/consultation-room/consultation-patients/${status}/${item.payment_cache_item?.payment_cache?.check_in.patient_id}/${item.id}/clinical-notes`
                         )
                       }
                     >

@@ -54,7 +54,7 @@ const SelectItems = ({
   const [error, setError] = useState();
 
   const [paymentMode, setPaymentMode] = useState(
-    consultation.payment_cache_item.payment_mode
+    consultation.payment_cache_item?.payment_mode
   );
   const [consultant, setConsultant] = useState(window.user);
   const [itemName, setItemName] = useState();

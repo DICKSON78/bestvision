@@ -116,7 +116,7 @@ class DoctorTask extends Model
     {
         try {
             // Get the consultant/doctor from the consultation
-            $doctor = $consultation->payment_cache_item->consultant ?? null;
+            $doctor = $consultation->payment_cache_item?->consultant;
             
             if (!$doctor) {
                 \Log::warning('No consultant found for consultation', [
@@ -127,7 +127,7 @@ class DoctorTask extends Model
             }
 
             // Get the patient from the consultation
-            $patient = $consultation->payment_cache_item->payment_cache->check_in->patient ?? null;
+            $patient = $consultation->payment_cache_item?->payment_cache?->check_in?->patient;
             
             if (!$patient) {
                 \Log::warning('No patient found for consultation', [

@@ -191,9 +191,9 @@ const PartnerFramePayments = () => {
             valueGetter: (item, index) =>
               item.payment_cache?.check_in?.patient
                 ? getFullName(
-                    item.payment_cache.check_in.patient.first_name,
-                    item.payment_cache.check_in.patient.middle_name,
-                    item.payment_cache.check_in.patient.last_name
+                    item.payment_cache?.check_in.patient.first_name,
+                    item.payment_cache?.check_in.patient.middle_name,
+                    item.payment_cache?.check_in.patient.last_name
                   )
                 : "N/A",
           },

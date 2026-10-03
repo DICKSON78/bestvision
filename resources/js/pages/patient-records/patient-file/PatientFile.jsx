@@ -70,19 +70,19 @@ const PatientFile = ({ patient }) => {
               {
                 field: "item_name",
                 headerName: "Consultation Item",
-                valueGetter: (item, index) => item.payment_cache_item.item.name,
+                valueGetter: (item, index) => item.payment_cache_item?.item.name,
               },
               {
                 field: "consultant",
                 headerName: "Consultant",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.consultant?.full_name,
+                  item.payment_cache_item?.consultant?.full_name,
               },
               {
                 field: "created_at",
                 headerName: "Date",
                 valueGetter: (item) =>
-                  item.payment_cache_item.served_at || item.created_at,
+                  item.payment_cache_item?.served_at || item.created_at,
               },
               {
                 field: "status",

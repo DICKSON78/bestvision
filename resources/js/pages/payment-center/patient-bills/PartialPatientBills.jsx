@@ -143,21 +143,21 @@ const PartialPatientBills = () => {
                 field: "full_name",
                 headerName: "Patient Name",
                 valueGetter: (item, index) =>
-                  item.first_item.payment_cache.check_in.patient.full_name,
+                  item.first_item.payment_cache?.check_in.patient.full_name,
                 tableCellProps: { sx: { width: 200 } },
               },
               {
                 field: "patient_id",
                 headerName: "Patient Number",
                 valueGetter: (item, index) =>
-                  item.first_item.payment_cache.check_in.patient_id,
+                  item.first_item.payment_cache?.check_in.patient_id,
                 tableCellProps: { sx: { width: 120 } },
               },
               {
                 field: "phone",
                 headerName: "Phone Number",
                 valueGetter: (item, index) =>
-                  item.first_item.payment_cache.check_in.patient.phone,
+                  item.first_item.payment_cache?.check_in.patient.phone,
                 tableCellProps: { sx: { width: 150 } },
               },
               {
@@ -245,7 +245,7 @@ const PartialPatientBills = () => {
                       size="small"
                       onClick={() =>
                         navigate(
-                          `/payment-center/patient-bills/pending/${item.first_item.payment_cache.check_in.patient_id}/${item.id}`
+                          `/payment-center/patient-bills/pending/${item.first_item.payment_cache?.check_in.patient_id}/${item.id}`
                         )
                       }
                     >

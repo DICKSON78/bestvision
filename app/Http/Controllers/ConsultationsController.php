@@ -365,8 +365,17 @@ class ConsultationsController extends Controller
 
             if (!$payment_cache) {
                 $consultation = Consultation::find($request->consultation_id);
+                $checkInId = $consultation?->payment_cache_item?->payment_cache?->check_in_id;
+
+                if (!$checkInId) {
+                    return $this->sendError(
+                        'This consultation is not linked to a payment cache item, so an item cannot be added to it.',
+                        Response::HTTP_UNPROCESSABLE_ENTITY
+                    );
+                }
+
                 $payment_cache = PatientPaymentCache::create([
-                    'check_in_id' => $consultation->payment_cache_item->payment_cache->check_in_id,
+                    'check_in_id' => $checkInId,
                     'consultation_id' => $request->consultation_id,
                     'created_by' => $user->id,
                 ]);
@@ -395,7 +404,7 @@ class ConsultationsController extends Controller
 
             // Start treatment for patient waiting time tracking
             try {
-                $patient = $data->payment_cache_item->payment_cache->check_in->patient;
+                $patient = $data->payment_cache_item?->payment_cache?->check_in?->patient;
                 if ($patient) {
                     $waitingTime = $patient->waiting_times()
                         ->whereDate('registration_time', $data->created_at->format('Y-m-d'))
@@ -519,7 +528,7 @@ class ConsultationsController extends Controller
             // (consultation + payment + dispensing + any other required departments)
             if ($request->status === 'Consulted') {
                 try {
-                    $patient = $data->payment_cache_item->payment_cache->check_in->patient;
+                    $patient = $data->payment_cache_item?->payment_cache?->check_in?->patient;
                     if ($patient) {
                         $waitingTime = $patient->current_waiting_time;
                         
@@ -572,7 +581,7 @@ class ConsultationsController extends Controller
                 // Get patient for both waiting time and notification
                 $patient = null;
                 try {
-                    $patient = $data->payment_cache_item->payment_cache->check_in->patient;
+                    $patient = $data->payment_cache_item?->payment_cache?->check_in?->patient;
                 } catch (\Exception $e) {
                     \Log::error('Failed to get patient for consultation', [
                         'consultation_id' => $data->id,
@@ -796,7 +805,7 @@ class ConsultationsController extends Controller
 
             // Check if patient waiting time should be completed after consultation (optimized)
             try {
-                $patient = $data->payment_cache_item->payment_cache->check_in->patient;
+                $patient = $data->payment_cache_item?->payment_cache?->check_in?->patient;
                 if ($patient) {
                     // Use a more efficient query with eager loading
                     $waitingTime = $patient->waiting_times()
@@ -839,7 +848,7 @@ class ConsultationsController extends Controller
 
             // update source of information
             if ($request->info_source_id) {
-                $patient = $data->payment_cache_item->payment_cache->check_in->patient;
+                $patient = $data->payment_cache_item?->payment_cache?->check_in?->patient;
                 $patient->info_source_id = $request->info_source_id;
                 $patient->save();
             }

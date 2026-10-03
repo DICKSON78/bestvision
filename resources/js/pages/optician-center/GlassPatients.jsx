@@ -146,21 +146,21 @@ const ConsultationPatients = () => {
                 field: "full_name",
                 headerName: "Patient Name",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient
+                  item.payment_cache_item?.payment_cache?.check_in.patient
                     .full_name,
               },
               {
                 field: "patient_id",
                 headerName: "Patient Number",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient_id,
+                  item.payment_cache_item?.payment_cache?.check_in.patient_id,
               },
               {
                 field: "date_of_birth",
                 headerName: "Age",
                 valueGetter: (item, index) =>
                   getAge(
-                    item.payment_cache_item.payment_cache.check_in.patient
+                    item.payment_cache_item?.payment_cache?.check_in.patient
                       .date_of_birth
                   ),
               },
@@ -168,13 +168,13 @@ const ConsultationPatients = () => {
                 field: "gender",
                 headerName: "Gender",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient.gender,
+                  item.payment_cache_item?.payment_cache?.check_in.patient.gender,
               },
               {
                 field: "phone",
                 headerName: "Phone Number",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient.phone,
+                  item.payment_cache_item?.payment_cache?.check_in.patient.phone,
               },
               {
                 field: "require_glass",
@@ -241,7 +241,7 @@ const ConsultationPatients = () => {
                       size="small"
                       onClick={() =>
                         navigate(
-                          `/optician-center/glass-patients/${item.payment_cache_item.payment_cache.check_in.patient_id}/${item.id}/clinical-notes`
+                          `/optician-center/glass-patients/${item.payment_cache_item?.payment_cache?.check_in.patient_id}/${item.id}/clinical-notes`
                         )
                       }
                     >

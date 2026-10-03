@@ -94,14 +94,14 @@ const PatientBills = () => {
                 field: "full_name",
                 headerName: "Patient Name",
                 valueGetter: (item, index) =>
-                  item.first_item.payment_cache.check_in.patient.full_name,
+                  item.first_item.payment_cache?.check_in.patient.full_name,
                 tableCellProps: { sx: { width: 200 } },
               },
               {
                 field: "patient_id",
                 headerName: "Patient Number",
                 valueGetter: (item, index) =>
-                  item.first_item.payment_cache.check_in.patient_id,
+                  item.first_item.payment_cache?.check_in.patient_id,
                 tableCellProps: { sx: { width: 120 } },
               },
               {
@@ -109,7 +109,7 @@ const PatientBills = () => {
                 headerName: "Age",
                 valueGetter: (item, index) =>
                   getAge(
-                    item.first_item.payment_cache.check_in.patient.date_of_birth
+                    item.first_item.payment_cache?.check_in.patient.date_of_birth
                   ),
                 tableCellProps: { sx: { width: 80 } },
               },
@@ -117,21 +117,21 @@ const PatientBills = () => {
                 field: "gender",
                 headerName: "Gender",
                 valueGetter: (item, index) =>
-                  item.first_item.payment_cache.check_in.patient.gender,
+                  item.first_item.payment_cache?.check_in.patient.gender,
                 tableCellProps: { sx: { width: 80 } },
               },
               {
                 field: "phone",
                 headerName: "Phone Number",
                 valueGetter: (item, index) =>
-                  item.first_item.payment_cache.check_in.patient.phone,
+                  item.first_item.payment_cache?.check_in.patient.phone,
                 tableCellProps: { sx: { width: 150 } },
               },
               {
                 field: "require_glass",
                 headerName: "Spectacle Required",
                 renderCell: (item) => {
-                  const requireGlass = item.first_item.payment_cache.consultation?.require_glass;
+                  const requireGlass = item.first_item.payment_cache?.consultation?.require_glass;
                   if (requireGlass === 'Yes') {
                     return (
                       <Chip
@@ -186,7 +186,7 @@ const PatientBills = () => {
                       size="small"
                       onClick={() =>
                         navigate(
-                          `/payment-center/patient-bills/${status}/${item.first_item.payment_cache.check_in.patient_id}/${item.id}`
+                          `/payment-center/patient-bills/${status}/${item.first_item.payment_cache?.check_in.patient_id}/${item.id}`
                         )
                       }
                     >

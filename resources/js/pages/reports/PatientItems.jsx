@@ -349,13 +349,13 @@ const PatientItems = ({
             field: "patient_name",
             headerName: "Patient Name",
             valueGetter: (item, index) =>
-              item.payment_cache.check_in.patient.full_name,
+              item.payment_cache?.check_in.patient.full_name,
           },
           {
             field: "patient_id",
             headerName: "Patient Number",
             valueGetter: (item, index) =>
-              item.payment_cache.check_in.patient_id,
+              item.payment_cache?.check_in.patient_id,
           },
           {
             field: "name",

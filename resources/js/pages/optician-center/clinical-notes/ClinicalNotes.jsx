@@ -161,7 +161,7 @@ const ClinicalNotes = ({ patient, consultation }) => {
         onOk={() => {
           modalRef.current.close();
           handleDispense("api/patient-payment-cache-items/dispense", {
-            payment_cache_id: consultation.payment_cache_item.payment_cache_id,
+            payment_cache_id: consultation.payment_cache_item?.payment_cache_id,
             items: selectedItems.map((e) => e.id),
           });
         }}

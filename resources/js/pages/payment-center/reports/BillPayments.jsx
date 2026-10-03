@@ -244,13 +244,13 @@ const BillPayments = ({ module }) => {
             field: "patient_name",
             headerName: "Patient Name",
             valueGetter: (item, index) =>
-              item.bill.first_item.payment_cache.check_in.patient.full_name,
+              item.bill.first_item.payment_cache?.check_in.patient.full_name,
           },
           {
             field: "patient_id",
             headerName: "Patient Number",
             valueGetter: (item, index) =>
-              item.bill.first_item.payment_cache.check_in.patient_id,
+              item.bill.first_item.payment_cache?.check_in.patient_id,
           },
           {
             field: "amount",

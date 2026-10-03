@@ -115,21 +115,21 @@ const GlassPatients = () => {
                 field: "full_name",
                 headerName: "Patient Name",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient
+                  item.payment_cache_item?.payment_cache?.check_in.patient
                     .full_name,
               },
               {
                 field: "patient_id",
                 headerName: "Patient Number",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient_id,
+                  item.payment_cache_item?.payment_cache?.check_in.patient_id,
               },
               {
                 field: "date_of_birth",
                 headerName: "Age",
                 valueGetter: (item, index) =>
                   getAge(
-                    item.payment_cache_item.payment_cache.check_in.patient
+                    item.payment_cache_item?.payment_cache?.check_in.patient
                       .date_of_birth
                   ),
               },
@@ -137,13 +137,13 @@ const GlassPatients = () => {
                 field: "gender",
                 headerName: "Gender",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient.gender,
+                  item.payment_cache_item?.payment_cache?.check_in.patient.gender,
               },
               {
                 field: "phone",
                 headerName: "Phone Number",
                 valueGetter: (item, index) =>
-                  item.payment_cache_item.payment_cache.check_in.patient.phone,
+                  item.payment_cache_item?.payment_cache?.check_in.patient.phone,
               },
               {
                 field: "require_glass",
@@ -176,7 +176,7 @@ const GlassPatients = () => {
                 headerName: "Sent By",
                 valueGetter: (item, index) =>
                   item.patient_direction === "Direct to Doctor"
-                    ? item.payment_cache_item.consultant?.full_name
+                    ? item.payment_cache_item?.consultant?.full_name
                     : item.creator?.full_name,
               },
               {
@@ -186,7 +186,7 @@ const GlassPatients = () => {
                   if (item.patient_direction === "Direct to Doctor") {
                     // For Direct to Doctor patients, show when consultation was completed
                     // If served_at is available, use it, otherwise use consultation updated_at
-                    return item.payment_cache_item.served_at || item.updated_at;
+                    return item.payment_cache_item?.served_at || item.updated_at;
                   } else {
                     // For Direct to Optician patients, show when consultation was created
                     return item.created_at;
@@ -213,7 +213,7 @@ const GlassPatients = () => {
                       size="small"
                       onClick={() =>
                         navigate(
-                          `/reception/glass-patients/${item.payment_cache_item.payment_cache.check_in.patient_id}/${item.id}/clinical-notes`
+                          `/reception/glass-patients/${item.payment_cache_item?.payment_cache?.check_in.patient_id}/${item.id}/clinical-notes`
                         )
                       }
                     >
