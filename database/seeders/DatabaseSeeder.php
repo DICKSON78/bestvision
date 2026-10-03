@@ -4,8 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Clinic;
 use App\Models\ConsultationType;
+use App\Models\DoctorTask;
 use App\Models\ItemType;
 use App\Models\JobTitle;
+use App\Models\Patient;
+use App\Models\PaymentChannel;
 use App\Models\PaymentMode;
 use App\Models\Preference;
 use App\Models\UnitOfMeasure;
@@ -155,9 +158,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Add sample patients
-        \App\Models\Patient::insert([
+        Patient::insert([
             [
-                'clinic_id' => 1,
                 'first_name' => 'Alice',
                 'last_name' => 'Johnson',
                 'phone' => '0712345678',
@@ -167,7 +169,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'clinic_id' => 1,
                 'first_name' => 'Bob',
                 'last_name' => 'Williams',
                 'phone' => '0723456789',
@@ -177,7 +178,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'clinic_id' => 1,
                 'first_name' => 'Carol',
                 'last_name' => 'Brown',
                 'phone' => '0734567890',
@@ -187,7 +187,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'clinic_id' => 1,
                 'first_name' => 'David',
                 'last_name' => 'Davis',
                 'phone' => '0745678901',
@@ -203,7 +202,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AnnouncementSeeder::class);
 
         // Add sample doctor tasks
-        \App\Models\DoctorTask::insert([
+        DoctorTask::insert([
             [
                 'doctor_id' => 2, // Dr. John Doe
                 'patient_id' => 1, // Alice Johnson
@@ -225,6 +224,7 @@ class DatabaseSeeder extends Seeder
                 'status' => 'in_progress',
                 'assigned_at' => now()->subHours(2),
                 'started_at' => now()->subHour(),
+                'completed_at' => null,
                 'assigned_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -236,6 +236,8 @@ class DatabaseSeeder extends Seeder
                 'treatment_details' => 'Post-surgery follow-up examination',
                 'status' => 'pending',
                 'assigned_at' => now()->addHours(1),
+                'started_at' => null,
+                'completed_at' => null,
                 'assigned_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -260,6 +262,8 @@ class DatabaseSeeder extends Seeder
                 'treatment_details' => 'Laser eye treatment',
                 'status' => 'pending',
                 'assigned_at' => now()->addDays(1),
+                'started_at' => null,
+                'completed_at' => null,
                 'assigned_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,

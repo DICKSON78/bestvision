@@ -13,10 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('stocktake_items', function (Blueprint $table) {
-            $table->double('selling_price')->unsigned()->nullable()->after('unit_buying_price');
-            $table->date('expiration_date')->nullable()->after('selling_price');
-        });
+        if (! Schema::hasColumn('stocktake_items', 'selling_price')) {
+            Schema::table('stocktake_items', function (Blueprint $table) {
+                $table->double('selling_price')->unsigned()->nullable()->after('unit_buying_price');
+            });
+        }
+
+        if (! Schema::hasColumn('stocktake_items', 'expiration_date')) {
+            Schema::table('stocktake_items', function (Blueprint $table) {
+                $table->date('expiration_date')->nullable()->after('selling_price');
+            });
+        }
     }
 
     /**
@@ -26,8 +33,15 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('stocktake_items', function (Blueprint $table) {
-            $table->dropColumn(['selling_price', 'expiration_date']);
-        });
+        $columns = array_values(array_filter(
+            ['selling_price', 'expiration_date'],
+            fn ($column) => Schema::hasColumn('stocktake_items', $column)
+        ));
+
+        if ($columns) {
+            Schema::table('stocktake_items', function (Blueprint $table) use ($columns) {
+                $table->dropColumn($columns);
+            });
+        }
     }
 };
